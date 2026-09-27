@@ -38,8 +38,8 @@ body {
     inset: 0;
     background: radial-gradient(
         circle at center,
-        rgba(0, 255, 180, 0.05),
-        rgba(3, 10, 22, 0.82)
+        rgba(0,255,180,0.05),
+        rgba(3,10,22,0.82)
     );
     pointer-events: none;
     z-index: -1;
@@ -81,7 +81,7 @@ header p {
     padding: 45px 35px;
     border: 1px solid rgba(0,255,204,.35);
     border-radius: 25px;
-    background: rgba(4, 17, 32, .93);
+    background: rgba(4,17,32,.93);
     box-shadow:
         0 0 25px rgba(0,255,204,.12),
         inset 0 0 40px rgba(0,255,204,.025);
@@ -94,7 +94,7 @@ header p {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    animation: cardEnter .45s ease;
+    animation: cardEnter .5s ease;
 }
 
 @keyframes cardEnter {
@@ -102,6 +102,7 @@ header p {
         opacity: 0;
         transform: translateY(18px) scale(.98);
     }
+
     to {
         opacity: 1;
         transform: translateY(0) scale(1);
@@ -133,7 +134,7 @@ header p {
 
 .welcome-title {
     color: #00ffcc;
-    font-size: clamp(30px, 5vw, 50px);
+    font-size: clamp(30px,5vw,50px);
     margin-bottom: 20px;
     text-align: center;
 }
@@ -179,7 +180,7 @@ header p {
 
 .card-title {
     color: #00ffcc;
-    font-size: clamp(28px, 4vw, 42px);
+    font-size: clamp(28px,4vw,42px);
     text-align: center;
     margin-bottom: 25px;
     text-shadow: 0 0 10px rgba(0,255,204,.35);
@@ -205,7 +206,7 @@ header p {
     width: 100%;
     max-width: 850px;
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2,1fr);
     gap: 18px;
     margin-top: 10px;
 }
@@ -254,7 +255,7 @@ header p {
 }
 
 /* =========================
-   AI LOGO
+   GEMINI
 ========================= */
 
 .gemini-logo {
@@ -282,7 +283,7 @@ header p {
 
 .thanks-title {
     color: #00ffcc;
-    font-size: clamp(38px, 6vw, 60px);
+    font-size: clamp(38px,6vw,60px);
     text-align: center;
     margin-bottom: 20px;
     text-shadow: 0 0 18px rgba(0,255,204,.5);
@@ -410,17 +411,30 @@ header p {
     align-items: center;
     justify-content: center;
     color: #00ffcc;
-    font-size: clamp(25px, 5vw, 45px);
+    font-size: clamp(25px,5vw,45px);
     font-weight: bold;
-    text-shadow: 0 0 20px #00ffcc;
+    text-shadow:
+        0 0 10px #00ffcc,
+        0 0 25px #00ffcc;
     pointer-events: none;
+    animation: transitionTextPulse 1s infinite alternate;
+}
+
+@keyframes transitionTextPulse {
+    from {
+        opacity: .45;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 /* =========================
    RESPONSIVE
 ========================= */
 
-@media (max-width: 700px) {
+@media (max-width:700px) {
 
     .hacker-card {
         padding: 40px 20px;
@@ -453,542 +467,815 @@ header p {
 
 <body>
 
-<!-- Matrix background -->
+<!-- =========================
+     BACKGROUND MATRIX
+========================= -->
+
 <canvas id="matrixCanvas"></canvas>
+
 <div class="matrix-overlay"></div>
 
-<!-- Matrix transition -->
+
+<!-- =========================
+     TRANSITION MATRIX
+========================= -->
+
 <div id="transitionMatrix">
+
     <canvas id="transitionCanvas"></canvas>
-    <div class="transition-text">جارٍ الانتقال...</div>
+
+    <div class="transition-text">
+        جارٍ الانتقال...
+    </div>
+
 </div>
 
+
 <header>
-    <h1>شرح وسائِلِ التِّكنولوجيا الحَديثَة 🚀</h1>
-    <p>عرض تفاعلي شامل حول أهم تقنيات العصر الحديث</p>
+
+    <h1>
+        شرح وسائِلِ التِّكنولوجيا الحَديثَة 🚀
+    </h1>
+
+    <p>
+        عرض تفاعلي شامل حول أهم تقنيات العصر الحديث
+    </p>
+
 </header>
+
 
 <main class="presentation">
 
-    <!-- =========================
-         CARD 1
-    ========================== -->
 
-    <section class="hacker-card active" id="card0">
+<!-- =========================
+     CARD 1
+========================= -->
 
-        <div class="welcome-icon">💻</div>
+<section class="hacker-card active" id="card0">
 
-        <h2 class="welcome-title">
-            مرحباً بكم في عالم التكنولوجيا
-        </h2>
+    <div class="welcome-icon">
+        💻
+    </div>
 
-        <p class="welcome-text">
-            في هذا العرض سنتعرف معاً على مجموعة من أهم التقنيات
-            الحديثة التي أصبحت جزءاً أساسياً من حياتنا اليومية،
-            وكيف ساهمت في تغيير طريقة التعلم والعمل والتواصل.
-        </p>
+    <h2 class="welcome-title">
+        مرحباً بكم في عالم التكنولوجيا
+    </h2>
 
-        <button class="start-btn" onclick="goToCard(1)">
-            🚀 ابدأ العرض
-        </button>
+    <p class="welcome-text">
+        في هذا العرض سنتعرف معاً على مجموعة من أهم التقنيات
+        الحديثة التي أصبحت جزءاً أساسياً من حياتنا اليومية،
+        وكيف ساهمت في تغيير طريقة التعلم والعمل والتواصل.
+    </p>
 
-    </section>
+    <button class="start-btn" onclick="goToCard(1)">
+        🚀 ابدأ العرض
+    </button>
+
+</section>
 
 
-    <!-- =========================
-         CARD 2
-    ========================== -->
+<!-- =========================
+     CARD 2
+========================= -->
 
-    <section class="hacker-card" id="card1">
+<section class="hacker-card" id="card1">
 
-        <span class="card-number">01</span>
+    <span class="card-number">
+        01
+    </span>
 
-        <h2 class="card-title">
-            📱 الأجهزة الذكية
-        </h2>
+    <h2 class="card-title">
+        📱 الأجهزة الذكية
+    </h2>
 
-        <p class="card-subtitle">
-            Smart Devices
-        </p>
+    <p class="card-subtitle">
+        Smart Devices
+    </p>
 
-        <p class="description">
-            الأجهزة الذكية هي أجهزة إلكترونية قادرة على تنفيذ العديد
-            من المهام والتفاعل مع المستخدم والاتصال بالإنترنت.
-            أصبحت الهواتف والأجهزة اللوحية والساعات الذكية جزءاً
-            مهماً من حياتنا اليومية.
-        </p>
+    <p class="description">
+        الأجهزة الذكية هي أجهزة إلكترونية قادرة على تنفيذ
+        العديد من المهام والتفاعل مع المستخدم والاتصال
+        بالإنترنت. أصبحت الهواتف والأجهزة اللوحية والساعات
+        الذكية جزءاً مهماً من حياتنا اليومية.
+    </p>
 
-        <div class="info-grid">
+    <div class="info-grid">
 
-            <div class="info-box">
-                <h3>📱 الهواتف الذكية</h3>
-                <p>
-                    تستخدم للتواصل والتعلم والتصوير وتشغيل التطبيقات
-                    والوصول إلى الإنترنت.
-                </p>
-            </div>
+        <div class="info-box">
 
-            <div class="info-box">
-                <h3>⌚ الساعات الذكية</h3>
-                <p>
-                    تساعد في متابعة النشاط البدني والإشعارات
-                    وبعض الوظائف الصحية.
-                </p>
-            </div>
+            <h3>
+                📱 الهواتف الذكية
+            </h3>
 
-            <div class="info-box">
-                <h3>🏠 الأجهزة المنزلية</h3>
-                <p>
-                    مثل أجهزة التلفاز والثلاجات والمكانس الذكية
-                    التي يمكن التحكم بها إلكترونياً.
-                </p>
-            </div>
-
-            <div class="info-box">
-                <h3>⚡ المميزات</h3>
-                <p>
-                    السرعة وسهولة الاستخدام والاتصال بالإنترنت
-                    وتوفير العديد من الخدمات.
-                </p>
-            </div>
+            <p>
+                تستخدم للتواصل والتعلم والتصوير وتشغيل
+                التطبيقات والوصول إلى الإنترنت.
+            </p>
 
         </div>
 
-    </section>
+        <div class="info-box">
 
+            <h3>
+                ⌚ الساعات الذكية
+            </h3>
 
-    <!-- =========================
-         CARD 3
-    ========================== -->
-
-    <section class="hacker-card" id="card2">
-
-        <span class="card-number">02</span>
-
-        <h2 class="card-title">
-            ☁️ الحوسبة السحابية
-        </h2>
-
-        <p class="card-subtitle">
-            Cloud Computing
-        </p>
-
-        <p class="description">
-            الحوسبة السحابية هي استخدام خوادم موجودة عبر الإنترنت
-            لتخزين البيانات وتشغيل البرامج وتقديم الخدمات بدلاً
-            من الاعتماد الكامل على جهاز المستخدم.
-        </p>
-
-        <div class="info-grid">
-
-            <div class="info-box">
-                <h3>💾 التخزين</h3>
-                <p>
-                    حفظ الصور والملفات والبيانات على خوادم عبر الإنترنت.
-                </p>
-            </div>
-
-            <div class="info-box">
-                <h3>🌐 الوصول</h3>
-                <p>
-                    يمكن الوصول إلى الملفات والخدمات من أجهزة مختلفة
-                    عند توفر الإنترنت.
-                </p>
-            </div>
-
-            <div class="info-box">
-                <h3>🔒 الأمان</h3>
-                <p>
-                    توفر الخدمات السحابية أنظمة متعددة لحماية
-                    البيانات والحسابات.
-                </p>
-            </div>
-
-            <div class="info-box">
-                <h3>👥 المشاركة</h3>
-                <p>
-                    تسمح بمشاركة الملفات والعمل عليها بشكل تعاوني.
-                </p>
-            </div>
+            <p>
+                تساعد في متابعة النشاط البدني والإشعارات
+                وبعض الوظائف الصحية.
+            </p>
 
         </div>
 
-    </section>
+        <div class="info-box">
 
+            <h3>
+                🏠 الأجهزة المنزلية
+            </h3>
 
-    <!-- =========================
-         CARD 4
-    ========================== -->
-
-    <section class="hacker-card" id="card3">
-
-        <span class="card-number">03</span>
-
-        <h2 class="card-title">
-            🥽 الواقع الافتراضي والمعزز
-        </h2>
-
-        <p class="card-subtitle">
-            VR & AR
-        </p>
-
-        <p class="description">
-            تقنيات الواقع الافتراضي والواقع المعزز تسمح للمستخدم
-            بالتفاعل مع بيئات أو عناصر رقمية بطريقة مختلفة عن
-            الاستخدام التقليدي للأجهزة.
-        </p>
-
-        <div class="info-grid">
-
-            <div class="info-box">
-                <h3>🥽 الواقع الافتراضي VR</h3>
-                <p>
-                    ينشئ بيئة رقمية ثلاثية الأبعاد يمكن للمستخدم
-                    التفاعل معها باستخدام أجهزة خاصة.
-                </p>
-            </div>
-
-            <div class="info-box">
-                <h3>📷 الواقع المعزز AR</h3>
-                <p>
-                    يضيف عناصر رقمية إلى العالم الحقيقي من خلال
-                    الهاتف أو الأجهزة المتخصصة.
-                </p>
-            </div>
-
-            <div class="info-box">
-                <h3>🎮 الألعاب</h3>
-                <p>
-                    تستخدم هذه التقنيات في الألعاب والتجارب التفاعلية.
-                </p>
-            </div>
-
-            <div class="info-box">
-                <h3>🎓 التعليم</h3>
-                <p>
-                    يمكن استخدامها لعرض النماذج والتجارب بطريقة
-                    أكثر تفاعلية.
-                </p>
-            </div>
+            <p>
+                مثل أجهزة التلفاز والثلاجات والمكانس الذكية
+                التي يمكن التحكم بها إلكترونياً.
+            </p>
 
         </div>
 
-    </section>
+        <div class="info-box">
 
+            <h3>
+                ⚡ المميزات
+            </h3>
 
-    <!-- =========================
-         CARD 5
-    ========================== -->
-
-    <section class="hacker-card" id="card4">
-
-        <span class="card-number">04</span>
-
-        <div class="gemini-logo">✦</div>
-
-        <h2 class="card-title">
-            🤖 الذكاء الاصطناعي
-        </h2>
-
-        <p class="card-subtitle">
-            Artificial Intelligence
-        </p>
-
-        <p class="description">
-            الذكاء الاصطناعي هو مجال من علوم الحاسوب يهدف إلى تطوير
-            أنظمة قادرة على تنفيذ مهام تحتاج عادةً إلى قدرات بشرية
-            مثل فهم اللغة وتحليل البيانات والتعرف على الأنماط.
-        </p>
-
-        <div class="info-grid">
-
-            <div class="info-box">
-                <h3>🧠 التعلم الآلي</h3>
-                <p>
-                    يساعد الأنظمة على اكتشاف الأنماط والتعلم من البيانات.
-                </p>
-            </div>
-
-            <div class="info-box">
-                <h3>💬 معالجة اللغة</h3>
-                <p>
-                    تمكن الحاسوب من التعامل مع النصوص واللغة البشرية.
-                </p>
-            </div>
-
-            <div class="info-box">
-                <h3>👁️ تحليل الصور</h3>
-                <p>
-                    يمكن للأنظمة تحليل الصور والتعرف على عناصر مختلفة.
-                </p>
-            </div>
-
-            <div class="info-box">
-                <h3>🚀 الاستخدامات</h3>
-                <p>
-                    يستخدم في التعليم والطب والصناعة والبرمجة
-                    والعديد من المجالات.
-                </p>
-            </div>
+            <p>
+                السرعة وسهولة الاستخدام والاتصال بالإنترنت
+                وتوفير العديد من الخدمات.
+            </p>
 
         </div>
-
-    </section>
-
-
-    <!-- =========================
-         CARD 6
-    ========================== -->
-
-    <section class="hacker-card" id="card5">
-
-        <span class="card-number">05</span>
-
-        <h2 class="card-title">
-            🌐 إنترنت الأشياء
-        </h2>
-
-        <p class="card-subtitle">
-            Internet of Things - IoT
-        </p>
-
-        <p class="description">
-            إنترنت الأشياء هو ربط الأجهزة والأشياء بالإنترنت
-            بحيث تستطيع جمع البيانات وتبادلها وتنفيذ وظائف معينة
-            دون الحاجة إلى تدخل بشري مستمر.
-        </p>
-
-        <div class="info-grid">
-
-            <div class="info-box">
-                <h3>🏠 المنزل الذكي</h3>
-                <p>
-                    التحكم بالإضاءة والأجهزة المنزلية وبعض الأنظمة
-                    عن طريق الإنترنت.
-                </p>
-            </div>
-
-            <div class="info-box">
-                <h3>🚗 السيارات</h3>
-                <p>
-                    يمكن للسيارات الحديثة استخدام الاتصال والبيانات
-                    لتحسين بعض الخدمات والوظائف.
-                </p>
-            </div>
-
-            <div class="info-box">
-                <h3>🏭 الصناعة</h3>
-                <p>
-                    تستخدم المستشعرات والأجهزة المتصلة لمراقبة
-                    العمليات والآلات.
-                </p>
-            </div>
-
-            <div class="info-box">
-                <h3>📊 البيانات</h3>
-                <p>
-                    تجمع الأجهزة المتصلة البيانات وترسلها
-                    إلى أنظمة أخرى لتحليلها.
-                </p>
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- =========================
-         CARD 7
-    ========================== -->
-
-    <section class="hacker-card" id="card6">
-
-        <div class="thanks-icon">✨🎓✨</div>
-
-        <h2 class="thanks-title">
-            شكراً لاستماعكم
-        </h2>
-
-        <p class="thanks-text">
-            نتمنى أن تكونوا قد استمتعتم بالتعرف على
-            أهم وسائل التكنولوجيا الحديثة.
-            <br>
-            🌐 التكنولوجيا تتطور باستمرار، والمستقبل مليء بالابتكار.
-        </p>
-
-        <div class="credits">
-
-            <div class="credits-title">
-                إعداد
-            </div>
-
-            <div class="credits-name">
-                عمار الهدار & هاشم العبيدين
-            </div>
-
-        </div>
-
-    </section>
-
-    <!-- NAVIGATION -->
-
-    <div class="navigation">
-
-        <button class="nav-btn" onclick="changeCard(1)">
-            ❮
-        </button>
-
-        <div class="page-number" id="pageNumber">
-            1 / 7
-        </div>
-
-        <button class="nav-btn" onclick="changeCard(-1)">
-            ❯
-        </button>
 
     </div>
 
-    <!-- DOTS -->
+</section>
 
-    <div class="dots">
 
-        <span class="dot active" onclick="goToCard(0)"></span>
-        <span class="dot" onclick="goToCard(1)"></span>
-        <span class="dot" onclick="goToCard(2)"></span>
-        <span class="dot" onclick="goToCard(3)"></span>
-        <span class="dot" onclick="goToCard(4)"></span>
-        <span class="dot" onclick="goToCard(5)"></span>
-        <span class="dot" onclick="goToCard(6)"></span>
+<!-- =========================
+     CARD 3
+========================= -->
+
+<section class="hacker-card" id="card2">
+
+    <span class="card-number">
+        02
+    </span>
+
+    <h2 class="card-title">
+        ☁️ الحوسبة السحابية
+    </h2>
+
+    <p class="card-subtitle">
+        Cloud Computing
+    </p>
+
+    <p class="description">
+        الحوسبة السحابية هي استخدام خوادم موجودة عبر الإنترنت
+        لتخزين البيانات وتشغيل البرامج وتقديم الخدمات بدلاً
+        من الاعتماد الكامل على جهاز المستخدم.
+    </p>
+
+    <div class="info-grid">
+
+        <div class="info-box">
+
+            <h3>
+                💾 التخزين
+            </h3>
+
+            <p>
+                حفظ الصور والملفات والبيانات على خوادم
+                عبر الإنترنت.
+            </p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>
+                🌐 الوصول
+            </h3>
+
+            <p>
+                يمكن الوصول إلى الملفات والخدمات من أجهزة
+                مختلفة عند توفر الإنترنت.
+            </p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>
+                🔒 الأمان
+            </h3>
+
+            <p>
+                توفر الخدمات السحابية أنظمة متعددة لحماية
+                البيانات والحسابات.
+            </p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>
+                👥 المشاركة
+            </h3>
+
+            <p>
+                تسمح بمشاركة الملفات والعمل عليها بشكل تعاوني.
+            </p>
+
+        </div>
 
     </div>
+
+</section>
+
+
+<!-- =========================
+     CARD 4
+========================= -->
+
+<section class="hacker-card" id="card3">
+
+    <span class="card-number">
+        03
+    </span>
+
+    <h2 class="card-title">
+        🥽 الواقع الافتراضي والمعزز
+    </h2>
+
+    <p class="card-subtitle">
+        VR & AR
+    </p>
+
+    <p class="description">
+        تقنيات الواقع الافتراضي والواقع المعزز تسمح للمستخدم
+        بالتفاعل مع بيئات أو عناصر رقمية بطريقة مختلفة
+        عن الاستخدام التقليدي للأجهزة.
+    </p>
+
+    <div class="info-grid">
+
+        <div class="info-box">
+
+            <h3>
+                🥽 الواقع الافتراضي VR
+            </h3>
+
+            <p>
+                ينشئ بيئة رقمية ثلاثية الأبعاد يمكن للمستخدم
+                التفاعل معها باستخدام أجهزة خاصة.
+            </p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>
+                📷 الواقع المعزز AR
+            </h3>
+
+            <p>
+                يضيف عناصر رقمية إلى العالم الحقيقي من خلال
+                الهاتف أو الأجهزة المتخصصة.
+            </p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>
+                🎮 الألعاب
+            </h3>
+
+            <p>
+                تستخدم هذه التقنيات في الألعاب والتجارب
+                التفاعلية.
+            </p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>
+                🎓 التعليم
+            </h3>
+
+            <p>
+                يمكن استخدامها لعرض النماذج والتجارب بطريقة
+                أكثر تفاعلية.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     CARD 5
+========================= -->
+
+<section class="hacker-card" id="card4">
+
+    <span class="card-number">
+        04
+    </span>
+
+    <div class="gemini-logo">
+        ✦
+    </div>
+
+    <h2 class="card-title">
+        🤖 الذكاء الاصطناعي
+    </h2>
+
+    <p class="card-subtitle">
+        Artificial Intelligence
+    </p>
+
+    <p class="description">
+        الذكاء الاصطناعي هو مجال من علوم الحاسوب يهدف إلى
+        تطوير أنظمة قادرة على تنفيذ مهام تحتاج عادةً إلى
+        قدرات بشرية مثل فهم اللغة وتحليل البيانات والتعرف
+        على الأنماط.
+    </p>
+
+    <div class="info-grid">
+
+        <div class="info-box">
+
+            <h3>
+                🧠 التعلم الآلي
+            </h3>
+
+            <p>
+                يساعد الأنظمة على اكتشاف الأنماط والتعلم
+                من البيانات.
+            </p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>
+                💬 معالجة اللغة
+            </h3>
+
+            <p>
+                تمكن الحاسوب من التعامل مع النصوص واللغة البشرية.
+            </p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>
+                👁️ تحليل الصور
+            </h3>
+
+            <p>
+                يمكن للأنظمة تحليل الصور والتعرف على عناصر مختلفة.
+            </p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>
+                🚀 الاستخدامات
+            </h3>
+
+            <p>
+                يستخدم في التعليم والطب والصناعة والبرمجة
+                والعديد من المجالات.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     CARD 6
+========================= -->
+
+<section class="hacker-card" id="card5">
+
+    <span class="card-number">
+        05
+    </span>
+
+    <h2 class="card-title">
+        🌐 إنترنت الأشياء
+    </h2>
+
+    <p class="card-subtitle">
+        Internet of Things - IoT
+    </p>
+
+    <p class="description">
+        إنترنت الأشياء هو ربط الأجهزة والأشياء بالإنترنت
+        بحيث تستطيع جمع البيانات وتبادلها وتنفيذ وظائف
+        معينة دون الحاجة إلى تدخل بشري مستمر.
+    </p>
+
+    <div class="info-grid">
+
+        <div class="info-box">
+
+            <h3>
+                🏠 المنزل الذكي
+            </h3>
+
+            <p>
+                التحكم بالإضاءة والأجهزة المنزلية وبعض الأنظمة
+                عن طريق الإنترنت.
+            </p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>
+                🚗 السيارات
+            </h3>
+
+            <p>
+                يمكن للسيارات الحديثة استخدام الاتصال والبيانات
+                لتحسين بعض الخدمات والوظائف.
+            </p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>
+                🏭 الصناعة
+            </h3>
+
+            <p>
+                تستخدم المستشعرات والأجهزة المتصلة لمراقبة
+                العمليات والآلات.
+            </p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>
+                📊 البيانات
+            </h3>
+
+            <p>
+                تجمع الأجهزة المتصلة البيانات وترسلها إلى
+                أنظمة أخرى لتحليلها.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     CARD 7
+========================= -->
+
+<section class="hacker-card" id="card6">
+
+    <div class="thanks-icon">
+        ✨🎓✨
+    </div>
+
+    <h2 class="thanks-title">
+        شكراً لاستماعكم
+    </h2>
+
+    <p class="thanks-text">
+        نتمنى أن تكونوا قد استمتعتم بالتعرف على
+        أهم وسائل التكنولوجيا الحديثة.
+        <br>
+        🌐 التكنولوجيا تتطور باستمرار، والمستقبل مليء بالابتكار.
+    </p>
+
+    <div class="credits">
+
+        <div class="credits-title">
+            إعداد
+        </div>
+
+        <div class="credits-name">
+            عمار الهدار & هاشم العبيدين
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     NAVIGATION
+========================= -->
+
+<div class="navigation">
+
+    <button class="nav-btn" onclick="changeCard(1)">
+        ❮
+    </button>
+
+    <div class="page-number" id="pageNumber">
+        1 / 7
+    </div>
+
+    <button class="nav-btn" onclick="changeCard(-1)">
+        ❯
+    </button>
+
+</div>
+
+
+<!-- =========================
+     DOTS
+========================= -->
+
+<div class="dots">
+
+    <span class="dot active" onclick="goToCard(0)"></span>
+
+    <span class="dot" onclick="goToCard(1)"></span>
+
+    <span class="dot" onclick="goToCard(2)"></span>
+
+    <span class="dot" onclick="goToCard(3)"></span>
+
+    <span class="dot" onclick="goToCard(4)"></span>
+
+    <span class="dot" onclick="goToCard(5)"></span>
+
+    <span class="dot" onclick="goToCard(6)"></span>
+
+</div>
 
 </main>
 
 
 <script>
 
-/* ==========================================
+/* ==================================================
    MAIN MATRIX BACKGROUND
-========================================== */
+================================================== */
 
-const matrixCanvas = document.getElementById("matrixCanvas");
-const matrixCtx = matrixCanvas.getContext("2d");
+const matrixCanvas =
+    document.getElementById("matrixCanvas");
+
+const matrixCtx =
+    matrixCanvas.getContext("2d");
 
 let matrixWidth;
 let matrixHeight;
-let matrixFontSize = 18;
+
+const matrixFontSize = 18;
+
 let matrixColumns;
 let matrixDrops = [];
 
 const matrixCharacters =
     "010101010101ABCDEFGHIJKLMNOPQRSTUVWXYZ#$%&*アイウエオカキクケコ";
 
+
 function resizeMatrix() {
 
-    matrixWidth = matrixCanvas.width = window.innerWidth;
-    matrixHeight = matrixCanvas.height = window.innerHeight;
+    matrixWidth =
+        matrixCanvas.width =
+        window.innerWidth;
 
-    matrixColumns = Math.floor(matrixWidth / matrixFontSize);
+    matrixHeight =
+        matrixCanvas.height =
+        window.innerHeight;
+
+    matrixColumns =
+        Math.floor(
+            matrixWidth / matrixFontSize
+        );
 
     matrixDrops = [];
 
-    for (let i = 0; i < matrixColumns; i++) {
-        matrixDrops[i] = Math.random() * -50;
+    for (
+        let i = 0;
+        i < matrixColumns;
+        i++
+    ) {
+
+        matrixDrops[i] =
+            Math.random() * -50;
+
     }
 }
 
+
 resizeMatrix();
 
-window.addEventListener("resize", resizeMatrix);
+
+window.addEventListener(
+    "resize",
+    resizeMatrix
+);
+
 
 let lastMatrixTime = 0;
 
-/*
-   السرعة هنا بطيئة حتى تكون الأرقام
-   واضحة مثل المطر.
-*/
 
 function drawMatrix(time) {
 
-    if (time - lastMatrixTime < 75) {
-        requestAnimationFrame(drawMatrix);
+    /*
+       السرعة بطيئة حتى تظهر الأرقام
+       مثل المطر.
+    */
+
+    if (
+        time - lastMatrixTime < 75
+    ) {
+
+        requestAnimationFrame(
+            drawMatrix
+        );
+
         return;
     }
 
+
     lastMatrixTime = time;
 
-    matrixCtx.fillStyle = "rgba(3, 10, 22, 0.10)";
-    matrixCtx.fillRect(0, 0, matrixWidth, matrixHeight);
 
-    matrixCtx.font = matrixFontSize + "px monospace";
+    matrixCtx.fillStyle =
+        "rgba(3,10,22,0.10)";
 
-    for (let i = 0; i < matrixDrops.length; i++) {
+    matrixCtx.fillRect(
+        0,
+        0,
+        matrixWidth,
+        matrixHeight
+    );
+
+
+    matrixCtx.font =
+        matrixFontSize +
+        "px monospace";
+
+
+    for (
+        let i = 0;
+        i < matrixDrops.length;
+        i++
+    ) {
 
         const char =
             matrixCharacters[
-                Math.floor(Math.random() * matrixCharacters.length)
+                Math.floor(
+                    Math.random() *
+                    matrixCharacters.length
+                )
             ];
 
-        const x = i * matrixFontSize;
-        const y = matrixDrops[i] * matrixFontSize;
 
-        matrixCtx.fillStyle = "#00ffcc";
-        matrixCtx.fillText(char, x, y);
+        const x =
+            i * matrixFontSize;
+
+
+        const y =
+            matrixDrops[i] *
+            matrixFontSize;
+
+
+        matrixCtx.fillStyle =
+            "#00ffcc";
+
+
+        matrixCtx.fillText(
+            char,
+            x,
+            y
+        );
+
 
         /*
-          حركة بطيئة
+           سرعة سقوط أرقام الخلفية
         */
+
         matrixDrops[i] += 0.55;
+
 
         if (
             y > matrixHeight &&
             Math.random() > 0.97
         ) {
-            matrixDrops[i] = -Math.random() * 20;
+
+            matrixDrops[i] =
+                -Math.random() * 20;
+
         }
+
     }
 
-    requestAnimationFrame(drawMatrix);
+
+    requestAnimationFrame(
+        drawMatrix
+    );
 }
 
-requestAnimationFrame(drawMatrix);
+
+requestAnimationFrame(
+    drawMatrix
+);
 
 
-/* ==========================================
+/* ==================================================
    CARDS
-========================================== */
+================================================== */
 
-const cards = document.querySelectorAll(".hacker-card");
-const dots = document.querySelectorAll(".dot");
-const pageNumber = document.getElementById("pageNumber");
+const cards =
+    document.querySelectorAll(
+        ".hacker-card"
+    );
+
+
+const dots =
+    document.querySelectorAll(
+        ".dot"
+    );
+
+
+const pageNumber =
+    document.getElementById(
+        "pageNumber"
+    );
+
 
 let currentCardIndex = 0;
+
 let isTransitioning = false;
 
 
-/* ==========================================
-   TRANSITION MATRIX
-========================================== */
+/* ==================================================
+   TRANSITION CANVAS
+================================================== */
 
 const transitionMatrix =
-    document.getElementById("transitionMatrix");
+    document.getElementById(
+        "transitionMatrix"
+    );
+
 
 const transitionCanvas =
-    document.getElementById("transitionCanvas");
+    document.getElementById(
+        "transitionCanvas"
+    );
+
 
 const transitionCtx =
-    transitionCanvas.getContext("2d");
+    transitionCanvas.getContext(
+        "2d"
+    );
 
-let transitionAnimation;
+
 let transitionDrops = [];
+
+
+/*
+   هذا المتغير يمنع تغيير الصفحة
+   أكثر من مرة أثناء نفس الانتقال.
+*/
+
+let transitionChanged = false;
+
 
 function resizeTransitionCanvas() {
 
-    transitionCanvas.width = window.innerWidth;
-    transitionCanvas.height = window.innerHeight;
+    transitionCanvas.width =
+        window.innerWidth;
+
+    transitionCanvas.height =
+        window.innerHeight;
 }
 
+
 resizeTransitionCanvas();
+
 
 window.addEventListener(
     "resize",
@@ -996,42 +1283,81 @@ window.addEventListener(
 );
 
 
-function startMatrixTransition(callback) {
+/* ==================================================
+   MATRIX TRANSITION
+================================================== */
 
-    if (isTransitioning) return;
+function startMatrixTransition(
+    callback
+) {
+
+    if (isTransitioning) {
+        return;
+    }
+
 
     isTransitioning = true;
 
-    transitionMatrix.classList.add("show");
+    transitionChanged = false;
 
-    transitionCanvas.width = window.innerWidth;
-    transitionCanvas.height = window.innerHeight;
+
+    transitionMatrix.classList.add(
+        "show"
+    );
+
+
+    transitionCanvas.width =
+        window.innerWidth;
+
+    transitionCanvas.height =
+        window.innerHeight;
+
 
     const fontSize = 22;
 
+
     const columns =
         Math.floor(
-            transitionCanvas.width / fontSize
+            transitionCanvas.width /
+            fontSize
         );
+
 
     transitionDrops = [];
 
-    for (let i = 0; i < columns; i++) {
+
+    for (
+        let i = 0;
+        i < columns;
+        i++
+    ) {
 
         transitionDrops[i] =
             Math.random() *
             -transitionCanvas.height /
             fontSize;
+
     }
 
-    let startTime = performance.now();
+
+    let startTime =
+        performance.now();
+
 
     function animateTransition(time) {
 
-        const elapsed = time - startTime;
+        const elapsed =
+            time - startTime;
+
+
+        /*
+           طبقة سوداء شفافة حتى تعمل
+           خطوط الأرقام مثل المطر.
+        */
 
         transitionCtx.fillStyle =
-            "rgba(2, 8, 18, 0.18)";
+            "rgba(2,8,18,0.15)";
+
 
         transitionCtx.fillRect(
             0,
@@ -1040,13 +1366,21 @@ function startMatrixTransition(callback) {
             transitionCanvas.height
         );
 
+
         transitionCtx.font =
-            fontSize + "px monospace";
+            fontSize +
+            "px monospace";
 
-        for (let i = 0; i < columns; i++) {
 
-            const characters =
-                "010101ABCDEFGHIJKLMNOPQRSTUVWXYZ#$%&*";
+        const characters =
+            "010101ABCDEFGHIJKLMNOPQRSTUVWXYZ#$%&*";
+
+
+        for (
+            let i = 0;
+            i < columns;
+            i++
+        ) {
 
             const char =
                 characters[
@@ -1056,15 +1390,26 @@ function startMatrixTransition(callback) {
                     )
                 ];
 
-            const x = i * fontSize;
+
+            const x =
+                i * fontSize;
+
+
             const y =
                 transitionDrops[i] *
                 fontSize;
 
+
+            /*
+               بعض الأرقام تكون بيضاء
+               لإعطاء تأثير أقوى.
+            */
+
             transitionCtx.fillStyle =
-                Math.random() > 0.85
+                Math.random() > 0.86
                     ? "#ffffff"
                     : "#00ffcc";
+
 
             transitionCtx.fillText(
                 char,
@@ -1072,39 +1417,58 @@ function startMatrixTransition(callback) {
                 y
             );
 
-            transitionDrops[i] += 1.15;
+
+            /*
+               سرعة سقوط أرقام الانتقال
+            */
+
+            transitionDrops[i] += 1.25;
+
 
             if (
                 y >
                 transitionCanvas.height
             ) {
+
                 transitionDrops[i] =
                     -Math.random() * 20;
+
             }
+
         }
 
-        /*
-          بعد ظهور تأثير Matrix
-          نغير الصفحة.
-        */
 
-        if (elapsed > 430) {
+        /* ==========================================
+           تغيير الصفحة بعد 0.9 ثانية
+        ========================================== */
+
+        if (
+            elapsed > 900 &&
+            !transitionChanged
+        ) {
+
+            transitionChanged = true;
 
             callback();
 
         }
 
-        /*
-          نخفي الانتقال بعد فترة قصيرة
-        */
 
-        if (elapsed > 700) {
+        /* ==========================================
+           انتهاء الانتقال بعد 1.7 ثانية
+        ========================================== */
+
+        if (
+            elapsed > 1700
+        ) {
 
             transitionMatrix.classList.remove(
                 "show"
             );
 
+
             isTransitioning = false;
+
 
             transitionCtx.clearRect(
                 0,
@@ -1113,54 +1477,64 @@ function startMatrixTransition(callback) {
                 transitionCanvas.height
             );
 
+
             return;
         }
 
-        transitionAnimation =
-            requestAnimationFrame(
-                animateTransition
-            );
-    }
 
-    transitionAnimation =
         requestAnimationFrame(
             animateTransition
         );
+
+    }
+
+
+    requestAnimationFrame(
+        animateTransition
+    );
+
 }
 
 
-/* ==========================================
+/* ==================================================
    UPDATE PAGE
-========================================== */
+================================================== */
 
 function updatePage() {
 
-    cards.forEach((card, index) => {
+    cards.forEach(
+        (card, index) => {
 
-        card.classList.toggle(
-            "active",
-            index === currentCardIndex
-        );
+            card.classList.toggle(
+                "active",
+                index === currentCardIndex
+            );
 
-    });
+        }
+    );
 
-    dots.forEach((dot, index) => {
 
-        dot.classList.toggle(
-            "active",
-            index === currentCardIndex
-        );
+    dots.forEach(
+        (dot, index) => {
 
-    });
+            dot.classList.toggle(
+                "active",
+                index === currentCardIndex
+            );
+
+        }
+    );
+
 
     pageNumber.textContent =
         `${currentCardIndex + 1} / ${cards.length}`;
+
 }
 
 
-/* ==========================================
+/* ==================================================
    GO TO CARD
-========================================== */
+================================================== */
 
 function goToCard(index) {
 
@@ -1170,62 +1544,82 @@ function goToCard(index) {
         index === currentCardIndex ||
         isTransitioning
     ) {
+
         return;
     }
 
-    startMatrixTransition(() => {
 
-        currentCardIndex = index;
+    startMatrixTransition(
+        () => {
 
-        updatePage();
+            currentCardIndex =
+                index;
 
-    });
+            updatePage();
+
+        }
+    );
+
 }
 
 
-/* ==========================================
+/* ==================================================
    NEXT / PREVIOUS
-========================================== */
+================================================== */
 
 function changeCard(direction) {
 
     const newIndex =
-        currentCardIndex + direction;
+        currentCardIndex +
+        direction;
+
 
     if (
         newIndex < 0 ||
         newIndex >= cards.length
     ) {
+
         return;
     }
 
+
     goToCard(newIndex);
+
 }
 
 
-/* ==========================================
+/* ==================================================
    KEYBOARD
-========================================== */
+================================================== */
 
 document.addEventListener(
     "keydown",
     function(event) {
 
-        if (event.key === "ArrowLeft") {
+        if (
+            event.key === "ArrowLeft"
+        ) {
+
             changeCard(1);
+
         }
 
-        if (event.key === "ArrowRight") {
+
+        if (
+            event.key === "ArrowRight"
+        ) {
+
             changeCard(-1);
+
         }
 
     }
 );
 
 
-/* ==========================================
+/* ==================================================
    INITIALIZE
-========================================== */
+================================================== */
 
 updatePage();
 
