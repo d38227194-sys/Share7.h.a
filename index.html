@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>عرض التكنولوجيا الحديثة التفاعلي</title>
+
     <style>
         :root {
             --navy-dark: #0b2545;
@@ -13,158 +14,174 @@
             --card-bg: #ffffff;
             --text-color: #1e293b;
             --cyan-accent: #00f2fe;
+            --green: #00ffcc;
         }
 
         * {
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            transition: all 0.3s ease;
         }
 
         body {
-            background-color: var(--bg-color);
+            background: radial-gradient(circle at top, #102a43, #08121e 60%);
             color: var(--text-color);
             margin: 0;
-            padding: 0;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             overflow-x: hidden;
-            position: relative;
         }
 
-        /* Header Banner */
+        /* ================= HEADER ================= */
+
         header {
-            background: linear-gradient(135deg, #0b2545 0%, #134074 100%);
+            background: linear-gradient(135deg, #0b2545, #134074);
             color: white;
             width: 100%;
-            padding: 20px;
+            padding: 22px 15px;
             text-align: center;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 4px 25px rgba(0,0,0,.5);
             z-index: 10;
         }
 
         header h1 {
             margin: 0;
             font-size: 22pt;
-            letter-spacing: 1px;
-            color: #ffffff;
-            text-shadow: 0 0 10px rgba(0, 242, 254, 0.5);
+            color: white;
+            text-shadow: 0 0 15px rgba(0,242,254,.6);
         }
 
         header p {
-            margin: 6px 0 0;
-            color: var(--navy-light);
+            margin: 7px 0 0;
+            color: #b8d0e5;
             font-size: 11pt;
         }
 
-        /* Dots Indicator */
+        /* ================= DOTS ================= */
+
         .nav-dots {
             display: flex;
             justify-content: center;
             gap: 12px;
-            margin: 20px 0 10px 0;
+            margin: 20px 0 12px;
             z-index: 10;
         }
 
         .dot {
-            width: 14px;
-            height: 14px;
-            background-color: #334155;
+            width: 13px;
+            height: 13px;
+            background: #334155;
             border-radius: 50%;
             cursor: pointer;
-            border: 2px solid transparent;
+            transition: .3s;
+        }
+
+        .dot:hover {
+            transform: scale(1.2);
+            background: #64748b;
         }
 
         .dot.active {
-            background-color: var(--cyan-accent);
-            box-shadow: 0 0 10px var(--cyan-accent);
-            transform: scale(1.3);
+            background: var(--cyan-accent);
+            box-shadow: 0 0 14px var(--cyan-accent);
+            transform: scale(1.35);
         }
 
-        /* Container & Cards */
+        /* ================= MAIN ================= */
+
         .main-container {
             width: 90%;
             max-width: 850px;
             margin-bottom: 25px;
-            position: relative;
             min-height: 520px;
-            z-index: 10;
+            position: relative;
+            z-index: 5;
         }
 
         .card {
-            background-color: var(--card-bg);
-            border-radius: 18px;
-            padding: 30px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 32px;
+            box-shadow: 0 15px 40px rgba(0,0,0,.45);
             border-top: 6px solid var(--navy-medium);
             display: none;
             position: relative;
             overflow: hidden;
+            text-align: center;
         }
 
         .card.active {
             display: block;
-            animation: fadeIn 0.5s ease-in-out;
+            animation: cardEnter .55s cubic-bezier(.2,.8,.2,1);
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.97); }
-            to { opacity: 1; transform: scale(1); }
+        @keyframes cardEnter {
+            0% {
+                opacity: 0;
+                transform: translateY(25px) scale(.96);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
         }
 
-        /* Card 0: Welcome Hacker Page */
+        /* ================= WELCOME ================= */
+
         .hacker-card {
             background: #030a16 !important;
-            color: #00ffcc !important;
-            border-top: 6px solid #00ffcc !important;
-            text-align: center;
-            padding: 40px 20px;
+            color: var(--green) !important;
+            border-top: 6px solid var(--green) !important;
             min-height: 480px;
-            display: flex;
-            flex-direction: column;
+            display: none;
             justify-content: center;
             align-items: center;
-            position: relative;
+        }
+
+        .hacker-card.active {
+            display: flex;
         }
 
         #matrixCanvas {
             position: absolute;
-            top: 0;
-            left: 0;
+            inset: 0;
             width: 100%;
             height: 100%;
             z-index: 1;
-            opacity: 0.65;
-            border-radius: 18px;
+            opacity: .65;
         }
 
         .hacker-content {
             position: relative;
             z-index: 2;
-            background: rgba(3, 10, 22, 0.85);
-            padding: 35px 25px;
-            border-radius: 16px;
-            border: 1px solid rgba(0, 255, 204, 0.3);
-            box-shadow: 0 0 25px rgba(0, 255, 204, 0.15);
+            background: rgba(3,10,22,.88);
+            padding: 38px 28px;
+            border-radius: 18px;
+            border: 1px solid rgba(0,255,204,.35);
+            box-shadow:
+                0 0 30px rgba(0,255,204,.15),
+                inset 0 0 25px rgba(0,255,204,.05);
             max-width: 90%;
+            text-align: center;
         }
 
         .hacker-title {
             font-size: 28pt;
             font-weight: bold;
-            margin-bottom: 15px;
-            color: #ffffff;
-            text-shadow: 0 0 15px #00ffcc, 0 0 30px #00ffcc;
-            letter-spacing: 2px;
+            margin-bottom: 18px;
+            color: white;
+            text-shadow:
+                0 0 15px #00ffcc,
+                0 0 35px #00ffcc;
         }
 
         .hacker-subtitle {
             font-size: 13pt;
-            color: #8da9c4;
-            line-height: 1.8;
-            margin-bottom: 25px;
+            color: #9bb4ca;
+            line-height: 1.9;
+            margin-bottom: 28px;
         }
 
         .start-btn {
@@ -172,175 +189,239 @@
             color: #030a16;
             font-weight: bold;
             font-size: 13pt;
-            padding: 14px 35px;
+            padding: 14px 38px;
             border: none;
             border-radius: 30px;
             cursor: pointer;
-            box-shadow: 0 0 15px rgba(0, 255, 204, 0.4);
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
+            box-shadow: 0 0 18px rgba(0,255,204,.4);
+            transition: .3s;
         }
 
         .start-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 25px rgba(0, 255, 204, 0.8);
+            transform: scale(1.07);
+            box-shadow: 0 0 30px rgba(0,255,204,.8);
         }
 
-        /* Card Header & Content */
+        /* ================= CARD HEADER ================= */
+
         .card-header {
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            justify-content: center;
             border-bottom: 2px solid #e2e8f0;
-            padding-bottom: 12px;
-            margin-bottom: 20px;
+            padding-bottom: 14px;
+            margin-bottom: 22px;
         }
 
         .card-title {
             color: var(--navy-dark);
-            font-size: 16pt;
+            font-size: 17pt;
             margin: 0;
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 10px;
         }
 
         .card-badge {
-            background-color: var(--navy-dark);
+            background: var(--navy-dark);
             color: white;
-            padding: 4px 12px;
+            padding: 5px 13px;
             border-radius: 20px;
-            font-size: 11pt;
+            font-size: 10pt;
         }
 
+        /* ================= TEXT ================= */
+
         .original-text {
-            background-color: #f8fafc;
+            background: #f8fafc;
             border-right: 4px solid var(--navy-medium);
-            padding: 12px 16px;
-            border-radius: 6px;
-            font-size: 10.5pt;
-            line-height: 1.7;
-            margin-bottom: 20px;
+            padding: 15px 18px;
+            border-radius: 8px;
+            font-size: 11pt;
+            line-height: 1.9;
+            margin-bottom: 22px;
             color: #334155;
+            text-align: center;
         }
 
         .detailed-explanation {
-            background-color: #eef4f8;
-            border-radius: 10px;
-            padding: 20px;
+            background: #eef4f8;
+            border-radius: 12px;
+            padding: 22px;
             font-size: 11pt;
-            line-height: 1.8;
+            line-height: 1.9;
             color: #0f172a;
+            text-align: center;
+        }
+
+        .detailed-explanation ul,
+        .detailed-explanation ol {
+            text-align: right;
+            display: inline-block;
+            width: 90%;
         }
 
         .explanation-title {
             font-weight: bold;
             color: var(--navy-dark);
-            font-size: 12pt;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            font-size: 12.5pt;
+            display: block;
+            margin-bottom: 12px;
         }
 
-        /* Animated Logos */
+        /* ================= TABLE ================= */
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 18px;
+            font-size: 10pt;
+            text-align: center;
+        }
+
+        .comparison-table th {
+            background: var(--navy-dark);
+            color: white;
+            padding: 11px;
+            text-align: center;
+        }
+
+        .comparison-table td {
+            padding: 11px;
+            border: 1px solid #cbd5e1;
+            background: white;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        /* ================= AI LOGOS ================= */
+
         .ai-logos-container {
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 40px;
-            margin: 20px 0;
-            padding: 15px;
-            background-color: #ffffff;
-            border-radius: 12px;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.03);
+            gap: 70px;
+            margin: 15px 0 25px;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 15px;
         }
 
         .logo-item {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
         }
 
         .animated-logo {
-            width: 55px;
-            height: 55px;
-            animation: float 3s ease-in-out infinite;
+            width: 68px;
+            height: 68px;
+            animation: floatLogo 3s ease-in-out infinite;
+            filter: drop-shadow(0 5px 10px rgba(0,0,0,.15));
         }
 
-        .chatgpt-logo { animation-delay: 0s; }
-        .gemini-logo { animation-delay: 1.5s; }
-
-        @keyframes float {
-            0% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-10px) rotate(5deg); }
-            100% { transform: translateY(0px) rotate(0deg); }
+        .gemini-logo {
+            animation-delay: 1.5s;
         }
 
-        /* Tables */
-        .comparison-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-            font-size: 10pt;
+        @keyframes floatLogo {
+            0%,100% {
+                transform: translateY(0) rotate(0);
+            }
+
+            50% {
+                transform: translateY(-10px) rotate(4deg);
+            }
         }
 
-        .comparison-table th {
-            background-color: var(--navy-dark);
-            color: white;
-            padding: 10px;
-            text-align: right;
-        }
+        /* ChatGPT improved logo */
 
-        .comparison-table td {
-            padding: 10px;
-            border: 1px solid #cbd5e1;
-            background-color: white;
-        }
-
-        /* Card Last: Thank You Page */
-        .thankyou-card {
-            background: linear-gradient(135deg, #0b2545 0%, #134074 100%) !important;
-            color: white !important;
-            text-align: center;
-            padding: 50px 20px;
-            min-height: 480px;
+        .chatgpt-symbol {
+            width: 68px;
+            height: 68px;
+            border-radius: 50%;
+            background: white;
             display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow:
+                0 5px 18px rgba(16,163,127,.2),
+                inset 0 0 0 2px rgba(16,163,127,.12);
+        }
+
+        .chatgpt-symbol svg {
+            width: 48px;
+            height: 48px;
+        }
+
+        /* ================= THANK YOU ================= */
+
+        .final-card {
+            background: linear-gradient(135deg,#0b2545,#134074) !important;
+            color: white !important;
+            min-height: 480px;
+            display: none;
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            text-align: center;
         }
 
-        .thankyou-icon {
-            font-size: 55pt;
-            margin-bottom: 20px;
+        .final-card.active {
+            display: flex;
+        }
+
+        .final-icon {
+            font-size: 58pt;
+            margin-bottom: 15px;
             animation: pulse 2s infinite;
         }
 
         @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.15); }
-            100% { transform: scale(1); }
+            0%,100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.12);
+            }
         }
 
         .thankyou-title {
-            font-size: 30pt;
+            font-size: 31pt;
             font-weight: bold;
+            color: white;
+            text-shadow: 0 0 18px var(--cyan-accent);
             margin-bottom: 15px;
-            color: #ffffff;
-            text-shadow: 0 0 15px var(--cyan-accent);
         }
 
         .thankyou-sub {
             font-size: 13pt;
-            color: var(--navy-light);
-            max-width: 600px;
-            line-height: 1.8;
+            color: #c4d8e9;
+            max-width: 620px;
+            line-height: 1.9;
         }
 
-        /* Controls / Navigation */
+        .credits-box {
+            margin-top: 28px;
+            padding: 18px 35px;
+            border: 1px solid rgba(0,242,254,.5);
+            border-radius: 15px;
+            background: rgba(0,0,0,.25);
+            box-shadow: 0 0 25px rgba(0,242,254,.12);
+            font-size: 13pt;
+            color: white;
+        }
+
+        .credits-box strong {
+            color: var(--cyan-accent);
+            font-size: 15pt;
+        }
+
+        /* ================= NAVIGATION ================= */
+
         .navigation-controls {
             display: flex;
             justify-content: space-between;
@@ -352,9 +433,9 @@
         }
 
         .nav-btn {
-            background: linear-gradient(135deg, #134074 0%, #0b2545 100%);
+            background: linear-gradient(135deg,#134074,#0b2545);
             color: white;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255,255,255,.2);
             padding: 12px 26px;
             border-radius: 30px;
             font-size: 11pt;
@@ -363,409 +444,967 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            position: relative;
+            box-shadow: 0 5px 15px rgba(0,0,0,.3);
+            transition: .25s;
         }
 
-        .nav-btn:hover {
-            background: #00f2fe;
+        .nav-btn:hover:not(:disabled) {
+            background: var(--cyan-accent);
             color: #0b2545;
-            box-shadow: 0 0 20px rgba(0, 242, 254, 0.6);
-            transform: translateY(-2px);
+            transform: translateY(-3px);
+            box-shadow: 0 0 25px rgba(0,242,254,.65);
         }
 
         .nav-btn:disabled {
             background: #1e293b;
             color: #64748b;
-            border: none;
             cursor: not-allowed;
-            transform: none;
             box-shadow: none;
         }
 
-        /* Flying Airplane Animation Layer */
+        #pageIndicator {
+            font-weight: bold;
+            color: var(--cyan-accent);
+            font-size: 12pt;
+        }
+
+        /* ================= PLANE TRANSITION ================= */
+
         #planeOverlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
+            inset: 0;
             pointer-events: none;
             z-index: 9999;
             overflow: hidden;
             display: none;
         }
 
+        #planeTrail {
+            position: absolute;
+            width: 0;
+            height: 4px;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(0,242,254,.4),
+                #00f2fe
+            );
+            border-radius: 50%;
+            box-shadow: 0 0 12px #00f2fe;
+        }
+
         .flying-plane-icon {
             position: absolute;
-            font-size: 80px;
-            filter: drop-shadow(0 0 20px #00f2fe);
+            right: -120px;
+            bottom: -120px;
+            font-size: 65px;
+            filter:
+                drop-shadow(0 0 8px #00f2fe)
+                drop-shadow(0 0 20px rgba(0,242,254,.8));
+            opacity: 0;
             transform: rotate(-35deg);
         }
 
-        @keyframes flyAcross {
-            0% {
-                bottom: -100px;
-                right: -100px;
-                transform: scale(0.4) rotate(-25deg);
-                opacity: 0;
-            }
-            30% {
-                opacity: 1;
-                transform: scale(1.5) rotate(-35deg);
-            }
-            70% {
-                opacity: 1;
-                transform: scale(2.8) rotate(-40deg);
-            }
-            100% {
-                bottom: 110vh;
-                right: 110vw;
-                transform: scale(4) rotate(-45deg);
-                opacity: 0;
-            }
-        }
-
         .animate-fly {
-            animation: flyAcross 0.9s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+            animation: planeFlight 1.25s cubic-bezier(.2,.75,.2,1) forwards;
         }
 
+        @keyframes planeFlight {
+            0% {
+                right: -120px;
+                bottom: -120px;
+                opacity: 0;
+                transform: scale(.35) rotate(-30deg);
+            }
+
+            12% {
+                opacity: 1;
+            }
+
+            45% {
+                transform: scale(1.25) rotate(-35deg);
+            }
+
+            70% {
+                transform: scale(1.8) rotate(-38deg);
+            }
+
+            100% {
+                right: 115vw;
+                bottom: 115vh;
+                opacity: 0;
+                transform: scale(2.5) rotate(-45deg);
+            }
+        }
+
+        /* ================= MOBILE ================= */
+
+        @media (max-width: 600px) {
+
+            header h1 {
+                font-size: 18pt;
+            }
+
+            .card {
+                padding: 20px 15px;
+            }
+
+            .card-title {
+                font-size: 14pt;
+            }
+
+            .hacker-title {
+                font-size: 23pt;
+            }
+
+            .hacker-subtitle {
+                font-size: 11pt;
+            }
+
+            .comparison-table {
+                font-size: 8pt;
+            }
+
+            .comparison-table th,
+            .comparison-table td {
+                padding: 7px;
+            }
+
+            .ai-logos-container {
+                gap: 35px;
+            }
+
+            .navigation-controls {
+                width: 95%;
+            }
+
+            .nav-btn {
+                padding: 10px 15px;
+                font-size: 9pt;
+            }
+
+            .thankyou-title {
+                font-size: 25pt;
+            }
+        }
     </style>
 </head>
+
 <body>
 
-    <!-- Airplane Flying Overlay -->
+    <!-- ================= PLANE ================= -->
+
     <div id="planeOverlay">
+        <div id="planeTrail"></div>
         <div id="flyingPlane" class="flying-plane-icon">✈️</div>
     </div>
 
+    <!-- ================= HEADER ================= -->
+
     <header>
         <h1>شرح وسائِلِ التِّكنولوجيا الحَديثَة 🚀</h1>
-        <p>عرض تفاعلي شامل ومتطوّر لدروس التكنولوجيا</p>
+        <p>عرض تفاعلي شامل ومتطوّر لأبرز مفاهيم التكنولوجيا الحديثة</p>
     </header>
 
-    <!-- Navigation Dots -->
     <div class="nav-dots" id="dotsContainer"></div>
 
     <div class="main-container">
 
-        <!-- Card 0: Welcome Hacker Page -->
+        <!-- ================= CARD 0 ================= -->
+
         <div class="card hacker-card active">
+
             <canvas id="matrixCanvas"></canvas>
+
             <div class="hacker-content">
-                <div class="hacker-title">التكنولوجيا الحديثة</div>
+
+                <div class="hacker-title">
+                    التكنولوجيا الحديثة
+                </div>
+
                 <div class="hacker-subtitle">
                     مرحباً بك في العرض التفاعلي الشامل.<br>
-                    اكتشف عالم الأجهزة الذكية، الحوسبة السحابية، الذكاء الاصطناعي، وإنترنت الأشياء بأسلوب عصري وممتع.
+                    اكتشف عالم الأجهزة الذكية، الحوسبة السحابية،
+                    الذكاء الاصطناعي، وإنترنت الأشياء بأسلوب عصري وممتع.
                 </div>
+
                 <button class="start-btn" onclick="triggerPlaneFlight(1)">
                     ابدأ الاستكشاف ✈️
                 </button>
+
             </div>
         </div>
 
-        <!-- Card 1: Smart Devices -->
+
+        <!-- ================= CARD 1 ================= -->
+
         <div class="card">
+
             <div class="card-header">
-                <h2 class="card-title"><span class="card-badge">1</span> الأجهزة الذكية (Smart Devices)</h2>
+                <h2 class="card-title">
+                    <span class="card-badge">1</span>
+                    الأجهزة الذكية (Smart Devices)
+                </h2>
             </div>
+
             <div class="original-text">
-                <strong>📝 النص الأصلي:</strong> أجهزة إلكترونية مجهزة بتقنيات حديثة تمكنها من الاتصال بشبكة الإنترنت وتبادل البيانات مع البيئة المحيطة، أو مع مستخدمين آخرين. تمتاز بالقدرة على جمع البيانات وتحليلها، واتخاذ قرارات ذكية بناءً عليها.
+                <strong>📝 النص الأساسي:</strong><br>
+                أجهزة إلكترونية مجهزة بتقنيات حديثة تمكنها من الاتصال بالإنترنت
+                وتبادل البيانات مع البيئة المحيطة أو مع مستخدمين آخرين،
+                كما تستطيع جمع البيانات وتحليلها واتخاذ قرارات ذكية بناءً عليها.
             </div>
+
             <div class="detailed-explanation">
-                <span class="explanation-title">💡 الشرح المُوسّع والمفهوم العميق:</span>
-                الأجهزة الذكية أصبحت تتجاوز مجرد كونها أدوات تنفّذ أوامر بلمسة زر؛ فهي تُعتبر أجهزة ذات <strong>"وعي رقمي بيئي"</strong>. تعتمد هذه الأجهزة على دمج ثلاثية محورية:
+
+                <span class="explanation-title">
+                    💡 الشرح المُوسّع
+                </span>
+
+                تعتمد الأجهزة الذكية على مجموعة من التقنيات التي تجعلها أكثر قدرة
+                على فهم البيئة المحيطة والتفاعل معها.
+
                 <ul>
-                    <li><strong>المستشعرات (Sensors):</strong> مثل الحساسات الضوئية، الحرارية، وحساسات الحركة لجمع البيانات لحظياً.</li>
-                    <li><strong>المعالجة الذكية (Smart Processing):</strong> تحليل هذه البيانات وفهم أنماط سلوك المستخدم والبيئة.</li>
-                    <li><strong>الاتصال والتحكم (Connectivity & Automation):</strong> اتخاذ قرارات ذاتية والتواصل مع أجهزة أخرى بدون تدخل بشري.</li>
+                    <li>
+                        <strong>المستشعرات:</strong>
+                        تجمع البيانات مثل الحرارة والضوء والحركة.
+                    </li>
+
+                    <li>
+                        <strong>المعالجة الذكية:</strong>
+                        تحليل البيانات واكتشاف الأنماط.
+                    </li>
+
+                    <li>
+                        <strong>الاتصال والتحكم:</strong>
+                        التواصل مع أجهزة أخرى وتنفيذ إجراءات تلقائية.
+                    </li>
                 </ul>
-                <strong>أمثلة من حياتنا اليومية:</strong>
+
+                <strong>أمثلة:</strong>
+
                 <ul>
-                    <li><strong>الساعات الذكية:</strong> لا تقيس نبضات القلب فقط، بل تُحلل نمط نومك وتتصل بالطوارئ تلقائياً إذا رصدت سقوطاً مفاجئاً.</li>
-                    <li><strong>أنظمة المنازل الذكية:</strong> مثل أجهزة التكييف التي تتعلم أوقات تواجدك في المنزل وتضبط الحرارة لتوفير الطاقة تلقائياً.</li>
+                    <li>الساعات الذكية.</li>
+                    <li>المنازل الذكية.</li>
+                    <li>السيارات الحديثة.</li>
+                    <li>أجهزة المراقبة الذكية.</li>
                 </ul>
+
             </div>
         </div>
 
-        <!-- Card 2: Cloud Computing -->
+
+        <!-- ================= CARD 2 ================= -->
+
         <div class="card">
+
             <div class="card-header">
-                <h2 class="card-title"><span class="card-badge">2</span> الحوسبة السحابية (Cloud Computing)</h2>
+                <h2 class="card-title">
+                    <span class="card-badge">2</span>
+                    الحوسبة السحابية (Cloud Computing)
+                </h2>
             </div>
+
             <div class="original-text">
-                <strong>📝 النص الأصلي:</strong> تقنية توفر خدمات حاسوبية عديدة عبر الإنترنت (خوادم، قواعد بيانات، تخزين، برمجيات، شبكات، ذكاء اصطناعي) وتتيح الوصول إليها من أي مكان بتكلفة منخفضة وبدون بنية تحتية محلية.
+                <strong>📝 النص الأساسي:</strong><br>
+                تقنية توفر خدمات حاسوبية عديدة عبر الإنترنت، مثل الخوادم
+                وقواعد البيانات والتخزين والبرمجيات والشبكات والذكاء الاصطناعي،
+                دون الحاجة إلى بنية تحتية محلية كبيرة.
             </div>
+
             <div class="detailed-explanation">
-                <span class="explanation-title">💡 الشرح المُوسّع والمفهوم العميق:</span>
-                تخيّل الحوسبة السحابية مثل شركة الكهرباء؛ بدلاً من أن تبني محطة كهرباء خاصة في بيتك (سيرفرات وأجهزة ضخمة مكلفة)، أنت تشترك في الخدمة وتدفع فقط مقابل ما تستهلكه عبر القابس (الإنترنت).
-                
-                <br><br><strong>النماذج الثلاثة الرئيسية للحوسبة السحابية:</strong>
+
+                <span class="explanation-title">
+                    💡 الشرح المُوسّع
+                </span>
+
+                يمكن تشبيه الحوسبة السحابية بالكهرباء؛
+                بدلاً من بناء محطة كهرباء خاصة بك، تستخدم الخدمة
+                عبر الشبكة وتدفع مقابل ما تحتاج إليه.
+
                 <table class="comparison-table">
-                    <thead>
-                        <tr>
-                            <th>النموذج</th>
-                            <th>المفهوم الشامل والشرح</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>البرمجيات كخدمة (SaaS)</strong></td>
-                            <td>تطبيقات جاهزة للاستخدام الفوري عبر المتصفح دون تثبيت. (مثل: Google Docs, Gmail, OneDrive).</td>
-                        </tr>
-                        <tr>
-                            <td><strong>المنصة كخدمة (PaaS)</strong></td>
-                            <td>بيئة متكاملة موجهة للمطورين لبناء البرامج والتطبيقات واختبارها دون التفكير في إدارة السيرفرات.</td>
-                        </tr>
-                        <tr>
-                            <td><strong>البنية التحتية كخدمة (IaaS)</strong></td>
-                            <td>تأجير البنية التحتية الصلبة (خوادم افتراضية، مساحات تخزين ضخمة، شبكات) مثل خدمات (AWS) و (Microsoft Azure).</td>
-                        </tr>
-                    </tbody>
+
+                    <tr>
+                        <th>النموذج</th>
+                        <th>الشرح</th>
+                    </tr>
+
+                    <tr>
+                        <td><strong>SaaS</strong></td>
+                        <td>
+                            برامج جاهزة للاستخدام عبر الإنترنت مثل Gmail وGoogle Docs.
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td><strong>PaaS</strong></td>
+                        <td>
+                            بيئة تساعد المطورين على بناء التطبيقات وتشغيلها.
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td><strong>IaaS</strong></td>
+                        <td>
+                            توفير خوادم ومساحات تخزين وشبكات افتراضية.
+                        </td>
+                    </tr>
+
                 </table>
+
             </div>
         </div>
 
-        <!-- Card 3: VR & AR -->
+
+        <!-- ================= CARD 3 ================= -->
+
         <div class="card">
+
             <div class="card-header">
-                <h2 class="card-title"><span class="card-badge">3</span> الواقع الافتراضي (VR) والواقع المعزز (AR)</h2>
+
+                <h2 class="card-title">
+                    <span class="card-badge">3</span>
+                    الواقع الافتراضي (VR) والواقع المعزز (AR)
+                </h2>
+
             </div>
+
             <div class="original-text">
-                <strong>📝 النص الأصلي:</strong> تقنيات تفاعلية ثلاثية الأبعاد تقدم تجارب فريدة، ورغم وجود تشابه بينهما إلا أن لكل منهما خصائص واستخدامات معينة.
+                <strong>📝 النص الأساسي:</strong><br>
+                تقنيات تفاعلية ثلاثية الأبعاد توفر تجارب رقمية مختلفة،
+                ويختلف الواقع الافتراضي عن الواقع المعزز في طريقة التعامل
+                مع العالم الحقيقي.
             </div>
+
             <div class="detailed-explanation">
-                <span class="explanation-title">💡 الشرح المُوسّع والمقارنة الشاملة:</span>
-                الفرق الجوهري يكمن في مدى انفصالك عن الواقع الحقيقي:
-                
+
+                <span class="explanation-title">
+                    💡 المقارنة
+                </span>
+
                 <table class="comparison-table">
-                    <thead>
-                        <tr>
-                            <th>المعيار</th>
-                            <th>الواقع الافتراضي (Virtual Reality - VR)</th>
-                            <th>الواقع المعزز (Augmented Reality - AR)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>درجة العزل</strong></td>
-                            <td>عزل كامل عن العالم الحقيقي (انغماس في عالم افتراضي 100%).</td>
-                            <td>دمج عناصر رقمية 3D فوق العالم الحقيقي دون عزلك عنه.</td>
-                        </tr>
-                        <tr>
-                            <td><strong>الأدوات</strong></td>
-                            <td>نظارات مغلقة بالكامل (مثل Meta Quest) وسماعات.</td>
-                            <td>كاميرات الهواتف الذكية، النظارات الذكية الشفافة.</td>
-                        </tr>
-                        <tr>
-                            <td><strong>الأثر والإنتاجية</strong></td>
-                            <td>تُمكّن الأطباء والطيارين من التدرب في بيئة خطرة بأمان تام.</td>
-                            <td>تساعد مهندسي الصيانة والمصممين في رؤية قطع الغيار فوق الآلة الحقيقية.</td>
-                        </tr>
-                    </tbody>
+
+                    <tr>
+                        <th>المعيار</th>
+                        <th>VR</th>
+                        <th>AR</th>
+                    </tr>
+
+                    <tr>
+                        <td>التجربة</td>
+                        <td>عالم افتراضي كامل</td>
+                        <td>إضافة عناصر رقمية للعالم الحقيقي</td>
+                    </tr>
+
+                    <tr>
+                        <td>الأدوات</td>
+                        <td>نظارات الواقع الافتراضي</td>
+                        <td>الهاتف أو النظارات الذكية</td>
+                    </tr>
+
+                    <tr>
+                        <td>الاستخدامات</td>
+                        <td>الألعاب والتدريب والمحاكاة</td>
+                        <td>التعليم والتصميم والصيانة</td>
+                    </tr>
+
                 </table>
+
             </div>
         </div>
 
-        <!-- Card 4: AI with Animated Logos -->
+
+        <!-- ================= CARD 4 ================= -->
+
         <div class="card">
+
             <div class="card-header">
-                <h2 class="card-title"><span class="card-badge">4</span> الذكاء الاصطناعي (Artificial Intelligence - AI)</h2>
+
+                <h2 class="card-title">
+                    <span class="card-badge">4</span>
+                    الذكاء الاصطناعي (Artificial Intelligence - AI)
+                </h2>
+
             </div>
-            
+
+            <!-- LOGOS -->
+
             <div class="ai-logos-container">
+
                 <div class="logo-item">
-                    <svg class="animated-logo chatgpt-logo" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.259 23a6.0557 6.0557 0 0 0 5.7719-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7467-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.47 4.47 0 0 1-.5355-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0806.0806 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464z" fill="#10a37f"/>
-                    </svg>
-                    <span style="font-size: 9pt; font-weight: bold; color: #10a37f;">ChatGPT</span>
+
+                    <div class="chatgpt-symbol">
+
+                        <svg viewBox="0 0 24 24"
+                             fill="none"
+                             xmlns="http://www.w3.org/2000/svg">
+
+                            <path
+                                d="M21.4 10.1a5.7 5.7 0 0 0-5.6-5.7A5.8 5.8 0 0 0 5.4 6.3a5.7 5.7 0 0 0-2.8 10.4 5.8 5.8 0 0 0 7.5 4.7 5.8 5.8 0 0 0 9.1-4.1 5.8 5.8 0 0 0 2.2-7.2Z"
+                                stroke="#10a37f"
+                                stroke-width="1.7"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            />
+
+                            <path
+                                d="M8 9.2l4-2.3 4 2.3v4.6l-4 2.3-4-2.3V9.2Z"
+                                stroke="#10a37f"
+                                stroke-width="1.5"
+                                stroke-linejoin="round"
+                            />
+
+                        </svg>
+
+                    </div>
+
+                    <span style="font-weight:bold;color:#10a37f;">
+                        ChatGPT
+                    </span>
+
                 </div>
-                
+
+
                 <div class="logo-item">
-                    <svg class="animated-logo gemini-logo" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 0C12 6.62742 6.62742 12 0 12C6.62742 12 12 17.3726 12 24C12 17.3726 17.3726 12 24 12C17.3726 12 12 6.62742 12 0Z" fill="url(#gemini-grad)"/>
+
+                    <svg class="animated-logo gemini-logo"
+                         viewBox="0 0 24 24"
+                         fill="none">
+
+                        <path
+                            d="M12 0C12 6.63 6.63 12 0 12
+                            C6.63 12 12 17.37 12 24
+                            C12 17.37 17.37 12 24 12
+                            C17.37 12 12 6.63 12 0Z"
+                            fill="url(#geminiGradient)"
+                        />
+
                         <defs>
-                            <linearGradient id="gemini-grad" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse">
+
+                            <linearGradient
+                                id="geminiGradient"
+                                x1="0"
+                                y1="0"
+                                x2="24"
+                                y2="24">
+
                                 <stop stop-color="#1A73E8"/>
-                                <stop offset="0.5" stop-color="#8AB4F8"/>
+                                <stop offset=".5" stop-color="#8AB4F8"/>
                                 <stop offset="1" stop-color="#A142F4"/>
+
                             </linearGradient>
+
                         </defs>
+
                     </svg>
-                    <span style="font-size: 9pt; font-weight: bold; color: #1a73e8;">Gemini</span>
+
+                    <span style="font-weight:bold;color:#1a73e8;">
+                        Gemini
+                    </span>
+
                 </div>
+
             </div>
+
 
             <div class="original-text">
-                <strong>📝 النص الأصلي:</strong> نظام حاسوبي قادر على محاكاة الذكاء البشري (التفكير، التعلم، حل المشكلات). يضم التعلم الآلي والتعلم العميق، ومن أمثلته Siri, GPS, والأدوات التوليدية مثل ChatGPT.
+
+                <strong>📝 النص الأساسي:</strong><br>
+
+                نظام حاسوبي قادر على تنفيذ مهام تحاكي بعض قدرات الذكاء البشري،
+                مثل التعلم وتحليل البيانات وحل المشكلات وفهم اللغة.
+                ومن أمثلته Siri وGPS والأدوات التوليدية مثل ChatGPT.
+
             </div>
 
+
             <div class="detailed-explanation">
-                <span class="explanation-title">💡 الشرح المُوسّع والمفهوم العميق:</span>
-                الذكاء الاصطناعي لا يقتصر على برمجيات تقليدية، بل يعتمد على <strong>خوارزميات تعلّم ذاتية</strong> تحاكي العصبونات في الدماغ البشري:
+
+                <span class="explanation-title">
+                    💡 الشرح المُوسّع
+                </span>
+
                 <ul>
-                    <li><strong>التعلم الآلي (Machine Learning):</strong> تدريب النظام على آلاف البيانات ليتعلم استخراج الأنماط بنفسه.</li>
-                    <li><strong>التعلم العميق (Deep Learning):</strong> شبكات عصبية اصطناعية معقدة قادرة على فهم اللغات وتحليل الصور.</li>
-                    <li><strong>الذكاء الاصطناعي التوليدي (Generative AI):</strong> نماذج متقدمة جداً مثل <strong>Gemini</strong> و <strong>ChatGPT</strong> تقوم بتوليد النصوص والأكواد والصور من الفهم البشري.</li>
+
+                    <li>
+                        <strong>التعلم الآلي:</strong>
+                        تدريب الأنظمة على البيانات لاكتشاف الأنماط.
+                    </li>
+
+                    <li>
+                        <strong>التعلم العميق:</strong>
+                        استخدام شبكات عصبية اصطناعية لمعالجة البيانات المعقدة.
+                    </li>
+
+                    <li>
+                        <strong>الذكاء الاصطناعي التوليدي:</strong>
+                        إنشاء نصوص أو صور أو أكواد بناءً على طلب المستخدم.
+                    </li>
+
                 </ul>
 
-                <div style="background-color: #fef2f2; border-right: 4px solid #ef4444; padding: 10px 14px; border-radius: 6px; margin-top: 15px; font-size: 10pt; color: #991b1b;">
-                    <strong>⚠️ الموثوقية ودقة المعلومات:</strong>
-                    نماذج الذكاء الاصطناعي قد تُعاني أحياناً من <strong>"الهلوسة الرقمية" (Hallucination)</strong>؛ حيث تقدم معلومات تبدو واثقة لكنها غير صحيحة، لذا يجب دائماً مراجعة المصادر العلمية والتحقق منها!
+
+                <div style="
+                    background:#fef2f2;
+                    border-right:4px solid #ef4444;
+                    padding:12px 15px;
+                    border-radius:8px;
+                    margin-top:18px;
+                    color:#991b1b;
+                ">
+
+                    <strong>⚠️ ملاحظة مهمة:</strong><br>
+
+                    قد تنتج بعض أنظمة الذكاء الاصطناعي معلومات غير دقيقة،
+                    لذلك من المهم مراجعة المعلومات والتحقق من المصادر.
+
                 </div>
+
             </div>
+
         </div>
 
-        <!-- Card 5: IoT -->
+
+        <!-- ================= CARD 5 ================= -->
+
         <div class="card">
+
             <div class="card-header">
-                <h2 class="card-title"><span class="card-badge">5</span> إنترنت الأشياء (Internet of Things - IoT)</h2>
+
+                <h2 class="card-title">
+                    <span class="card-badge">5</span>
+                    إنترنت الأشياء (Internet of Things - IoT)
+                </h2>
+
             </div>
+
+
             <div class="original-text">
-                <strong>📝 النص الأصلي:</strong> شبكة مفتوحة وشاملة من الأجهزة الذكية المرتبطة بالإنترنت لمشاركة البيانات والموارد، والتفاعل والتنظيم الذاتي دون تدخل بشري مباشر.
+
+                <strong>📝 النص الأساسي:</strong><br>
+
+                شبكة من الأجهزة المتصلة بالإنترنت تستطيع جمع البيانات
+                وتبادلها والتفاعل مع بعضها البعض، مما يسمح بتنفيذ
+                بعض العمليات بصورة تلقائية.
+
             </div>
+
+
             <div class="detailed-explanation">
-                <span class="explanation-title">💡 الشرح المُوسّع والمفهوم العميق:</span>
-                فكرة إنترنت الأشياء هي إعطاء "صوت وشبكة اتصال" لجميع الأغراض غير الحاسوبية في حياتنا (مثل السيارات، الثلاجات، والمستشعرات الزراعية).
-                
-                <br><br><strong>كيف تعمل شبكة إنترنت الأشياء؟</strong>
+
+                <span class="explanation-title">
+                    💡 كيف يعمل إنترنت الأشياء؟
+                </span>
+
                 <ol>
-                    <li><strong>الالتقاط:</strong> تجمع أجهزة الاستشعار (Sensors) البيانات من البيئة.</li>
-                    <li><strong>النقل:</strong> تُرسل هذه البيانات عبر الإنترنت إلى السحابة.</li>
-                    <li><strong>المعالجة والاتخاذ:</strong> تتواصل الأجهزة فيما بينها لاتخاذ إجراء تلقائي بدون تدخل بشري.</li>
+
+                    <li>
+                        <strong>جمع البيانات:</strong>
+                        تستقبل المستشعرات المعلومات من البيئة.
+                    </li>
+
+                    <li>
+                        <strong>نقل البيانات:</strong>
+                        تُرسل البيانات عبر الشبكة.
+                    </li>
+
+                    <li>
+                        <strong>المعالجة:</strong>
+                        يتم تحليل البيانات لاتخاذ الإجراء المناسب.
+                    </li>
+
+                    <li>
+                        <strong>التنفيذ:</strong>
+                        يمكن للجهاز تنفيذ أمر تلقائي بناءً على البيانات.
+                    </li>
+
                 </ol>
 
-                <div style="background-color: #f0fdf4; border-right: 4px solid #22c55e; padding: 10px 14px; border-radius: 6px; margin-top: 15px; font-size: 10pt; color: #166534;">
-                    <strong>📜 معلومة تاريخية إثرائية:</strong>
-                    أول جهاز إنترنت أشياء في العالم كان عام 1982 في جامعة (Carnegie Mellon)، حيث ربط الطلاب آلة بيع المشروبات الغازية بالشبكة للتحقق من وجود علب باردة قبل الذهاب إليها!
+
+                <div style="
+                    background:#f0fdf4;
+                    border-right:4px solid #22c55e;
+                    padding:12px 15px;
+                    border-radius:8px;
+                    margin-top:18px;
+                    color:#166534;
+                ">
+
+                    <strong>📜 معلومة تاريخية:</strong><br>
+
+                    من أوائل أمثلة إنترنت الأشياء آلة بيع المشروبات
+                    في جامعة Carnegie Mellon عام 1982، حيث تم ربطها
+                    بالشبكة لمتابعة حالة المشروبات.
+
                 </div>
+
             </div>
+
         </div>
 
-        <!-- Card 6: Thank You Page -->
-        <div class="card thankyou-card">
-            <div class="thankyou-icon">✨🎓✨</div>
-            <div class="thankyou-title">شكراً لاستماعكم</div>
+
+        <!-- ================= FINAL CARD ================= -->
+
+        <div class="card final-card">
+
+            <div class="final-icon">
+                ✨🎓✨
+            </div>
+
+            <div class="thankyou-title">
+                شكراً لاستماعكم
+            </div>
+
             <div class="thankyou-sub">
-                نتمنى أن يكون هذا العرض التفاعلي الموسع قد قدم لكم إضافة قيمة وفهماً عميقاً لأبرز مفاهيم التكنولوجيا الحديثة.
+
+                نتمنى أن يكون هذا العرض التفاعلي قد ساعدكم
+                على فهم أبرز مفاهيم التكنولوجيا الحديثة
+                بطريقة واضحة وممتعة.
+
             </div>
+
+
+            <div class="credits-box">
+
+                <div>
+                    إعداد
+                </div>
+
+                <strong>
+                    عمار الهدار & هاشم العبيدين
+                </strong>
+
+            </div>
+
         </div>
 
     </div>
 
-    <!-- Navigation Controls -->
+
+    <!-- ================= NAVIGATION ================= -->
+
     <div class="navigation-controls">
-        <button class="nav-btn" id="prevBtn" onclick="triggerPlaneFlight(-1)" disabled>
-            <span style="font-size: 14pt;">➔</span> الفكرة السابقة
+
+        <button
+            class="nav-btn"
+            id="prevBtn"
+            onclick="triggerPlaneFlight(-1)"
+            disabled>
+
+            <span style="font-size:14pt;">➔</span>
+            الفكرة السابقة
+
         </button>
-        <span id="pageIndicator" style="font-weight: bold; color: var(--cyan-accent); font-size: 12pt;">1 / 7</span>
-        <button class="nav-btn" id="nextBtn" onclick="triggerPlaneFlight(1)">
-            الصفحة التالية <span style="font-size: 14pt;">✈️</span>
+
+
+        <span id="pageIndicator">
+            1 / 7
+        </span>
+
+
+        <button
+            class="nav-btn"
+            id="nextBtn"
+            onclick="triggerPlaneFlight(1)">
+
+            الصفحة التالية
+            <span style="font-size:14pt;">✈️</span>
+
         </button>
+
     </div>
+
+
+    <!-- ================= JAVASCRIPT ================= -->
 
     <script>
-        let currentCardIndex = 0;
-        const cards = document.querySelectorAll('.card');
-        const dotsContainer = document.getElementById('dotsContainer');
-        const prevBtn = document.getElementById('prevBtn');
-        const nextBtn = document.getElementById('nextBtn');
-        const pageIndicator = document.getElementById('pageIndicator');
-        const planeOverlay = document.getElementById('planeOverlay');
-        const flyingPlane = document.getElementById('flyingPlane');
 
-        // Create Navigation Dots
+        let currentCardIndex = 0;
+
+        const cards =
+            document.querySelectorAll('.card');
+
+        const dotsContainer =
+            document.getElementById('dotsContainer');
+
+        const prevBtn =
+            document.getElementById('prevBtn');
+
+        const nextBtn =
+            document.getElementById('nextBtn');
+
+        const pageIndicator =
+            document.getElementById('pageIndicator');
+
+        const planeOverlay =
+            document.getElementById('planeOverlay');
+
+        const flyingPlane =
+            document.getElementById('flyingPlane');
+
+
+        /* ================= DOTS ================= */
+
         cards.forEach((_, index) => {
-            const dot = document.createElement('div');
+
+            const dot =
+                document.createElement('div');
+
             dot.classList.add('dot');
-            if (index === 0) dot.classList.add('active');
+
+            if (index === 0) {
+                dot.classList.add('active');
+            }
+
             dot.addEventListener('click', () => {
+
                 if (index !== currentCardIndex) {
                     triggerPlaneFlightTo(index);
                 }
+
             });
+
             dotsContainer.appendChild(dot);
+
         });
 
-        const dots = document.querySelectorAll('.dot');
+
+        const dots =
+            document.querySelectorAll('.dot');
+
+
+        /* ================= UI ================= */
 
         function updateUI() {
+
             cards.forEach((card, index) => {
-                card.classList.toggle('active', index === currentCardIndex);
-                dots[index].classList.toggle('active', index === currentCardIndex);
+
+                card.classList.toggle(
+                    'active',
+                    index === currentCardIndex
+                );
+
+                dots[index].classList.toggle(
+                    'active',
+                    index === currentCardIndex
+                );
+
             });
 
-            prevBtn.disabled = currentCardIndex === 0;
-            nextBtn.disabled = currentCardIndex === cards.length - 1;
-            pageIndicator.innerText = `${currentCardIndex + 1} / ${cards.length}`;
+
+            prevBtn.disabled =
+                currentCardIndex === 0;
+
+            nextBtn.disabled =
+                currentCardIndex === cards.length - 1;
+
+
+            pageIndicator.innerText =
+                `${currentCardIndex + 1} / ${cards.length}`;
+
         }
 
-        // Flying Airplane Transition Trigger
+
+        /* ================= PLANE ================= */
+
         function triggerPlaneFlight(direction) {
-            const targetIndex = currentCardIndex + direction;
-            if (targetIndex >= 0 && targetIndex < cards.length) {
+
+            const targetIndex =
+                currentCardIndex + direction;
+
+            if (
+                targetIndex >= 0 &&
+                targetIndex < cards.length
+            ) {
+
                 triggerPlaneFlightTo(targetIndex);
+
             }
+
         }
+
 
         function triggerPlaneFlightTo(targetIndex) {
+
             planeOverlay.style.display = 'block';
+
             flyingPlane.classList.remove('animate-fly');
-            
-            // trigger reflow
+
             void flyingPlane.offsetWidth;
-            
+
             flyingPlane.classList.add('animate-fly');
 
-            // Switch card halfway through airplane flight
-            setTimeout(() => {
-                currentCardIndex = targetIndex;
-                updateUI();
-            }, 450);
 
-            // Hide overlay after animation completes
+            /*
+                تغيير الصفحة بعد وصول الطائرة
+                إلى منتصف الشاشة تقريباً
+            */
+
             setTimeout(() => {
+
+                currentCardIndex =
+                    targetIndex;
+
+                updateUI();
+
+            }, 620);
+
+
+            /*
+                إخفاء طبقة الطائرة
+            */
+
+            setTimeout(() => {
+
                 planeOverlay.style.display = 'none';
-            }, 950);
+
+            }, 1350);
+
         }
 
-        // Matrix Hacker Background Effect for Card 0
-        const canvas = document.getElementById('matrixCanvas');
-        const ctx = canvas.getContext('2d');
+
+        /* ================= MATRIX ================= */
+
+        const canvas =
+            document.getElementById('matrixCanvas');
+
+        const ctx =
+            canvas.getContext('2d');
+
 
         function resizeCanvas() {
-            if (canvas.parentElement) {
-                canvas.width = canvas.parentElement.clientWidth;
-                canvas.height = canvas.parentElement.clientHeight;
-            }
-        }
-        resizeCanvas();
-        window.addEventListener('resize', resizeCanvas);
 
-        const matrixChars = '0101010101010101010101ABCDEFXYZ#$';
+            if (canvas.parentElement) {
+
+                canvas.width =
+                    canvas.parentElement.clientWidth;
+
+                canvas.height =
+                    canvas.parentElement.clientHeight;
+
+                columns =
+                    Math.floor(canvas.width / fontSize);
+
+                drops =
+                    Array(columns).fill(1);
+
+            }
+
+        }
+
+
+        const matrixChars =
+            '01010101010101010101ABCDEFXYZ#$';
+
         const fontSize = 14;
-        let columns = Math.floor(canvas.width / fontSize) || 30;
-        let drops = Array(columns).fill(1);
+
+        let columns =
+            Math.floor(canvas.width / fontSize) || 30;
+
+        let drops =
+            Array(columns).fill(1);
+
+
+        resizeCanvas();
+
+        window.addEventListener(
+            'resize',
+            resizeCanvas
+        );
+
 
         function drawMatrix() {
-            ctx.fillStyle = 'rgba(3, 10, 22, 0.15)';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            ctx.fillStyle = '#00ffcc';
-            ctx.font = fontSize + 'px monospace';
+            ctx.fillStyle =
+                'rgba(3,10,22,.15)';
 
-            for (let i = 0; i < drops.length; i++) {
-                const text = matrixChars.charAt(Math.floor(Math.random() * matrixChars.length));
-                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+            ctx.fillRect(
+                0,
+                0,
+                canvas.width,
+                canvas.height
+            );
 
-                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+
+            ctx.fillStyle =
+                '#00ffcc';
+
+            ctx.font =
+                fontSize + 'px monospace';
+
+
+            for (
+                let i = 0;
+                i < drops.length;
+                i++
+            ) {
+
+                const text =
+                    matrixChars.charAt(
+                        Math.floor(
+                            Math.random() *
+                            matrixChars.length
+                        )
+                    );
+
+
+                ctx.fillText(
+                    text,
+                    i * fontSize,
+                    drops[i] * fontSize
+                );
+
+
+                if (
+                    drops[i] * fontSize >
+                    canvas.height &&
+                    Math.random() > .975
+                ) {
+
                     drops[i] = 0;
+
                 }
+
+
                 drops[i]++;
+
             }
+
         }
 
-        setInterval(drawMatrix, 45);
+
+        setInterval(
+            drawMatrix,
+            45
+        );
+
+
+        /* ================= KEYBOARD ================= */
+
+        document.addEventListener(
+            'keydown',
+            function(event) {
+
+                if (
+                    event.key === 'ArrowRight' ||
+                    event.key === 'ArrowLeft'
+                ) {
+
+                    const direction =
+                        event.key === 'ArrowLeft'
+                            ? 1
+                            : -1;
+
+                    triggerPlaneFlight(direction);
+
+                }
+
+            }
+        );
+
     </script>
+
 </body>
 </html>
+
+
+
