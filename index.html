@@ -2,277 +2,498 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>شرح وسائل التكنولوجيا الحديثة</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>شرح وسائل التكنولوجيا الحديثة - تفاعلي</title>
     <style>
-        body {
+        :root {
+            --navy-dark: #0b2545;
+            --navy-medium: #134074;
+            --navy-light: #8da9c4;
+            --bg-color: #f0f4f8;
+            --card-bg: #ffffff;
+            --text-color: #1e293b;
+        }
+
+        * {
+            box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f6f9;
-            color: #1e293b;
+            transition: all 0.3s ease;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
             margin: 0;
-            padding: 20px;
-            direction: rtl;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         /* Banner Header */
-        .header-banner {
-            background-color: #0b2545;
-            color: #ffffff;
-            padding: 30px 20px;
+        header {
+            background-color: var(--navy-dark);
+            color: white;
+            width: 100%;
+            padding: 25px 20px;
             text-align: center;
-            border-radius: 10px;
-            margin-bottom: 25px;
-            box-shadow: 0 4px 10px rgba(11, 37, 69, 0.2);
+            box-shadow: 0 4px 15px rgba(11, 37, 69, 0.3);
+            position: relative;
         }
 
-        .header-banner h1 {
+        header h1 {
             margin: 0;
-            font-size: 24pt;
-            color: #ffffff;
+            font-size: 22pt;
         }
 
-        .header-banner p {
-            margin-top: 10px;
-            font-size: 12pt;
-            color: #8da9c4;
-        }
-
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        .intro-box {
-            background-color: #ffffff;
-            border-right: 6px solid #0b2545;
-            padding: 18px 20px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        header p {
+            margin: 8px 0 0;
+            color: var(--navy-light);
             font-size: 11pt;
-            line-height: 1.7;
         }
 
-        .section-card {
-            background-color: #ffffff;
-            border: 1px solid #dbe2ef;
-            border-radius: 10px;
-            padding: 20px;
+        /* Nav Indicators */
+        .nav-dots {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0 10px 0;
+            flex-wrap: wrap;
+        }
+
+        .dot {
+            width: 14px;
+            height: 14px;
+            background-color: #cbd5e1;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .dot.active {
+            background-color: var(--navy-dark);
+            transform: scale(1.3);
+        }
+
+        /* Container & Cards */
+        .main-container {
+            width: 90%;
+            max-width: 850px;
             margin-bottom: 20px;
-            box-shadow: 0 3px 8px rgba(11, 37, 69, 0.05);
+            position: relative;
+            min-height: 520px;
         }
 
-        h2 {
-            color: #0b2545;
-            font-size: 15pt;
-            margin-top: 0;
-            margin-bottom: 12px;
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 10px 25px rgba(11, 37, 69, 0.08);
+            border-top: 6px solid var(--navy-dark);
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .card.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             border-bottom: 2px solid #e2e8f0;
-            padding-bottom: 8px;
+            padding-bottom: 12px;
+            margin-bottom: 20px;
         }
 
-        .badge {
-            background-color: #0b2545;
-            color: #ffffff;
-            padding: 3px 10px;
-            border-radius: 5px;
+        .card-title {
+            color: var(--navy-dark);
+            font-size: 16pt;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-badge {
+            background-color: var(--navy-dark);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
             font-size: 11pt;
-            margin-left: 8px;
         }
 
-        .explanation {
-            background-color: #eef4f8;
-            border-right: 4px solid #134074;
+        .original-text {
+            background-color: #f8fafc;
+            border-right: 4px solid var(--navy-medium);
             padding: 12px 16px;
             border-radius: 6px;
-            margin-top: 12px;
             font-size: 10.5pt;
-            color: #0b2545;
-            line-height: 1.6;
+            line-height: 1.7;
+            margin-bottom: 20px;
+            color: #334155;
+        }
+
+        .detailed-explanation {
+            background-color: #eef4f8;
+            border-radius: 10px;
+            padding: 20px;
+            font-size: 11pt;
+            line-height: 1.8;
+            color: #0f172a;
         }
 
         .explanation-title {
             font-weight: bold;
-            color: #0b2545;
-            margin-bottom: 5px;
-            display: block;
+            color: var(--navy-dark);
+            font-size: 12pt;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        .table-style {
+        /* Animated Logos for AI Card */
+        .ai-logos-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.03);
+        }
+
+        .logo-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .animated-logo {
+            width: 55px;
+            height: 55px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .chatgpt-logo { animation-delay: 0s; }
+        .gemini-logo { animation-delay: 1.5s; }
+
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(5deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+
+        .comparison-table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 15px;
             font-size: 10pt;
         }
 
-        .table-style th {
-            background-color: #0b2545;
-            color: #ffffff;
+        .comparison-table th {
+            background-color: var(--navy-dark);
+            color: white;
             padding: 10px;
             text-align: right;
         }
 
-        .table-style td {
+        .comparison-table td {
             padding: 10px;
             border: 1px solid #cbd5e1;
-            background-color: #ffffff;
+            background-color: white;
         }
 
-        .table-style tr:nth-child(even) td {
-            background-color: #f8fafc;
+        /* Navigation Arrows */
+        .navigation-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 90%;
+            max-width: 850px;
+            margin-bottom: 30px;
         }
 
-        .highlight-box {
-            background-color: #e2eaf4;
-            border: 1px dashed #134074;
-            padding: 12px 15px;
-            border-radius: 6px;
-            margin-top: 12px;
-            font-size: 10pt;
-            color: #0b2545;
-            line-height: 1.6;
+        .nav-btn {
+            background-color: var(--navy-dark);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-size: 11pt;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 10px rgba(11, 37, 69, 0.2);
         }
 
-        ul {
-            margin: 8px 0;
-            padding-right: 20px;
+        .nav-btn:hover {
+            background-color: var(--navy-medium);
+            transform: translateY(-2px);
         }
 
-        li {
-            margin-bottom: 5px;
+        .nav-btn:disabled {
+            background-color: #cbd5e1;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <div class="header-banner">
-            <h1>شرح وسائِلِ والتِّكنولوجيا الحَديثَة</h1>
-            <p>دليل شامل ومُبسّط لجميع المفاهيم والتقنيات الواردة في الدرس</p>
-        </div>
+    <header>
+        <h1>شرح وسائِلِ التِّكنولوجيا الحَديثَة 🚀</h1>
+        <p>عرض تفاعلي مفصل ومُوسّع لدروس التكنولوجيا</p>
+    </header>
 
-        <div class="intro-box">
-            <strong>مقدمة الوحدة:</strong> أصبحت التكنولوجيا الحديثة عنصرًا أساسيًا يسهم في تحسين جودة الحياة، زيادة الإنتاجية، وتطوير القطاعات الاقتصادية والاجتماعية والثقافية. يتناول الدرس تساؤلًا جوهريًا حول ما إذا كانت التكنولوجيا توفر فوائد ومنافع فقط، أم أن لها بعض الآثار الجانبية والأضرار على الفرد والمجتمع.
-        </div>
+    <div class="nav-dots" id="dotsContainer"></div>
 
-        <!-- 1. الأجهزة الذكية -->
-        <div class="section-card">
-            <h2><span class="badge">1</span> الأجهزة الذكية (Smart Devices)</h2>
-            <p><strong>النص الأصلي:</strong> أجهزة إلكترونية مجهزة بتقنيات حديثة تمكنها من الاتصال بشبكة الإنترنت وتبادل البيانات مع البيئة المحيطة أو مع مستخدمين آخرين، وتمتاز بالقدرة على جمع البيانات وتحليلها واتخاذ قرارات ذكية.</p>
-            
-            <div class="explanation">
-                <span class="explanation-title">💡 الشرح والمفهوم:</span>
-                الأجهزة الذكية ليست مجرد أدوات تعمل بتعليمات ثابتة، بل تمتلك حسًا رقميًا؛ حيث تستشعر ما حولها، تجمع البيانات (مثل درجات الحرارة أو الحركة)، ثم تتخذ قرارات مناسبة بدون تدخل مباشر من الإنسان (مثل الهواتف والساعات الذكية ومستشعرات المنازل).
+    <div class="main-container">
+
+        <!-- Card 1: Smart Devices -->
+        <div class="card active">
+            <div class="card-header">
+                <h2 class="card-title"><span class="card-badge">1</span> الأجهزة الذكية (Smart Devices)</h2>
             </div>
-        </div>
-
-        <!-- 2. الحوسبة السحابية -->
-        <div class="section-card">
-            <h2><span class="badge">2</span> الحوسبة السحابية (Cloud Computing)</h2>
-            <p><strong>النص الأصلي:</strong> تقنية توفر خدمات حاسوبية عديدة عبر الإنترنت (خوادم، قواعد بيانات، تخزين، برمجيات، ذكاء اصطناعي) دون الحاجة لبنية تحتية محلية مكلفة.</p>
-            
-            <div class="explanation">
-                <span class="explanation-title">💡 الشرح والمفهوم:</span>
-                بدلاً من حفظ ملفاتك على جهازك الخاص وتحمّل مخاطر تلف القرص الصلب، تتيح لك الحوسبة السحابية الوصول لملفاتك وتطبيقاتك عبر خوادم آمنة في الإنترنت من أي مكان.
+            <div class="original-text">
+                <strong>📝 النص الأصلي:</strong> أجهزة إلكترونية مجهزة بتقنيات حديثة تمكنها من الاتصال بشبكة الإنترنت وتبادل البيانات مع البيئة المحيطة، أو مع مستخدمين آخرين. تمتاز بالقدرة على جمع البيانات وتحليلها، واتخاذ قرارات ذكية بناءً عليها.
             </div>
-
-            <table class="table-style">
-                <thead>
-                    <tr>
-                        <th style="width: 30%;">النموذج</th>
-                        <th style="width: 70%;">الشرح والتوضيح</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>البرمجيات كخدمة (SaaS)</strong></td>
-                        <td>استخدام التطبيقات جاهزة عبر الإنترنت فوراً (مثل: Google Docs, Gmail).</td>
-                    </tr>
-                    <tr>
-                        <td><strong>المنصة كخدمة (PaaS)</strong></td>
-                        <td>توفر للمطورين بيئة جاهزة لبناء البرامج والتطبيقات دون القلق بشأن السيرفرات.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>البنية التحتية كخدمة (IaaS)</strong></td>
-                        <td>تأجير موارد الحاسوب الأساسية مثل مساحات التخزين والخوادم الافتراضية (مثل: AWS, Azure).</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <!-- 3. الواقع الافتراضي والمعزز -->
-        <div class="section-card">
-            <h2><span class="badge">3</span> الواقع الافتراضي (VR) والواقع المعزز (AR)</h2>
-            <p><strong>النص الأصلي:</strong> تقنيات تفاعلية ثلاثية الأبعاد تقدم تجارب مختلفة كلياً للمستخدمين.</p>
-            
-            <table class="table-style">
-                <thead>
-                    <tr>
-                        <th>المعيار</th>
-                        <th>الواقع الافتراضي (VR)</th>
-                        <th>الواقع المعزز (AR)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>التعريف</strong></td>
-                        <td>يعزلك تماماً عن الواقع وينقلك لعالم رقمي بالكامل.</td>
-                        <td>يضيف عناصر رقمية ثلاثية الأبعاد فوق البيئة الحقيقية.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>الأدوات</strong></td>
-                        <td>نظارات مخصصة (VR Headsets) وسماعات مغلقة.</td>
-                        <td>الهواتف الذكية، النظارات الذكية الشفافة.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>التفاعل</strong></td>
-                        <td>تفاعل كامل داخل العالم الافتراضي فقط.</td>
-                        <td>دمج وتفاعل بين العناصر الرقمية والعالم الواقعي.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>الاستخدامات</strong></td>
-                        <td>الألعاب، محاكاة الطيران، التدريب الجراحي.</td>
-                        <td>التصميم، التطبيقات التعليمية، الفلاتر، الصيانة.</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <!-- 4. الذكاء الاصطناعي -->
-        <div class="section-card">
-            <h2><span class="badge">4</span> الذكاء الاصطناعي (AI)</h2>
-            <p><strong>النص الأصلي:</strong> نظام حاسوبي قادر على محاكاة الذكاء البشري مثل التفكير والتعلم وحل المشكلات واتخاذ القرارات.</p>
-            
-            <div class="explanation">
-                <span class="explanation-title">💡 الشرح والمفهوم:</span>
-                الذكاء الاصطناعي يهدف لجعل الآلة تفكر وتتعلم مثل الإنسان. وله فرعان رئيسيان:
+            <div class="detailed-explanation">
+                <span class="explanation-title">💡 الشرح المُوسّع والمفهوم العميق:</span>
+                الأجهزة الذكية أصبحت تتجاوز مجرد كونها أدوات تنفّذ أوامر بلمسة زر؛ فهي تُعتبر أجهزة ذات <strong>"وعي رقمي بيئي"</strong>. تعتمد هذه الأجهزة على دمج ثلاثية محورية:
                 <ul>
-                    <li><strong>التعلم الآلي (Machine Learning):</strong> قدرة النظام على التعلم وتحسين أدائه تلقائياً من البيانات.</li>
-                    <li><strong>التعلم العميق (Deep Learning):</strong> فرع أكثر تعقيداً يحاكي الشبكات العصبية في الدماغ لمعالجة الصور واللغات.</li>
+                    <li><strong>المستشعرات (Sensors):</strong> مثل الحساسات الضوئية، الحرارية، وحساسات الحركة لجمع البيانات لحظياً.</li>
+                    <li><strong>المعالجة الذكية (Smart Processing):</strong> تحليل هذه البيانات وفهم أنماط سلوك المستخدم والبيئة.</li>
+                    <li><strong>الاتصال والتحكم (Connectivity & Automation):</strong> اتخاذ قرارات ذاتية والتواصل مع أجهزة أخرى بدون تدخل بشري.</li>
+                </ul>
+                <strong>أمثلة من حياتنا اليومية:</strong>
+                <ul>
+                    <li><strong>الساعات الذكية:</strong> لا تقيس نبضات القلب فقط، بل تُحلل نمط نومك وتتصل بالطوارئ تلقائياً إذا رصدت سقوطاً مفاجئاً.</li>
+                    <li><strong>أنظمة المنازل الذكية:</strong> مثل أجهزة التكييف التي تتعلم أوقات تواجدك في المنزل وتضبط الحرارة لتوفير الطاقة تلقائياً.</li>
                 </ul>
             </div>
+        </div>
 
-            <div class="highlight-box">
-                <strong>📌 تنبيه حول موثوقية الذكاء الاصطناعي (مثل ChatGPT):</strong>
-                المعلومات المقدمة من نماذج الذكاء الاصطناعي ليست صحيحة دائمًا بنسبة 100%؛ إذ قد تحتوي على أخطاء، ولذلك يجب دائمًا مراجعتها والتحقق منها من مصادر علمية موثوقة.
+        <!-- Card 2: Cloud Computing -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title"><span class="card-badge">2</span> الحوسبة السحابية (Cloud Computing)</h2>
+            </div>
+            <div class="original-text">
+                <strong>📝 النص الأصلي:</strong> تقنية توفر خدمات حاسوبية عديدة عبر الإنترنت (خوادم، قواعد بيانات، تخزين، برمجيات، شبكات، ذكاء اصطناعي) وتتيح الوصول إليها من أي مكان بتكلفة منخفضة وبدون بنية تحتية محلية.
+            </div>
+            <div class="detailed-explanation">
+                <span class="explanation-title">💡 الشرح المُوسّع والمفهوم العميق:</span>
+                تخيّل الحوسبة السحابية مثل شركة الكهرباء؛ بدلاً من أن تبني محطة كهرباء خاصة في بيتك (سيرفرات وأجهزة ضخمة مكلفة)، أنت تشترك في الخدمة وتدفع فقط مقابل ما تستهلكه عبر القابس (الإنترنت).
+                
+                <br><br><strong>النماذج الثلاثة الرئيسية للحوسبة السحابية:</strong>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>النموذج</th>
+                            <th>المفهوم الشامل والشرح</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>البرمجيات كخدمة (SaaS)</strong></td>
+                            <td>تطبيقات جاهزة للاستخدام الفوري عبر المتصفح دون تثبيت. (مثل: Google Docs, Gmail, OneDrive).</td>
+                        </tr>
+                        <tr>
+                            <td><strong>المنصة كخدمة (PaaS)</strong></td>
+                            <td>بيئة متكاملة موجهة للمطورين لبناء البرامج والتطبيقات واختبارها دون التفكير في إدارة السيرفرات.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>البنية التحتية كخدمة (IaaS)</strong></td>
+                            <td>تأجير البنية التحتية الصلبة (خوادم افتراضية، مساحات تخزين ضخمة، شبكات) مثل خدمات (AWS) و (Microsoft Azure).</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
 
-        <!-- 5. إنترنت الأشياء -->
-        <div class="section-card">
-            <h2><span class="badge">5</span> إنترنت الأشياء (IoT)</h2>
-            <p><strong>النص الأصلي:</strong> شبكة ترتبط فيها الأدوات والأجهزة الذكية بالإنترنت لتبادل البيانات والتفاعل بذكاء ودون تدخل بشري مباشر.</p>
+        <!-- Card 3: VR & AR -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title"><span class="card-badge">3</span> الواقع الافتراضي (VR) والواقع المعزز (AR)</h2>
+            </div>
+            <div class="original-text">
+                <strong>📝 النص الأصلي:</strong> تقنيات تفاعلية ثلاثية الأبعاد تقدم تجارب فريدة، ورغم وجود تشابه بينهما إلا أن لكل منهما خصائص واستخدامات معينة.
+            </div>
+            <div class="detailed-explanation">
+                <span class="explanation-title">💡 الشرح المُوسّع والمقارنة الشاملة:</span>
+                الفرق الجوهري يكمن في مدى انفصالك عن الواقع الحقيقي:
+                
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>المعيار</th>
+                            <th>الواقع الافتراضي (Virtual Reality - VR)</th>
+                            <th>الواقع المعزز (Augmented Reality - AR)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>درجة العزل</strong></td>
+                            <td>عزل كامل عن العالم الحقيقي (انغماس في عالم افتراضي 100%).</td>
+                            <td>دمج عناصر رقمية 3D فوق العالم الحقيقي دون عزلك عنه.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>الأدوات</strong></td>
+                            <td>نظارات مغلقة بالكامل (مثل Meta Quest) وسماعات.</td>
+                            <td>كاميرات الهواتف الذكية، النظارات الذكية الشفافة.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>الأثر والإنتاجية</strong></td>
+                            <td>تُمكّن الأطباء والطيارين من التدرب في بيئة خطرة بأمان تام.</td>
+                            <td>تساعد مهندسي الصيانة والمصممين في رؤية قطع الغيار فوق الآلة الحقيقية.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Card 4: AI with Animated Logos -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title"><span class="card-badge">4</span> الذكاء الاصطناعي (Artificial Intelligence - AI)</h2>
+            </div>
             
-            <div class="explanation">
-                <span class="explanation-title">💡 الشرح والمفهوم:</span>
-                توصيل الأجهزة اليومية (كالتلفاز، الثلاجة، السيارات) بالإنترنت وتزويدها بأجهزة استشعار (Sensors) لتتواصل فيما بينها وتُنفذ المهام بذكاء وسهولة.
+            <div class="ai-logos-container">
+                <div class="logo-item">
+                    <svg class="animated-logo chatgpt-logo" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.259 23a6.0557 6.0557 0 0 0 5.7719-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7467-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.47 4.47 0 0 1-.5355-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0806.0806 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464z" fill="#10a37f"/>
+                    </svg>
+                    <span style="font-size: 9pt; font-weight: bold; color: #10a37f;">ChatGPT</span>
+                </div>
+                
+                <div class="logo-item">
+                    <svg class="animated-logo gemini-logo" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 0C12 6.62742 6.62742 12 0 12C6.62742 12 12 17.3726 12 24C12 17.3726 17.3726 12 24 12C17.3726 12 12 6.62742 12 0Z" fill="url(#gemini-grad)"/>
+                        <defs>
+                            <linearGradient id="gemini-grad" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse">
+                                <stop stop-color="#1A73E8"/>
+                                <stop offset="0.5" stop-color="#8AB4F8"/>
+                                <stop offset="1" stop-color="#A142F4"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                    <span style="font-size: 9pt; font-weight: bold; color: #1a73e8;">Gemini</span>
+                </div>
             </div>
 
-            <div class="highlight-box">
-                <strong>💡 معلومة إثرائية (أول جهاز IoT في التاريخ):</strong>
-                تعود أول فكرة لإنترنت الأشياء لجامعة Carnegie Mellon في الثمانينيات، عندما تم ربط آلة بيع مشروبات غازية بالإنترنت لمعرفة الكمية المتوفرة ومدى برودتها عن بُعد!
+            <div class="original-text">
+                <strong>📝 النص الأصلي:</strong> نظام حاسوبي قادر على محاكاة الذكاء البشري (التفكير، التعلم، حل المشكلات). يضم التعلم الآلي والتعلم العميق، ومن أمثلته Siri, GPS, والأدوات التوليدية مثل ChatGPT.
+            </div>
+
+            <div class="detailed-explanation">
+                <span class="explanation-title">💡 الشرح المُوسّع والمفهوم العميق:</span>
+                الذكاء الاصطناعي لا يقتصر على برمجيات تقليدية، بل يعتمد على <strong>خوارزميات تعلّم ذاتية</strong> تحاكي العصبونات في الدماغ البشري:
+                <ul>
+                    <li><strong>التعلم الآلي (Machine Learning):</strong> تدريب النظام على آلاف البيانات ليتعلم استخراج الأنماط بنفسه.</li>
+                    <li><strong>التعلم العميق (Deep Learning):</strong> شبكات عصبية اصطناعية معقدة قادرة على فهم اللغات وتحليل الصور.</li>
+                    <li><strong>الذكاء الاصطناعي التوليدي (Generative AI):</strong> نماذج متقدمة جداً مثل <strong>Gemini</strong> و <strong>ChatGPT</strong> تقوم بتوليد النصوص والأكواد والصور من الفهم البشري.</li>
+                </ul>
+
+                <div style="background-color: #fef2f2; border-right: 4px solid #ef4444; padding: 10px 14px; border-radius: 6px; margin-top: 15px; font-size: 10pt; color: #991b1b;">
+                    <strong>⚠️ الموثوقية ودقة المعلومات:</strong>
+                    نماذج الذكاء الاصطناعي قد تُعاني أحياناً من <strong>"الهلوسة الرقمية" (Hallucination)</strong>؛ حيث تقدم معلومات تبدو واثقة لكنها غير صحيحة، لذا يجب دائماً مراجعة المصادر العلمية والتحقق منها!
+                </div>
             </div>
         </div>
+
+        <!-- Card 5: IoT -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title"><span class="card-badge">5</span> إنترنت الأشياء (Internet of Things - IoT)</h2>
+            </div>
+            <div class="original-text">
+                <strong>📝 النص الأصلي:</strong> شبكة مفتوحة وشاملة من الأجهزة الذكية المرتبطة بالإنترنت لمشاركة البيانات والموارد، والتفاعل والتنظيم الذاتي دون تدخل بشري مباشر.
+            </div>
+            <div class="detailed-explanation">
+                <span class="explanation-title">💡 الشرح المُوسّع والمفهوم العميق:</span>
+                فكرة إنترنت الأشياء هي إعطاء "صوت وشبكة اتصال" لجميع الأغراض غير الحاسوبية في حياتنا (مثل السيارات، الثلاجات، والمستشعرات الزراعية).
+                
+                <br><br><strong>كيف تعمل شبكة إنترنت الأشياء؟</strong>
+                <ol>
+                    <li><strong>الالتقاط:</strong> تجمع أجهزة الاستشعار (Sensors) البيانات من البيئة.</li>
+                    <li><strong>النقل:</strong> تُرسل هذه البيانات عبر الإنترنت إلى السحابة.</li>
+                    <li><strong>المعالجة والاتخاذ:</strong> تتواصل الأجهزة فيما بينها لاتخاذ إجراء تلقائي بدون تدخل بشري.</li>
+                </ol>
+
+                <div style="background-color: #f0fdf4; border-right: 4px solid #22c55e; padding: 10px 14px; border-radius: 6px; margin-top: 15px; font-size: 10pt; color: #166534;">
+                    <strong>📜 معلومة تاريخية إثرائية:</strong>
+                    أول جهاز إنترنت أشياء في العالم كان عام 1982 في جامعة (Carnegie Mellon)، حيث ربط الطلاب آلة بيع المشروبات الغازية بالشبكة للتحقق من وجود علب باردة قبل الذهاب إليها!
+                </div>
+            </div>
+        </div>
+
     </div>
 
+    <!-- Controls -->
+    <div class="navigation-controls">
+        <button class="nav-btn" id="prevBtn" onclick="changeCard(-1)" disabled>
+            <span style="font-size: 14pt;">➔</span> الفكرة السابقة
+        </button>
+        <span id="pageIndicator" style="font-weight: bold; color: var(--navy-dark);">1 / 5</span>
+        <button class="nav-btn" id="nextBtn" onclick="changeCard(1)">
+            الفكرة التالية <span style="font-size: 14pt;">⬅</span>
+        </button>
+    </div>
+
+    <script>
+        let currentCardIndex = 0;
+        const cards = document.querySelectorAll('.card');
+        const dotsContainer = document.getElementById('dotsContainer');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const pageIndicator = document.getElementById('pageIndicator');
+
+        cards.forEach((_, index) => {
+            const dot = document.createElement('div');
+            dot.classList.add('dot');
+            if (index === 0) dot.classList.add('active');
+            dot.addEventListener('click', () => goToCard(index));
+            dotsContainer.appendChild(dot);
+        });
+
+        const dots = document.querySelectorAll('.dot');
+
+        function updateUI() {
+            cards.forEach((card, index) => {
+                card.classList.toggle('active', index === currentCardIndex);
+                dots[index].classList.toggle('active', index === currentCardIndex);
+            });
+
+            prevBtn.disabled = currentCardIndex === 0;
+            nextBtn.disabled = currentCardIndex === cards.length - 1;
+            pageIndicator.innerText = `${currentCardIndex + 1} / ${cards.length}`;
+        }
+
+        function changeCard(direction) {
+            currentCardIndex += direction;
+            if (currentCardIndex < 0) currentCardIndex = 0;
+            if (currentCardIndex >= cards.length) currentCardIndex = cards.length - 1;
+            updateUI();
+        }
+
+        function goToCard(index) {
+            currentCardIndex = index;
+            updateUI();
+        }
+    </script>
 </body>
 </html>
