@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>الذكاء الاصطناعي والتقنيات الحديثة</title>
+
+  <style>
+    :root {
+      --primary: #176b87;
+      --secondary: #38a169;
+      --accent: #e58e26;
+      --dark: #173042;
+      --light: #f4f8fa;
+      --white: #ffffff;
+      --success: #218739;
+      --danger: #c0392b;
+    }
+
+    * {
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: Tahoma, Arial, sans-serif;
+      background: linear-gradient(135deg, #e8f4f7, #f8f5ec);
+      color: #263238;
+      line-height: 1.9;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--primary), #0d4054);
+      color: white;
+      padding: 45px 20px;
+      text-align: center;
+      box-shadow: 0 4px 15px #0003;
+    }
+
+    header h1 {
+      margin: 0 0 10px;
+      font-size: clamp(28px, 5vw, 48px);
+    }
+
+    header p {
+      font-size: 19px;
+      margin: 0 auto;
+      max-width: 850px;
+    }
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: var(--dark);
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 10px;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      padding: 8px 14px;
+      border-radius: 20px;
+      transition: 0.3s;
+    }
+
+    nav a:hover {
+      background: var(--accent);
+    }
+
+    main {
+      width: min(1100px, 94%);
+      margin: 30px auto;
+    }
+
+    section {
+      background: var(--white);
+      margin: 25px 0;
+      padding: 28px;
+      border-radius: 18px;
+      box-shadow: 0 5px 18px #17405218;
+    }
+
+    h2 {
+      color: var(--primary);
+      border-right: 6px solid var(--accent);
+      padding-right: 12px;
+      margin-top: 0;
+    }
+
+    h3 {
+      color: var(--secondary);
+    }
+
+    .intro {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 18px;
+      margin-top: 20px;
+    }
+
+    .card {
+      background: var(--light);
+      border-radius: 15px;
+      padding: 20px;
+      border-top: 5px solid var(--primary);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 8px 20px #0002;
+    }
+
+    .icon {
+      font-size: 38px;
+    }
+
+    .definition {
+      background: #eef8ee;
+      border-right: 5px solid var(--secondary);
+      padding: 18px;
+      border-radius: 10px;
+      font-size: 18px;
+    }
+
+    .timeline {
+      border-right: 4px solid var(--accent);
+      padding-right: 20px;
+    }
+
+    .timeline article {
+      position: relative;
+      margin: 22px 0;
+      background: #fffaf2;
+      padding: 15px 20px;
+      border-radius: 12px;
+    }
+
+    .timeline article::before {
+      content: "";
+      position: absolute;
+      right: -31px;
+      top: 22px;
+      width: 14px;
+      height: 14px;
+      background: var(--accent);
+      border-radius: 50%;
+      border: 4px solid white;
+    }
+
+    .accordion {
+      margin: 12px 0;
+      border: 1px solid #d5e1e5;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .accordion button {
+      width: 100%;
+      border: 0;
+      background: #eaf5f7;
+      color: var(--dark);
+      text-align: right;
+      font-size: 17px;
+      font-weight: bold;
+      padding: 15px;
+      cursor: pointer;
+    }
+
+    .accordion button:hover {
+      background: #d5edf1;
+    }
+
+    .answer {
+      display: none;
+      padding: 15px;
+      background: white;
+    }
+
+    .quiz-question {
+      background: #f7fafb;
+      padding: 20px;
+      margin: 18px 0;
+      border-radius: 12px;
+      border: 1px solid #dce8eb;
+    }
+
+    .quiz-question label {
+      display: block;
+      padding: 8px;
+      cursor: pointer;
+      border-radius: 7px;
+    }
+
+    .quiz-question label:hover {
+      background: #e8f3f5;
+    }
+
+    .correct {
+      color: var(--success);
+      font-weight: bold;
+    }
+
+    .wrong {
+      color: var(--danger);
+      font-weight: bold;
+    }
+
+    button.main-btn {
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 13px 25px;
+      font-size: 17px;
+      cursor: pointer;
+      margin: 8px 0;
+    }
+
+    button.main-btn:hover {
+      background: #0d4c61;
+    }
+
+    #result {
+      font-size: 20px;
+      font-weight: bold;
+      margin-top: 15px;
+    }
+
+    .tip {
+      background: #fff4dd;
+      border-right: 5px solid var(--accent);
+      padding: 18px;
+      border-radius: 10px;
+      margin: 15px 0;
+    }
+
+    .comparison {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 15px;
+    }
+
+    .pros, .cons {
+      padding: 18px;
+      border-radius: 12px;
+    }
+
+    .pros {
+      background: #eaf8ed;
+      border-top: 5px solid var(--success);
+    }
+
+    .cons {
+      background: #fff0ed;
+      border-top: 5px solid var(--danger);
+    }
+
+    footer {
+      text-align: center;
+      background: var(--dark);
+      color: white;
+      padding: 25px;
+      margin-top: 35px;
+    }
+
+    @media (max-width: 600px) {
+      section {
+        padding: 20px 15px;
+      }
+
+      nav a {
+        font-size: 14px;
+        padding: 6px 9px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>الذكاء الاصطناعي والتقنيات الحديثة</h1>
+    <p>
+      شرح تفاعلي مبسط حول مفهوم الذكاء الاصطناعي، تطبيقاته، فوائده،
+      مخاطره، وأهميته في حياتنا اليومية.
+    </p>
+  </header>
+
+  <nav>
+    <a href="#definition">التعريف</a>
+    <a href="#applications">التطبيقات</a>
+    <a href="#benefits">الفوائد</a>
+    <a href="#ethics">الأخلاقيات</a>
+    <a href="#quiz">اختبر نفسك</a>
+  </nav>
+
+  <main>
+
+    <section id="definition">
+      <h2>ما المقصود بالذكاء الاصطناعي؟</h2>
+
+      <div class="definition">
+        <strong>الذكاء الاصطناعي:</strong>
+        هو مجال من مجالات علوم الحاسب يهدف إلى تصميم أنظمة وبرامج تستطيع
+        تنفيذ مهام تحتاج عادةً إلى قدرات بشرية، مثل التعلم، والتحليل،
+        وفهم اللغة، والتعرف على الصور، واتخاذ القرارات.
+      </div>
+
+      <div class="intro">
+        <div class="card">
+          <div class="icon">🧠</div>
+          <h3>التعلم</h3>
+          <p>
+            تستطيع بعض الأنظمة التعلم من البيانات واكتشاف الأنماط وتحسين
+            نتائجها مع مرور الوقت.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="icon">🤖</div>
+          <h3>الروبوتات</h3>
+          <p>
+            تستخدم الروبوتات الذكاء الاصطناعي لتنفيذ أعمال مختلفة في المصانع
+            والمستشفيات والمنازل.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="icon">💬</div>
+          <h3>فهم اللغة</h3>
+          <p>
+            يمكن للأنظمة الذكية فهم الأسئلة المكتوبة أو المنطوقة والرد عليها
+            بطريقة قريبة من اللغة البشرية.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="icon">👁️</div>
+          <h3>رؤية الحاسوب</h3>
+          <p>
+            تساعد الحواسيب على تحليل الصور ومقاطع الفيديو والتعرف على الأشياء
+            والوجوه والأنماط.
+          </p>
+        </div>
+      </div>
+
+      <div class="tip">
+        <strong>فكرة مهمة:</strong>
+        الذكاء الاصطناعي لا يعني أن الجهاز يفكر مثل الإنسان تمامًا، بل يعني
+        أنه يستخدم خوارزميات وبيانات لتنفيذ مهام ذكية.
+      </div>
+    </section>
+
+    <section id="applications">
+      <h2>أهم تطبيقات الذكاء الاصطناعي</h2>
+
+      <div class="accordion">
+        <button onclick="toggleAnswer(this)">
+          🏥 الذكاء الاصطناعي في المجال الصحي
+        </button>
+        <div class="answer">
+          يساعد في تحليل الأشعة والصور الطبية، واكتشاف بعض الأنماط المرضية،
+          وتنظيم بيانات المرضى، ودعم الأطباء في اتخاذ القرار.
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button onclick="toggleAnswer(this)">
+          🚗 الذكاء الاصطناعي في النقل
+        </button>
+        <div class="answer">
+          يستخدم في أنظمة الملاحة، وتحليل حركة المرور، ومساعدة السائق،
+          وتطوير المركبات ذاتية القيادة.
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button onclick="toggleAnswer(this)">
+          🎓 الذكاء الاصطناعي في التعليم
+        </button>
+        <div class="answer">
+          يمكن أن يقدم تدريبات مخصصة للطلاب، ويساعد على تصحيح بعض الإجابات،
+          ويقترح مصادر تعليمية مناسبة لمستوى المتعلم.
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button onclick="toggleAnswer(this)">
+          🏭 الذكاء الاصطناعي في الصناعة
+        </button>
+        <div class="answer">
+          يستخدم في مراقبة جودة المنتجات، والتنبؤ بالأعطال، وتحسين عمليات
+          الإنتاج، وتشغيل الروبوتات الصناعية.
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button onclick="toggleAnswer(this)">
+          📱 الذكاء الاصطناعي في الحياة اليومية
+        </button>
+        <div class="answer">
+          يظهر في المساعدات الصوتية، وترشيح مقاطع الفيديو، والتعرف على الصور،
+          والترجمة الآلية، والبحث الذكي، وتطبيقات الخرائط.
+        </div>
+      </div>
+    </section>
+
+    <section id="benefits">
+      <h2>فوائد الذكاء الاصطناعي وتحدياته</h2>
+
+      <div class="comparison">
+        <div class="pros">
+          <h3>الفوائد</h3>
+          <ul>
+            <li>إنجاز المهام بسرعة كبيرة.</li>
+            <li>تحليل كميات ضخمة من البيانات.</li>
+            <li>تقليل الأخطاء في الأعمال المتكررة.</li>
+            <li>مساعدة الأطباء والمهندسين والمعلمين.</li>
+            <li>تقديم خدمات أكثر ملاءمة للمستخدم.</li>
+            <li>العمل في البيئات الخطرة بدلًا من الإنسان.</li>
+          </ul>
+        </div>
+
+        <div class="cons">
+          <h3>التحديات</h3>
+          <ul>
+            <li>إمكانية ظهور معلومات غير دقيقة.</li>
+            <li>التأثير في بعض الوظائف التقليدية.</li>
+            <li>الاعتماد الزائد على الأنظمة الذكية.</li>
+            <li>احتمال وجود تحيز في البيانات.</li>
+            <li>الحاجة إلى حماية البيانات والمعلومات.</li>
+            <li>إمكانية استخدام التقنية بطريقة غير مسؤولة.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="tip">
+        <strong>كيف نستخدم الذكاء الاصطناعي بشكل صحيح؟</strong>
+        نستخدمه أداةً مساعدة، ونراجع المعلومات المهمة، ولا نعتمد عليه وحده
+        في القرارات الطبية أو القانونية أو المالية.
+      </div>
+    </section>
+
+    <section id="ethics">
+      <h2>أخلاقيات استخدام الذكاء الاصطناعي</h2>
+
+      <p>
+        تحتاج التقنيات الحديثة إلى استخدام مسؤول يراعي الإنسان والمجتمع.
+        ومن أهم المبادئ الأخلاقية:
+      </p>
+
+      <div class="intro">
+        <div class="card">
+          <h3>العدالة</h3>
+          <p>
+            يجب ألا تميز الأنظمة بين الأشخاص بسبب الجنس أو اللون أو اللغة أو
+            أي عامل غير مناسب.
+          </p>
+        </div>
+
+        <div class="card">
+          <h3>الشفافية</h3>
+          <p>
+            من المهم توضيح طريقة استخدام النظام ومتى يكون القرار صادرًا عن
+            برنامج ذكي.
+          </p>
+        </div>
+
+        <div class="card">
+          <h3>المسؤولية</h3>
+          <p>
+            يجب أن يتحمل الإنسان مسؤولية القرارات التي يتخذها اعتمادًا على
+            الذكاء الاصطناعي.
+          </p>
+        </div>
+
+        <div class="card">
+          <h3>التحقق</h3>
+          <p>
+            ينبغي مراجعة النتائج وعدم اعتبار كل إجابة يقدمها النظام صحيحة
+            دون تفكير أو مقارنة.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>معلومات إضافية</h2>
+
+      <div class="timeline">
+        <article>
+          <h3>البيانات</h3>
+          <p>
+            تعتمد أنظمة الذكاء الاصطناعي على البيانات للتعلم واكتشاف العلاقات
+            والأنماط.
+          </p>
+        </article>
+
+        <article>
+          <h3>الخوارزمية</h3>
+          <p>
+            الخوارزمية مجموعة من الخطوات والتعليمات التي يستخدمها الحاسوب
+            لمعالجة البيانات والوصول إلى نتيجة.
+          </p>
+        </article>
+
+        <article>
+          <h3>التعلم الآلي</h3>
+          <p>
+            فرع من الذكاء الاصطناعي يسمح للأنظمة بتحسين أدائها اعتمادًا على
+            البيانات والتجارب السابقة.
+          </p>
+        </article>
+
+        <article>
+          <h3>التعلم العميق</h3>
+          <p>
+            نوع متقدم من التعلم الآلي يعتمد على شبكات عصبية متعددة الطبقات
+            لمعالجة مسائل معقدة.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section id="quiz">
+      <h2>اختبر معلوماتك</h2>
+
+      <form id="quizForm">
+
+        <div class="quiz-question">
+          <p><strong>1. ما الهدف الأساسي من الذكاء الاصطناعي؟</strong></p>
+          <label>
+            <input type="radio" name="q1" value="a">
+            زيادة حجم الأجهزة
+          </label>
+          <label>
+            <input type="radio" name="q1" value="b">
+            تنفيذ مهام تحتاج عادةً إلى قدرات بشرية
+          </label>
+          <label>
+            <input type="radio" name="q1" value="c">
+            استبدال جميع البشر
+          </label>
+        </div>
+
+        <div class="quiz-question">
+          <p><strong>2. أي مما يلي يعد تطبيقًا للذكاء الاصطناعي؟</strong></p>
+          <label>
+            <input type="radio" name="q2" value="a">
+            تحليل الصور الطبية
+          </label>
+          <label>
+            <input type="radio" name="q2" value="b">
+            الورق العادي
+          </label>
+          <label>
+            <input type="radio" name="q2" value="c">
+            القلم غير الإلكتروني
+          </label>
+        </div>
+
+        <div class="quiz-question">
+          <p><strong>3. لماذا يجب مراجعة إجابات الذكاء الاصطناعي؟</strong></p>
+          <label>
+            <input type="radio" name="q3" value="a">
+            لأنه لا يستطيع معالجة أي معلومة
+          </label>
+          <label>
+            <input type="radio" name="q3" value="b">
+            لأن نتائجه قد تكون غير دقيقة أحيانًا
+          </label>
+          <label>
+            <input type="radio" name="q3" value="c">
+            لأنه يعمل دون بيانات
+          </label>
+        </div>
+
+        <div class="quiz-question">
+          <p><strong>4. ما المقصود بالتعلم الآلي؟</strong></p>
+          <label>
+            <input type="radio" name="q4" value="a">
+            تعلم الإنسان استخدام الآلة
+          </label>
+          <label>
+            <input type="radio" name="q4" value="b">
+            قدرة النظام على تحسين أدائه من البيانات
+          </label>
+          <label>
+            <input type="radio" name="q4" value="c">
+            إيقاف الحاسوب
+          </label>
+        </div>
+
+        <div class="quiz-question">
+          <p><strong>5. أي مبدأ يرتبط بالاستخدام الأخلاقي للذكاء الاصطناعي؟</strong></p>
+          <label>
+            <input type="radio" name="q5" value="a">
+            العدالة والشفافية
+          </label>
+          <label>
+            <input type="radio" name="q5" value="b">
+            نشر المعلومات دون تحقق
+          </label>
+          <label>
+            <input type="radio" name="q5" value="c">
+            الاعتماد الكامل على النظام
+          </label>
+        </div>
+
+        <button class="main-btn" type="button" onclick="checkQuiz()">
+          إظهار النتيجة
+        </button>
+
+        <button class="main-btn" type="button" onclick="resetQuiz()">
+          إعادة الاختبار
+        </button>
+
+        <div id="result"></div>
+      </form>
+    </section>
+
+    <section>
+      <h2>سؤال للتفكير</h2>
+      <p>
+        تخيل أنك تريد استخدام الذكاء الاصطناعي في مدرستك. ما المهمة التي يمكن
+        أن يساعد فيها؟ وما الضوابط التي ستضعها حتى يكون استخدامه مفيدًا وعادلًا؟
+      </p>
+
+      <textarea
+        id="thinking"
+        rows="5"
+        style="width:100%; padding:12px; border:1px solid #ccd; border-radius:10px;"
+        placeholder="اكتب إجابتك هنا..."
+      ></textarea>
+
+      <button class="main-btn" onclick="saveThinking()">
+        حفظ الإجابة على الصفحة
+      </button>
+
+      <p id="savedMessage"></p>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>صفحة تعليمية تفاعلية عن الذكاء الاصطناعي والتقنيات الحديثة</p>
+  </footer>
+
+  <script>
+    function toggleAnswer(button) {
+      const answer = button.nextElementSibling;
+
+      if (answer.style.display === "block") {
+        answer.style.display = "none";
+        button.textContent = button.textContent.replace("▲", "▼");
+      } else {
+        answer.style.display = "block";
+        button.textContent = button.textContent.replace("▼", "▲");
+      }
+    }
+
+    function checkQuiz() {
+      const correctAnswers = {
+        q1: "b",
+        q2: "a",
+        q3: "b",
+        q4: "b",
+        q5: "a"
+      };
+
+      let score = 0;
+      let answered = 0;
+
+      for (const question in correctAnswers) {
+        const selected = document.querySelector(
+          `input[name="${question}"]:checked`
+        );
+
+        if (selected) {
+          answered++;
+
+          if (selected.value === correctAnswers[question]) {
+            score++;
+          }
+        }
+      }
+
+      const result = document.getElementById("result");
+
+      if (answered < 5) {
+        result.className = "wrong";
+        result.textContent =
+          "يرجى الإجابة عن جميع الأسئلة أولًا.";
+        return;
+      }
+
+      let message = "";
+
+      if (score === 5) {
+        message = "ممتاز جدًا! لديك فهم رائع للموضوع.";
+      } else if (score >= 3) {
+        message = "أحسنت! لديك معرفة جيدة، ويمكنك مراجعة المعلومات الإضافية.";
+      } else {
+        message = "حاول مرة أخرى، وراجع المفاهيم الأساسية.";
+      }
+
+      result.className = score >= 3 ? "correct" : "wrong";
+      result.textContent = `نتيجتك: ${score} من 5 — ${message}`;
+    }
+
+    function resetQuiz() {
+      document.getElementById("quizForm").reset();
+      document.getElementById("result").textContent = "";
+    }
+
+    function saveThinking() {
+      const answer = document.getElementById("thinking").value.trim();
+      const message = document.getElementById("savedMessage");
+
+      if (answer === "") {
+        message.className = "wrong";
+        message.textContent = "اكتب إجابتك أولًا.";
+      } else {
+        message.className = "correct";
+        message.textContent = "تم حفظ إجابتك على الصفحة بنجاح.";
+      }
+    }
+  </script>
+
+</body>
+</html>
