@@ -3,15 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>شرح وسائل التكنولوجيا الحديثة - تفاعلي</title>
+    <title>عرض التكنولوجيا الحديثة التفاعلي</title>
     <style>
         :root {
             --navy-dark: #0b2545;
             --navy-medium: #134074;
             --navy-light: #8da9c4;
-            --bg-color: #f0f4f8;
+            --bg-color: #08121e;
             --card-bg: #ffffff;
             --text-color: #1e293b;
+            --cyan-accent: #00f2fe;
         }
 
         * {
@@ -29,49 +30,56 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            overflow-x: hidden;
+            position: relative;
         }
 
-        /* Banner Header */
+        /* Header Banner */
         header {
-            background-color: var(--navy-dark);
+            background: linear-gradient(135deg, #0b2545 0%, #134074 100%);
             color: white;
             width: 100%;
-            padding: 25px 20px;
+            padding: 20px;
             text-align: center;
-            box-shadow: 0 4px 15px rgba(11, 37, 69, 0.3);
-            position: relative;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            z-index: 10;
         }
 
         header h1 {
             margin: 0;
             font-size: 22pt;
+            letter-spacing: 1px;
+            color: #ffffff;
+            text-shadow: 0 0 10px rgba(0, 242, 254, 0.5);
         }
 
         header p {
-            margin: 8px 0 0;
+            margin: 6px 0 0;
             color: var(--navy-light);
             font-size: 11pt;
         }
 
-        /* Nav Indicators */
+        /* Dots Indicator */
         .nav-dots {
             display: flex;
             justify-content: center;
-            gap: 10px;
+            gap: 12px;
             margin: 20px 0 10px 0;
-            flex-wrap: wrap;
+            z-index: 10;
         }
 
         .dot {
             width: 14px;
             height: 14px;
-            background-color: #cbd5e1;
+            background-color: #334155;
             border-radius: 50%;
             cursor: pointer;
+            border: 2px solid transparent;
         }
 
         .dot.active {
-            background-color: var(--navy-dark);
+            background-color: var(--cyan-accent);
+            box-shadow: 0 0 10px var(--cyan-accent);
             transform: scale(1.3);
         }
 
@@ -79,30 +87,107 @@
         .main-container {
             width: 90%;
             max-width: 850px;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             position: relative;
             min-height: 520px;
+            z-index: 10;
         }
 
         .card {
             background-color: var(--card-bg);
-            border-radius: 16px;
+            border-radius: 18px;
             padding: 30px;
-            box-shadow: 0 10px 25px rgba(11, 37, 69, 0.08);
-            border-top: 6px solid var(--navy-dark);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+            border-top: 6px solid var(--navy-medium);
             display: none;
-            animation: fadeIn 0.5s ease-in-out;
+            position: relative;
+            overflow: hidden;
         }
 
         .card.active {
             display: block;
+            animation: fadeIn 0.5s ease-in-out;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; transform: scale(0.97); }
+            to { opacity: 1; transform: scale(1); }
         }
 
+        /* Card 0: Welcome Hacker Page */
+        .hacker-card {
+            background: #030a16 !important;
+            color: #00ffcc !important;
+            border-top: 6px solid #00ffcc !important;
+            text-align: center;
+            padding: 40px 20px;
+            min-height: 480px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        #matrixCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            opacity: 0.65;
+            border-radius: 18px;
+        }
+
+        .hacker-content {
+            position: relative;
+            z-index: 2;
+            background: rgba(3, 10, 22, 0.85);
+            padding: 35px 25px;
+            border-radius: 16px;
+            border: 1px solid rgba(0, 255, 204, 0.3);
+            box-shadow: 0 0 25px rgba(0, 255, 204, 0.15);
+            max-width: 90%;
+        }
+
+        .hacker-title {
+            font-size: 28pt;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #ffffff;
+            text-shadow: 0 0 15px #00ffcc, 0 0 30px #00ffcc;
+            letter-spacing: 2px;
+        }
+
+        .hacker-subtitle {
+            font-size: 13pt;
+            color: #8da9c4;
+            line-height: 1.8;
+            margin-bottom: 25px;
+        }
+
+        .start-btn {
+            background: linear-gradient(45deg, #00ffcc, #0072ff);
+            color: #030a16;
+            font-weight: bold;
+            font-size: 13pt;
+            padding: 14px 35px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(0, 255, 204, 0.4);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .start-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 25px rgba(0, 255, 204, 0.8);
+        }
+
+        /* Card Header & Content */
         .card-header {
             display: flex;
             align-items: center;
@@ -159,7 +244,7 @@
             gap: 8px;
         }
 
-        /* Animated Logos for AI Card */
+        /* Animated Logos */
         .ai-logos-container {
             display: flex;
             justify-content: center;
@@ -194,6 +279,7 @@
             100% { transform: translateY(0px) rotate(0deg); }
         }
 
+        /* Tables */
         .comparison-table {
             width: 100%;
             border-collapse: collapse;
@@ -214,7 +300,47 @@
             background-color: white;
         }
 
-        /* Navigation Arrows */
+        /* Card Last: Thank You Page */
+        .thankyou-card {
+            background: linear-gradient(135deg, #0b2545 0%, #134074 100%) !important;
+            color: white !important;
+            text-align: center;
+            padding: 50px 20px;
+            min-height: 480px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .thankyou-icon {
+            font-size: 55pt;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+            100% { transform: scale(1); }
+        }
+
+        .thankyou-title {
+            font-size: 30pt;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #ffffff;
+            text-shadow: 0 0 15px var(--cyan-accent);
+        }
+
+        .thankyou-sub {
+            font-size: 13pt;
+            color: var(--navy-light);
+            max-width: 600px;
+            line-height: 1.8;
+        }
+
+        /* Controls / Navigation */
         .navigation-controls {
             display: flex;
             justify-content: space-between;
@@ -222,13 +348,14 @@
             width: 90%;
             max-width: 850px;
             margin-bottom: 30px;
+            z-index: 10;
         }
 
         .nav-btn {
-            background-color: var(--navy-dark);
+            background: linear-gradient(135deg, #134074 0%, #0b2545 100%);
             color: white;
-            border: none;
-            padding: 12px 24px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 12px 26px;
             border-radius: 30px;
             font-size: 11pt;
             font-weight: bold;
@@ -236,35 +363,109 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            box-shadow: 0 4px 10px rgba(11, 37, 69, 0.2);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            position: relative;
         }
 
         .nav-btn:hover {
-            background-color: var(--navy-medium);
+            background: #00f2fe;
+            color: #0b2545;
+            box-shadow: 0 0 20px rgba(0, 242, 254, 0.6);
             transform: translateY(-2px);
         }
 
         .nav-btn:disabled {
-            background-color: #cbd5e1;
+            background: #1e293b;
+            color: #64748b;
+            border: none;
             cursor: not-allowed;
             transform: none;
             box-shadow: none;
         }
+
+        /* Flying Airplane Animation Layer */
+        #planeOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+            overflow: hidden;
+            display: none;
+        }
+
+        .flying-plane-icon {
+            position: absolute;
+            font-size: 80px;
+            filter: drop-shadow(0 0 20px #00f2fe);
+            transform: rotate(-35deg);
+        }
+
+        @keyframes flyAcross {
+            0% {
+                bottom: -100px;
+                right: -100px;
+                transform: scale(0.4) rotate(-25deg);
+                opacity: 0;
+            }
+            30% {
+                opacity: 1;
+                transform: scale(1.5) rotate(-35deg);
+            }
+            70% {
+                opacity: 1;
+                transform: scale(2.8) rotate(-40deg);
+            }
+            100% {
+                bottom: 110vh;
+                right: 110vw;
+                transform: scale(4) rotate(-45deg);
+                opacity: 0;
+            }
+        }
+
+        .animate-fly {
+            animation: flyAcross 0.9s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        }
+
     </style>
 </head>
 <body>
 
+    <!-- Airplane Flying Overlay -->
+    <div id="planeOverlay">
+        <div id="flyingPlane" class="flying-plane-icon">✈️</div>
+    </div>
+
     <header>
         <h1>شرح وسائِلِ التِّكنولوجيا الحَديثَة 🚀</h1>
-        <p>عرض تفاعلي مفصل ومُوسّع لدروس التكنولوجيا</p>
+        <p>عرض تفاعلي شامل ومتطوّر لدروس التكنولوجيا</p>
     </header>
 
+    <!-- Navigation Dots -->
     <div class="nav-dots" id="dotsContainer"></div>
 
     <div class="main-container">
 
+        <!-- Card 0: Welcome Hacker Page -->
+        <div class="card hacker-card active">
+            <canvas id="matrixCanvas"></canvas>
+            <div class="hacker-content">
+                <div class="hacker-title">التكنولوجيا الحديثة</div>
+                <div class="hacker-subtitle">
+                    مرحباً بك في العرض التفاعلي الشامل.<br>
+                    اكتشف عالم الأجهزة الذكية، الحوسبة السحابية، الذكاء الاصطناعي، وإنترنت الأشياء بأسلوب عصري وممتع.
+                </div>
+                <button class="start-btn" onclick="triggerPlaneFlight(1)">
+                    ابدأ الاستكشاف ✈️
+                </button>
+            </div>
+        </div>
+
         <!-- Card 1: Smart Devices -->
-        <div class="card active">
+        <div class="card">
             <div class="card-header">
                 <h2 class="card-title"><span class="card-badge">1</span> الأجهزة الذكية (Smart Devices)</h2>
             </div>
@@ -441,16 +642,25 @@
             </div>
         </div>
 
+        <!-- Card 6: Thank You Page -->
+        <div class="card thankyou-card">
+            <div class="thankyou-icon">✨🎓✨</div>
+            <div class="thankyou-title">شكراً لاستماعكم</div>
+            <div class="thankyou-sub">
+                نتمنى أن يكون هذا العرض التفاعلي الموسع قد قدم لكم إضافة قيمة وفهماً عميقاً لأبرز مفاهيم التكنولوجيا الحديثة.
+            </div>
+        </div>
+
     </div>
 
-    <!-- Controls -->
+    <!-- Navigation Controls -->
     <div class="navigation-controls">
-        <button class="nav-btn" id="prevBtn" onclick="changeCard(-1)" disabled>
+        <button class="nav-btn" id="prevBtn" onclick="triggerPlaneFlight(-1)" disabled>
             <span style="font-size: 14pt;">➔</span> الفكرة السابقة
         </button>
-        <span id="pageIndicator" style="font-weight: bold; color: var(--navy-dark);">1 / 5</span>
-        <button class="nav-btn" id="nextBtn" onclick="changeCard(1)">
-            الفكرة التالية <span style="font-size: 14pt;">⬅</span>
+        <span id="pageIndicator" style="font-weight: bold; color: var(--cyan-accent); font-size: 12pt;">1 / 7</span>
+        <button class="nav-btn" id="nextBtn" onclick="triggerPlaneFlight(1)">
+            الصفحة التالية <span style="font-size: 14pt;">✈️</span>
         </button>
     </div>
 
@@ -461,12 +671,19 @@
         const prevBtn = document.getElementById('prevBtn');
         const nextBtn = document.getElementById('nextBtn');
         const pageIndicator = document.getElementById('pageIndicator');
+        const planeOverlay = document.getElementById('planeOverlay');
+        const flyingPlane = document.getElementById('flyingPlane');
 
+        // Create Navigation Dots
         cards.forEach((_, index) => {
             const dot = document.createElement('div');
             dot.classList.add('dot');
             if (index === 0) dot.classList.add('active');
-            dot.addEventListener('click', () => goToCard(index));
+            dot.addEventListener('click', () => {
+                if (index !== currentCardIndex) {
+                    triggerPlaneFlightTo(index);
+                }
+            });
             dotsContainer.appendChild(dot);
         });
 
@@ -483,17 +700,72 @@
             pageIndicator.innerText = `${currentCardIndex + 1} / ${cards.length}`;
         }
 
-        function changeCard(direction) {
-            currentCardIndex += direction;
-            if (currentCardIndex < 0) currentCardIndex = 0;
-            if (currentCardIndex >= cards.length) currentCardIndex = cards.length - 1;
-            updateUI();
+        // Flying Airplane Transition Trigger
+        function triggerPlaneFlight(direction) {
+            const targetIndex = currentCardIndex + direction;
+            if (targetIndex >= 0 && targetIndex < cards.length) {
+                triggerPlaneFlightTo(targetIndex);
+            }
         }
 
-        function goToCard(index) {
-            currentCardIndex = index;
-            updateUI();
+        function triggerPlaneFlightTo(targetIndex) {
+            planeOverlay.style.display = 'block';
+            flyingPlane.classList.remove('animate-fly');
+            
+            // trigger reflow
+            void flyingPlane.offsetWidth;
+            
+            flyingPlane.classList.add('animate-fly');
+
+            // Switch card halfway through airplane flight
+            setTimeout(() => {
+                currentCardIndex = targetIndex;
+                updateUI();
+            }, 450);
+
+            // Hide overlay after animation completes
+            setTimeout(() => {
+                planeOverlay.style.display = 'none';
+            }, 950);
         }
+
+        // Matrix Hacker Background Effect for Card 0
+        const canvas = document.getElementById('matrixCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            if (canvas.parentElement) {
+                canvas.width = canvas.parentElement.clientWidth;
+                canvas.height = canvas.parentElement.clientHeight;
+            }
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        const matrixChars = '0101010101010101010101ABCDEFXYZ#$';
+        const fontSize = 14;
+        let columns = Math.floor(canvas.width / fontSize) || 30;
+        let drops = Array(columns).fill(1);
+
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(3, 10, 22, 0.15)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = '#00ffcc';
+            ctx.font = fontSize + 'px monospace';
+
+            for (let i = 0; i < drops.length; i++) {
+                const text = matrixChars.charAt(Math.floor(Math.random() * matrixChars.length));
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+
+        setInterval(drawMatrix, 45);
     </script>
 </body>
 </html>
