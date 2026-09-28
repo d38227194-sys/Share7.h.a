@@ -1,1241 +1,714 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>منظم وقت الدراسة</title>
-
-  <!-- استدعاء مكتبات Firebase السحابية -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
-    // 🔴 استبدل القيم التالية بمفاتيح مشروعك من Firebase Console
-    const firebaseConfig = {
-      apiKey: "AIzaSyC7biYFwpFoO4asez0TOgPXtgghvF87HMI",
-
-
-  authDomain: "study-planner-87613.firebaseapp.com",
-
-  projectId: "study-planner-87613",
-
-  storageBucket: "study-planner-87613.firebasestorage.app",
-
-  messagingSenderId: "398426757170",
-
-  appId: "1:398426757170:web:3cfeec488e4f7020f1c42b",
-
-  measurementId: "G-NNZ0X983LS"
-    };
-
-    // تهيئة تطبيق Firebase وخدمة قاعدة البيانات
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-
-    // جعل الدوال والسجلات متاحة في النافذة العامة (Global Scope)
-    window.db = db;
-    window.doc = doc;
-    window.setDoc = setDoc;
-    window.getDoc = getDoc;
-  </script>
-
-  <style>
-    * {
-      box-sizing: border-box;
-      font-family: Arial, sans-serif;
-    }
-
-    body {
-      margin: 0;
-      background: linear-gradient(135deg, #eff6ff, #dbeafe);
-      color: #172554;
-    }
-
-    .container {
-      max-width: 950px;
-      margin: 25px auto;
-      padding: 15px;
-    }
-
-    .card {
-      background: white;
-      padding: 22px;
-      margin-bottom: 18px;
-      border-radius: 18px;
-      box-shadow: 0 5px 18px #0002;
-    }
-
-    h1, h2 {
-      text-align: center;
-    }
-
-    h1 {
-      color: #2563eb;
-    }
-
-    label {
-      display: block;
-      margin: 12px 0 6px;
-      font-weight: bold;
-    }
-
-    input,
-    select,
-    button {
-      width: 100%;
-      padding: 12px;
-      border-radius: 9px;
-      font-size: 15px;
-    }
-
-    input,
-    select {
-      border: 1px solid #aaa;
-    }
-
-    button {
-      border: none;
-      margin-top: 12px;
-      background: #2563eb;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    button:hover {
-      opacity: 0.9;
-    }
-
-    .logout,
-    .delete,
-    .reset {
-      background: #dc2626;
-    }
-
-    .pause {
-      background: #f59e0b;
-    }
-
-    .resume {
-      background: #16a34a;
-    }
-
-    .task {
-      border: 1px solid #dbeafe;
-      background: #f8fafc;
-      padding: 15px;
-      margin-top: 12px;
-      border-radius: 12px;
-    }
-
-    .task.done {
-      opacity: 0.6;
-      text-decoration: line-through;
-    }
-
-    .task-title {
-      font-weight: bold;
-      font-size: 18px;
-    }
-
-    .task-info {
-      color: #475569;
-      margin-top: 7px;
-      line-height: 1.8;
-    }
-
-    .task-buttons {
-      display: flex;
-      gap: 8px;
-    }
-
-    .task-buttons button {
-      flex: 1;
-    }
-
-    .start {
-      background: #2563eb;
-    }
-
-    .finish {
-      background: #7c3aed;
-    }
-
-    .timer {
-      text-align: center;
-      font-size: 48px;
-      font-weight: bold;
-      color: #dc2626;
-      margin: 18px;
-      direction: ltr;
-    }
-
-    .timer-buttons {
-      display: flex;
-      gap: 10px;
-    }
-
-    .timer-buttons button {
-      flex: 1;
-    }
-
-    .empty {
-      text-align: center;
-      color: #64748b;
-    }
-
-    .welcome {
-      text-align: center;
-      color: #2563eb;
-      font-size: 20px;
-      font-weight: bold;
-    }
-
-    /* =========================
-       الروزنامة
-    ========================= */
-
-    .calendar-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      margin-bottom: 15px;
-    }
-
-    .calendar-header button {
-      width: auto;
-      min-width: 90px;
-      margin: 0;
-    }
-
-    .month-title {
-      font-size: 22px;
-      font-weight: bold;
-      text-align: center;
-      flex: 1;
-    }
-
-    .weekdays,
-    .calendar-grid {
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      gap: 6px;
-    }
-
-    .weekday {
-      text-align: center;
-      font-weight: bold;
-      padding: 10px 3px;
-      color: #475569;
-    }
-
-    .calendar-day {
-      min-height: 85px;
-      background: #f8fafc;
-      border: 1px solid #dbeafe;
-      border-radius: 10px;
-      padding: 8px;
-      cursor: pointer;
-      position: relative;
-      transition: 0.2s;
-    }
-
-    .calendar-day:hover {
-      background: #eff6ff;
-      transform: translateY(-2px);
-    }
-
-    .calendar-day.empty-day {
-      background: transparent;
-      border: none;
-      cursor: default;
-    }
-
-    .calendar-day.today {
-      border: 2px solid #2563eb;
-    }
-
-    .day-number {
-      font-weight: bold;
-      font-size: 16px;
-    }
-
-    .day-tasks {
-      margin-top: 7px;
-      font-size: 12px;
-    }
-
-    .calendar-task {
-      background: #dbeafe;
-      color: #1e40af;
-      padding: 3px 5px;
-      border-radius: 5px;
-      margin-top: 3px;
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-    }
-
-    .calendar-task.done {
-      background: #dcfce7;
-      color: #166534;
-      text-decoration: line-through;
-    }
-
-    .selected-date {
-      text-align: center;
-      background: #eff6ff;
-      padding: 12px;
-      border-radius: 10px;
-      margin-top: 15px;
-      font-weight: bold;
-    }
-
-    .date-task-form {
-      display: none;
-      margin-top: 15px;
-      padding: 15px;
-      background: #f8fafc;
-      border-radius: 12px;
-    }
-
-    .date-task-form.active {
-      display: block;
-    }
-
-    .calendar-task-list {
-      margin-top: 15px;
-    }
-
-    .calendar-event {
-      background: white;
-      border: 1px solid #dbeafe;
-      padding: 12px;
-      border-radius: 10px;
-      margin-top: 8px;
-    }
-
-    .calendar-event-title {
-      font-weight: bold;
-    }
-
-    .calendar-event-info {
-      color: #64748b;
-      font-size: 14px;
-      margin-top: 5px;
-    }
-
-    .event-buttons {
-      display: flex;
-      gap: 7px;
-    }
-
-    .event-buttons button {
-      flex: 1;
-    }
-
-    .event-delete {
-      background: #dc2626;
-    }
-
-    .event-done {
-      background: #16a34a;
-    }
-
-    footer {
-      text-align: center;
-      margin: 25px 0;
-      padding: 15px;
-      color: #64748b;
-      font-size: 14px;
-    }
-
-    @media (max-width: 600px) {
-
-      .task-buttons,
-      .timer-buttons,
-      .event-buttons {
-        flex-direction: column;
-      }
-
-      .timer {
-        font-size: 38px;
-      }
-
-      .calendar-day {
-        min-height: 65px;
-        padding: 5px;
-      }
-
-      .day-number {
-        font-size: 14px;
-      }
-
-      .calendar-task {
-        font-size: 10px;
-      }
-
-      .weekday {
-        font-size: 12px;
-      }
-
-      .calendar-header button {
-        min-width: 70px;
-        padding: 9px;
-      }
-
-      .month-title {
-        font-size: 17px;
-      }
-    }
-  </style>
-</head>
-
-<body>
-
-<div class="container">
-
-  <!-- تسجيل الدخول -->
-  <div class="card" id="loginBox">
-
-    <h1>📚 منظم وقت الدراسة</h1>
-
-    <p style="text-align:center">
-      اكتب اسم المستخدم للدخول إلى حسابك ومزامنة بياناتك
-    </p>
-
-    <input
-      id="usernameInput"
-      placeholder="مثلاً: Ahmad123"
-    >
-
-    <button onclick="login()">
-      دخول
-    </button>
-
-  </div>
-
-
-  <!-- التطبيق -->
-  <div id="app" style="display:none;">
-
-    <!-- الترحيب -->
-    <div class="card">
-
-      <div class="welcome" id="welcomeText"></div>
-
-      <button class="logout" onclick="logout()">
-        تسجيل الخروج
-      </button>
-
-    </div>
-
-
-    <!-- =========================
-         الروزنامة
-    ========================== -->
-
-    <div class="card">
-
-      <h2>📅 روزنامة الدراسة</h2>
-
-      <div class="calendar-header">
-
-        <button onclick="previousMonth()">
-          ◀ السابق
-        </button>
-
-        <div
-          class="month-title"
-          id="monthTitle">
-        </div>
-
-        <button onclick="nextMonth()">
-          التالي ▶
-        </button>
-
-      </div>
-
-
-      <!-- أيام الأسبوع -->
-
-      <div class="weekdays">
-
-        <div class="weekday">الأحد</div>
-        <div class="weekday">الإثنين</div>
-        <div class="weekday">الثلاثاء</div>
-        <div class="weekday">الأربعاء</div>
-        <div class="weekday">الخميس</div>
-        <div class="weekday">الجمعة</div>
-        <div class="weekday">السبت</div>
-
-      </div>
-
-
-      <!-- أيام الشهر -->
-
-      <div
-        class="calendar-grid"
-        id="calendarGrid">
-      </div>
-
-
-      <!-- التاريخ المختار -->
-
-      <div
-        class="selected-date"
-        id="selectedDate">
-        اضغط على أي يوم لإضافة شيء
-      </div>
-
-
-      <!-- إضافة حدث -->
-
-      <div
-        class="date-task-form"
-        id="dateTaskForm">
-
-        <label>اسم المهمة أو الموعد</label>
-
-        <input
-          id="calendarTaskName"
-          placeholder="مثلاً: اختبار الرياضيات"
-        >
-
-        <label>الوقت</label>
-
-        <input
-          id="calendarTaskTime"
-          type="time"
-        >
-
-        <label>ملاحظات</label>
-
-        <input
-          id="calendarTaskNote"
-          placeholder="مثلاً: مراجعة الفصل الثالث"
-        >
-
-        <button onclick="addCalendarTask()">
-          ➕ إضافة إلى هذا اليوم
-        </button>
-
-      </div>
-
-
-      <!-- مهام اليوم -->
-
-      <div
-        class="calendar-task-list"
-        id="calendarTaskList">
-      </div>
-
-    </div>
-
-
-    <!-- =========================
-         إضافة مهمة
-    ========================== -->
-
-    <div class="card">
-
-      <h2>➕ إضافة مهمة دراسية</h2>
-
-      <label>اسم المادة أو المهمة</label>
-
-      <input
-        id="taskName"
-        placeholder="مثلاً: رياضيات - حل الواجب"
-      >
 
-      <label>نوع المهمة</label>
 
-      <select id="taskType">
 
-        <option>مذاكرة</option>
-        <option>واجب</option>
-        <option>مراجعة</option>
-        <option>اختبار</option>
-        <option>قراءة</option>
 
-      </select>
 
-      <label>عدد الساعات</label>
 
-      <input
-        id="taskHours"
-        type="number"
-        min="0"
-        value="0"
-      >
 
-      <label>عدد الدقائق</label>
 
-      <input
-        id="taskMinutes"
-        type="number"
-        min="0"
-        max="59"
-        value="0"
-      >
 
-      <button onclick="addTask()">
-        إضافة المهمة
-      </button>
 
-    </div>
 
 
-    <!-- =========================
-         المؤقت
-    ========================== -->
 
-    <div class="card">
 
-      <h2>⏱️ المؤقت</h2>
 
-      <div
-        class="timer"
-        id="timer">
-        00:00:00
-      </div>
 
-      <div class="timer-buttons">
 
-        <button
-          class="pause"
-          onclick="pauseTimer()">
-          ⏸️ إيقاف مؤقت
-        </button>
+    
+    
 
-        <button
-          class="resume"
-          onclick="resumeTimer()">
-          ▶️ إعادة تشغيل
-        </button>
+        جارٍ الانتقال...
+    
 
-        <button
-          class="reset"
-          onclick="resetTimer()">
-          🔄 إعادة ضبط
-        </button>
 
-      </div>
 
-    </div>
 
+    
+شرح وسائِلِ التِّكنولوجيا الحَديثَة 🚀
 
-    <!-- =========================
-         المهام
-    ========================== -->
+    
+عرض تفاعلي شامل حول أهم تقنيات العصر الحديث
 
-    <div class="card">
 
-      <h2>📝 مهامي الدراسية</h2>
 
-      <div id="tasks">
 
-        <p class="empty">
-          جاري تحميل بياناتك من السحابة...
-        </p>
 
-      </div>
 
-    </div>
 
-  </div>
+<div class="welcome-icon">💻</div>
 
+<h2 class="welcome-title">
+    مرحباً بكم في عالم التكنولوجيا
+</h2>
 
-  <footer>
-    Developed by Ammar Al-Haddar
-  </footer>
+<p class="welcome-text">
+    في هذا العرض سنتعرف معاً على مجموعة من أهم التقنيات
+    الحديثة التي أصبحت جزءاً أساسياً من حياتنا اليومية،
+    وكيف ساهمت في تغيير طريقة التعلم والعمل والتواصل.
+</p>
 
-</div>
+<button class="start-btn" onclick="goToCard(1)">
+    🚀 ابدأ العرض
+</button>
 
 
-<script>
 
-  let username = "";
-  let tasks = [];
-  let calendarTasks = [];
 
-  let timerInterval = null;
-  let remainingSeconds = 0;
-  let timerRunning = false;
-  let currentTaskIndex = null;
 
-  let currentCalendarDate = new Date();
-  let selectedDate = null;
 
 
-  /* =========================
-     تشغيل الموقع
-  ========================== */
 
-  window.onload = function () {
-    const savedUsername = localStorage.getItem("studyUsername");
-    if (savedUsername) {
-      username = savedUsername.trim().toLowerCase();
-      openApp();
-    }
-  };
+01
 
 
-  /* =========================
-     تسجيل الدخول
-  ========================== */
+📱 الأجهزة الذكية
 
-  function login() {
-    const input = document.getElementById("usernameInput");
-    const name = input.value.trim().toLowerCase();
 
-    if (!name) {
-      alert("اكتب اسم مستخدم أولاً");
-      return;
-    }
+Smart Devices
 
-    username = name;
-    localStorage.setItem("studyUsername", username);
-    openApp();
-  }
 
 
-  /* =========================
-     فتح التطبيق
-  ========================== */
-
-  async function openApp() {
-    document.getElementById("loginBox").style.display = "none";
-    document.getElementById("app").style.display = "block";
-    document.getElementById("welcomeText").textContent = "أهلًا " + username + " 👋";
+الأجهزة الذكية هي أجهزة إلكترونية تحتوي على أنظمة وبرمجيات
+تسمح لها بتنفيذ مهام مختلفة والتفاعل مع المستخدم والاتصال
+بالإنترنت. ومن أشهر أمثلتها الهواتف الذكية والأجهزة اللوحية
+والساعات الذكية وأجهزة المنزل الذكي.
 
-    await loadDataFromCloud();
-
-    showTasks();
-    renderCalendar();
-  }
-
-
-  /* =========================
-     تسجيل الخروج
-  ========================== */
-
-  function logout() {
-    username = "";
-    tasks = [];
-    calendarTasks = [];
 
-    clearInterval(timerInterval);
-    remainingSeconds = 0;
-    timerRunning = false;
-    currentTaskIndex = null;
-
-    document.getElementById("timer").textContent = "00:00:00";
-    localStorage.removeItem("studyUsername");
-
-    document.getElementById("app").style.display = "none";
-    document.getElementById("loginBox").style.display = "block";
-    document.getElementById("usernameInput").value = "";
-
-    showTasks();
-  }
-
-
-  /* =========================
-     الربط مع Firebase السحابي
-  ========================== */
-
-  // جلب البيانات من السحابة
-  async function loadDataFromCloud() {
-    if (!username || !window.db) return;
-
-    try {
-      const userDocRef = window.doc(window.db, "users", username);
-      const userDocSnap = await window.getDoc(userDocRef);
-
-      if (userDocSnap.exists()) {
-        const data = userDocSnap.data();
-        tasks = data.tasks || [];
-        calendarTasks = data.calendarTasks || [];
-      } else {
-        tasks = [];
-        calendarTasks = [];
-      }
-    } catch (error) {
-      console.error("خطأ في جلب البيانات من السحابة:", error);
-      alert("حدث خطأ أثناء الاتصال بقاعدة البيانات السحابية.");
-    }
-  }
-
-  // حفظ البيانات في السحابة
-  async function saveDataToCloud() {
-    if (!username || !window.db) return;
-
-    try {
-      const userDocRef = window.doc(window.db, "users", username);
-      await window.setDoc(userDocRef, {
-        tasks: tasks,
-        calendarTasks: calendarTasks
-      });
-    } catch (error) {
-      console.error("خطأ في حفظ البيانات في السحابة:", error);
-    }
-  }
-
-
-  /* =========================
-     المهام العادية
-  ========================== */
-
-  async function addTask() {
-    const name = document.getElementById("taskName").value.trim();
-    const type = document.getElementById("taskType").value;
-    const hours = Number(document.getElementById("taskHours").value);
-    const minutes = Number(document.getElementById("taskMinutes").value);
-
-    if (
-      !name ||
-      hours < 0 ||
-      minutes < 0 ||
-      minutes > 59 ||
-      (hours === 0 && minutes === 0)
-    ) {
-      alert("أدخل اسم المهمة ومدة صحيحة");
-      return;
-    }
-
-    const totalSeconds = (hours * 60 * 60) + (minutes * 60);
-
-    tasks.push({
-      name: name,
-      type: type,
-      hours: hours,
-      minutes: minutes,
-      totalSeconds: totalSeconds,
-      done: false
-    });
-
-    await saveDataToCloud();
-    showTasks();
-
-    document.getElementById("taskName").value = "";
-    document.getElementById("taskHours").value = "0";
-    document.getElementById("taskMinutes").value = "0";
-  }
-
-
-  function formatDuration(hours, minutes) {
-    if (hours > 0 && minutes > 0) {
-      return hours + " ساعة و" + minutes + " دقيقة";
-    }
-    if (hours > 0) {
-      return hours + " ساعة";
-    }
-    return minutes + " دقيقة";
-  }
-
-
-  function showTasks() {
-    const box = document.getElementById("tasks");
-    if (!box) return;
-
-    if (tasks.length === 0) {
-      box.innerHTML = `
-        <p class="empty">
-          لم تضف أي مهام حتى الآن
-        </p>
-      `;
-      return;
-    }
-
-    box.innerHTML = "";
-
-    tasks.forEach(function(task, index) {
-      const div = document.createElement("div");
-      div.className = task.done ? "task done" : "task";
-
-      div.innerHTML = `
-        <div class="task-title">
-          ${escapeHTML(task.name)}
-        </div>
-
-        <div class="task-info">
-          النوع: ${escapeHTML(task.type)}
-          <br>
-          المدة: ${formatDuration(task.hours, task.minutes)}
-        </div>
-
-        <div class="task-buttons">
-          <button class="start" onclick="startTimer(${index})">
-            ▶️ ابدأ المؤقت
-          </button>
-          <button class="finish" onclick="finishTask(${index})">
-            ✅ ${task.done ? "تم الإنجاز" : "إنهاء"}
-          </button>
-          <button class="remove" onclick="deleteTask(${index})">
-            🗑️ حذف
-          </button>
-        </div>
-      `;
-
-      box.appendChild(div);
-    });
-  }
-
-
-  /* =========================
-     المؤقت
-  ========================== */
-
-  function startTimer(index) {
-    clearInterval(timerInterval);
-    currentTaskIndex = index;
-    remainingSeconds = tasks[index].totalSeconds;
-    timerRunning = true;
-
-    updateTimer();
-
-    timerInterval = setInterval(function() {
-      if (remainingSeconds > 0) {
-        remainingSeconds--;
-        updateTimer();
-      }
-
-      if (remainingSeconds <= 0) {
-        clearInterval(timerInterval);
-        timerRunning = false;
-        alert("🎉 انتهى وقت المهمة:\n" + tasks[index].name);
-        finishTask(index);
-      }
-    }, 1000);
-  }
-
-
-  function pauseTimer() {
-    if (!timerRunning) return;
-    clearInterval(timerInterval);
-    timerRunning = false;
-  }
-
-
-  function resumeTimer() {
-    if (timerRunning) return;
-
-    if (remainingSeconds <= 0) {
-      alert("لا يوجد مؤقت متوقف لإعادة تشغيله");
-      return;
-    }
-
-    timerRunning = true;
-    timerInterval = setInterval(function() {
-      if (remainingSeconds > 0) {
-        remainingSeconds--;
-        updateTimer();
-      }
-
-      if (remainingSeconds <= 0) {
-        clearInterval(timerInterval);
-        timerRunning = false;
-        if (currentTaskIndex !== null) {
-          alert("🎉 انتهى وقت المهمة:\n" + tasks[currentTaskIndex].name);
-          finishTask(currentTaskIndex);
-        }
-      }
-    }, 1000);
-  }
-
-
-  function resetTimer() {
-    clearInterval(timerInterval);
-    remainingSeconds = 0;
-    timerRunning = false;
-    currentTaskIndex = null;
-    document.getElementById("timer").textContent = "00:00:00";
-  }
-
-
-  function updateTimer() {
-    const hours = Math.floor(remainingSeconds / 3600);
-    const minutes = Math.floor((remainingSeconds % 3600) / 60);
-    const seconds = remainingSeconds % 60;
-
-    document.getElementById("timer").textContent =
-      String(hours).padStart(2, "0") + ":" +
-      String(minutes).padStart(2, "0") + ":" +
-      String(seconds).padStart(2, "0");
-  }
-
-
-  async function finishTask(index) {
-    if (!tasks[index]) return;
-    tasks[index].done = true;
-
-    await saveDataToCloud();
-    showTasks();
-  }
-
-
-  async function deleteTask(index) {
-    const answer = confirm("هل تريد حذف هذه المهمة؟");
-    if (!answer) return;
-
-    tasks.splice(index, 1);
-
-    await saveDataToCloud();
-    showTasks();
-  }
-
-
-  /* =========================
-     الروزنامة
-  ========================== */
-
-  function dateKey(year, month, day) {
-    return (
-      year + "-" +
-      String(month + 1).padStart(2, "0") + "-" +
-      String(day).padStart(2, "0")
-    );
-  }
-
-
-  function formatArabicDate(date) {
-    return date.toLocaleDateString("ar-JO", {
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric"
-    });
-  }
-
-
-  function renderCalendar() {
-    const grid = document.getElementById("calendarGrid");
-    const title = document.getElementById("monthTitle");
-    grid.innerHTML = "";
-
-    const year = currentCalendarDate.getFullYear();
-    const month = currentCalendarDate.getMonth();
-
-    const monthName = currentCalendarDate.toLocaleDateString("ar-JO", {
-      month: "long",
-      year: "numeric"
-    });
-
-    title.textContent = monthName;
-
-    const firstDay = new Date(year, month, 1).getDay();
-    const daysInMonth = new Date(year, month + 1, 0).getDate();
-
-    /* أيام فارغة قبل بداية الشهر */
-    for (let i = 0; i < firstDay; i++) {
-      const empty = document.createElement("div");
-      empty.className = "calendar-day empty-day";
-      grid.appendChild(empty);
-    }
-
-    /* أيام الشهر */
-    const today = new Date();
-    const todayKey = dateKey(today.getFullYear(), today.getMonth(), today.getDate());
-
-    for (let day = 1; day <= daysInMonth; day++) {
-      const key = dateKey(year, month, day);
-      const div = document.createElement("div");
-      div.className = "calendar-day";
-
-      if (key === todayKey) {
-        div.classList.add("today");
-      }
-
-      div.onclick = function() {
-        selectCalendarDate(year, month, day);
-      };
-
-      const dayNumber = document.createElement("div");
-      dayNumber.className = "day-number";
-      dayNumber.textContent = day;
-
-      const taskBox = document.createElement("div");
-      taskBox.className = "day-tasks";
-
-      const dayTasks = calendarTasks.filter(function(task) {
-        return task.date === key;
-      });
-
-      dayTasks.slice(0, 3).forEach(function(task) {
-        const taskElement = document.createElement("div");
-        taskElement.className = "calendar-task" + (task.done ? " done" : "");
-        taskElement.textContent = task.time ? task.time + " - " + task.title : task.title;
-        taskBox.appendChild(taskElement);
-      });
-
-      if (dayTasks.length > 3) {
-        const more = document.createElement("div");
-        more.textContent = "+" + (dayTasks.length - 3) + " أخرى";
-        more.style.marginTop = "3px";
-        more.style.color = "#64748b";
-        taskBox.appendChild(more);
-      }
-
-      div.appendChild(dayNumber);
-      div.appendChild(taskBox);
-      grid.appendChild(div);
-    }
-  }
-
-
-  function previousMonth() {
-    currentCalendarDate.setMonth(currentCalendarDate.getMonth() - 1);
-    renderCalendar();
-  }
-
-
-  function nextMonth() {
-    currentCalendarDate.setMonth(currentCalendarDate.getMonth() + 1);
-    renderCalendar();
-  }
-
-
-  function selectCalendarDate(year, month, day) {
-    selectedDate = dateKey(year, month, day);
-    const date = new Date(year, month, day);
-
-    document.getElementById("selectedDate").textContent = "📅 " + formatArabicDate(date);
-    document.getElementById("dateTaskForm").classList.add("active");
-    document.getElementById("calendarTaskName").focus();
-
-    showCalendarTasks();
-  }
-
-
-  async function addCalendarTask() {
-    if (!selectedDate) {
-      alert("اختر يومًا أولاً");
-      return;
-    }
-
-    const title = document.getElementById("calendarTaskName").value.trim();
-    const time = document.getElementById("calendarTaskTime").value;
-    const note = document.getElementById("calendarTaskNote").value.trim();
-
-    if (!title) {
-      alert("اكتب اسم المهمة أو الموعد");
-      return;
-    }
-
-    calendarTasks.push({
-      id: Date.now(),
-      date: selectedDate,
-      title: title,
-      time: time,
-      note: note,
-      done: false
-    });
-
-    await saveDataToCloud();
-    renderCalendar();
-    showCalendarTasks();
-
-    document.getElementById("calendarTaskName").value = "";
-    document.getElementById("calendarTaskTime").value = "";
-    document.getElementById("calendarTaskNote").value = "";
-  }
-
-
-  function showCalendarTasks() {
-    const box = document.getElementById("calendarTaskList");
-    if (!box) return;
-
-    if (!selectedDate) {
-      box.innerHTML = "";
-      return;
-    }
-
-    const dayTasks = calendarTasks.filter(function(task) {
-      return task.date === selectedDate;
-    });
-
-    if (dayTasks.length === 0) {
-      box.innerHTML = `
-        <p class="empty">
-          لا توجد مهام في هذا اليوم.
-        </p>
-      `;
-      return;
-    }
-
-    box.innerHTML = `<h3 style="margin-bottom:8px;">مهام هذا اليوم</h3>`;
-
-    dayTasks.forEach(function(task) {
-      const div = document.createElement("div");
-      div.className = "calendar-event";
-
-      div.innerHTML = `
-        <div class="calendar-event-title">
-          ${escapeHTML(task.title)}
-        </div>
-        ${task.time ? `<div class="calendar-event-info">⏰ ${escapeHTML(task.time)}</div>` : ""}
-        ${task.note ? `<div class="calendar-event-info">📝 ${escapeHTML(task.note)}</div>` : ""}
-
-        <div class="event-buttons">
-          <button class="event-done" onclick="toggleCalendarTask(${task.id})">
-            ${task.done ? "↩️ غير مكتملة" : "✅ مكتملة"}
-          </button>
-          <button class="event-delete" onclick="deleteCalendarTask(${task.id})">
-            🗑️ حذف
-          </button>
-        </div>
-      `;
-
-      box.appendChild(div);
-    });
-  }
-
-
-  async function toggleCalendarTask(id) {
-    const task = calendarTasks.find(function(item) {
-      return item.id === id;
-    });
-
-    if (!task) return;
-
-    task.done = !task.done;
-
-    await saveDataToCloud();
-    renderCalendar();
-    showCalendarTasks();
-  }
-
-
-  async function deleteCalendarTask(id) {
-    const answer = confirm("هل تريد حذف هذا الموعد؟");
-    if (!answer) return;
-
-    calendarTasks = calendarTasks.filter(function(task) {
-      return task.id !== id;
-    });
-
-    await saveDataToCloud();
-    renderCalendar();
-    showCalendarTasks();
-  }
-
-
-  /* =========================
-     حماية عرض النصوص
-  ========================== */
-
-  function escapeHTML(text) {
-    return String(text)
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#039;");
-  }
-
-</script>
-
-</body>
-</html>
+
+تعتمد الأجهزة الذكية على مجموعة من المكونات مثل المعالج
+والمستشعرات والاتصال اللاسلكي ونظام التشغيل. وتعمل هذه
+المكونات معاً لتقديم خدمات مختلفة بسرعة وسهولة.
+
+
+
+أصبحت الأجهزة الذكية جزءاً أساسياً من الحياة اليومية؛
+فهي تستخدم في التواصل والتعلم والعمل والترفيه والتصوير
+والوصول إلى المعلومات.
+
+
+
+
+
+
+
+📱 الهواتف الذكية
+
+
+
+تتيح الاتصال وإرسال الرسائل والتصفح والتصوير وتشغيل
+التطبيقات والألعاب والوصول إلى الخدمات الرقمية.
+
+
+
+
+
+
+
+⌚ الساعات الذكية
+
+
+
+تستقبل الإشعارات وتتابع النشاط البدني وتقدم مجموعة
+من الوظائف المرتبطة بالهاتف.
+
+
+
+
+
+
+
+🏠 المنزل الذكي
+
+
+
+يسمح بالتحكم ببعض الأجهزة المنزلية مثل الإضاءة
+والتلفاز وأجهزة التكييف باستخدام التطبيقات أو الأوامر.
+
+
+
+
+
+
+
+⚡ المميزات والتحديات
+
+
+
+توفر السرعة والسهولة، لكنها تحتاج إلى حماية البيانات
+والاستخدام المسؤول لتجنب مخاطر الخصوصية والإدمان الرقمي.
+
+
+
+
+
+
+
+
+
+
+
+
+02
+
+
+☁️ الحوسبة السحابية
+
+
+Cloud Computing
+
+
+
+الحوسبة السحابية هي تقنية تسمح باستخدام موارد الحاسوب
+مثل التخزين وقوة المعالجة والبرامج من خلال خوادم متصلة
+بالإنترنت بدلاً من الاعتماد الكامل على جهاز المستخدم.
+
+
+
+عندما نحفظ ملفاً في خدمة سحابية، يتم تخزينه على خوادم
+تابعة لمقدم الخدمة ويمكن الوصول إليه من أجهزة مختلفة
+عند تسجيل الدخول إلى الحساب.
+
+
+
+تستخدم الحوسبة السحابية في التعليم والشركات والتطبيقات
+والتخزين والنسخ الاحتياطي ومشاركة الملفات والعمل الجماعي.
+
+
+
+
+
+
+
+💾 التخزين
+
+
+
+حفظ الصور والملفات والبيانات على خوادم عبر الإنترنت
+بدلاً من الاعتماد على ذاكرة الجهاز فقط.
+
+
+
+
+
+
+
+🌐 الوصول
+
+
+
+يمكن الوصول إلى الملفات والخدمات من أجهزة مختلفة
+من أي مكان يتوفر فيه اتصال بالإنترنت.
+
+
+
+
+
+
+
+👥 المشاركة
+
+
+
+تسمح بمشاركة الملفات والعمل عليها بشكل جماعي،
+وهو أمر مهم للطلاب والشركات.
+
+
+
+
+
+
+
+🔒 التحديات
+
+
+
+تعتمد على الإنترنت وتتطلب حماية الحسابات والبيانات
+من الاختراق أو الوصول غير المصرح به.
+
+
+
+
+
+
+
+
+
+
+
+
+03
+
+
+🥽 الواقع الافتراضي والمعزز
+
+
+VR & AR
+
+
+
+الواقع الافتراضي والواقع المعزز من التقنيات التي تغير
+طريقة تفاعل الإنسان مع المحتوى الرقمي.
+
+
+
+الواقع الافتراضي VR ينشئ بيئة رقمية كاملة تحيط بالمستخدم،
+ويحتاج عادةً إلى نظارة أو أجهزة خاصة. أما الواقع المعزز AR
+فيضيف عناصر ومعلومات رقمية إلى البيئة الحقيقية التي يراها
+المستخدم من خلال الهاتف أو النظارات المتخصصة.
+
+
+
+يمكن استخدام هذه التقنيات في التعليم والتدريب والألعاب
+والتصميم والهندسة والطب والسياحة.
+
+
+
+
+
+
+
+🥽 VR
+
+
+
+ينقل المستخدم إلى بيئة رقمية ثلاثية الأبعاد يمكنه
+التفاعل معها وكأنه موجود داخلها.
+
+
+
+
+
+
+
+📷 AR
+
+
+
+يضيف عناصر رقمية إلى العالم الحقيقي دون أن يعزل
+المستخدم عنه بشكل كامل.
+
+
+
+
+
+
+
+🎮 الألعاب
+
+
+
+توفر تجارب تفاعلية تجعل اللاعب يشعر بأنه جزء
+من البيئة الرقمية.
+
+
+
+
+
+
+
+🎓 التعليم والتدريب
+
+
+
+يمكن استخدامها لمحاكاة التجارب والأماكن والمواقف
+التي يصعب تنفيذها في الواقع.
+
+
+
+
+
+
+
+
+
+
+
+
+04
+
+
+✦
+
+
+🤖 الذكاء الاصطناعي
+
+
+Artificial Intelligence
+
+
+
+الذكاء الاصطناعي هو مجال من علوم الحاسوب يهتم بتطوير
+أنظمة قادرة على تنفيذ مهام تحتاج عادةً إلى قدرات بشرية،
+مثل فهم اللغة والتعرف على الصور وتحليل البيانات والتعلم
+من المعلومات.
+
+
+
+تعتمد بعض أنظمة الذكاء الاصطناعي على خوارزميات تتعلم
+من كميات كبيرة من البيانات لاكتشاف الأنماط وإنتاج النتائج.
+ومن أشهر فروعه التعلم الآلي ومعالجة اللغة الطبيعية والرؤية
+الحاسوبية.
+
+
+
+أصبح الذكاء الاصطناعي يستخدم في التعليم والطب والصناعة
+والبرمجة والترجمة والمساعدات الرقمية وتحليل البيانات.
+
+
+
+
+
+
+
+🧠 التعلم الآلي
+
+
+
+يسمح للأنظمة باكتشاف الأنماط من البيانات وتحسين
+أدائها في بعض المهام.
+
+
+
+
+
+
+
+💬 معالجة اللغة
+
+
+
+تساعد الحاسوب على فهم النصوص والكلام والتعامل
+مع اللغة البشرية.
+
+
+
+
+
+
+
+👁️ الرؤية الحاسوبية
+
+
+
+تمكن الأنظمة من تحليل الصور والفيديو والتعرف
+على بعض العناصر الموجودة فيها.
+
+
+
+
+
+
+
+⚠️ التحديات
+
+
+
+تشمل الخصوصية ودقة النتائج والتحيز في البيانات
+والحاجة إلى استخدام التقنية بشكل مسؤول.
+
+
+
+
+
+
+
+
+
+
+
+
+05
+
+
+🌐 إنترنت الأشياء
+
+
+Internet of Things - IoT
+
+
+
+إنترنت الأشياء هو مفهوم يربط الأجهزة والأشياء بالإنترنت
+بحيث تستطيع جمع البيانات وإرسالها واستقبالها وتنفيذ
+وظائف معينة.
+
+
+
+تعتمد أنظمة إنترنت الأشياء على المستشعرات والاتصال
+والبرمجيات لمعرفة ما يحدث حول الجهاز ثم إرسال البيانات
+إلى نظام آخر لتحليلها أو تنفيذ أمر معين.
+
+
+
+يمكن أن نرى إنترنت الأشياء في المنازل الذكية والسيارات
+والمصانع والزراعة وبعض الأنظمة الطبية والخدمات الذكية.
+
+
+
+
+
+
+
+🏠 المنزل الذكي
+
+
+
+ربط الإضاءة والأجهزة المنزلية والأنظمة الأخرى
+بالإنترنت للتحكم بها ومراقبتها.
+
+
+
+
+
+
+
+🚗 السيارات
+
+
+
+يمكن للأجهزة المتصلة داخل السيارات جمع البيانات
+وتقديم بعض الخدمات الذكية.
+
+
+
+
+
+
+
+🏭 الصناعة
+
+
+
+تستخدم المستشعرات لمراقبة الآلات والعمليات
+واكتشاف بعض المشكلات.
+
+
+
+
+
+
+
+📊 البيانات
+
+
+
+تجمع الأجهزة المتصلة البيانات وترسلها إلى أنظمة
+يمكنها تحليلها والاستفادة منها.
+
+
+
+
+
+
+
+
+
+
+
+
+سؤال 1
+
+
+🧠 سؤال للمراجعة
+
+
+
+
+
+ما المقصود بالأجهزة الذكية؟
+
+
+
+إظهار الجواب
+
+
+
+الأجهزة الذكية هي أجهزة إلكترونية قادرة على تنفيذ
+مهام مختلفة والتفاعل مع المستخدم، وغالباً تستطيع
+الاتصال بالإنترنت واستخدام تطبيقات وخدمات رقمية.
+ومن أمثلتها الهواتف والساعات الذكية.
+
+
+
+
+
+
+
+
+
+سؤال 2
+
+
+🧠 سؤال للمراجعة
+
+
+
+
+
+ما هي الحوسبة السحابية؟
+
+
+
+إظهار الجواب
+
+
+
+الحوسبة السحابية هي استخدام خوادم عبر الإنترنت
+لتخزين البيانات وتشغيل البرامج وتقديم الخدمات،
+بدلاً من الاعتماد الكامل على موارد جهاز المستخدم.
+
+
+
+
+
+
+
+
+
+سؤال 3
+
+
+🧠 سؤال للمراجعة
+
+
+
+
+
+ما الفرق بين الواقع الافتراضي VR والواقع المعزز AR؟
+
+
+
+إظهار الجواب
+
+
+
+الواقع الافتراضي ينشئ بيئة رقمية كاملة يتفاعل معها
+المستخدم، بينما الواقع المعزز يضيف عناصر رقمية
+إلى العالم الحقيقي الذي يراه المستخدم.
+
+
+
+
+
+
+
+
+
+سؤال 4
+
+
+🧠 سؤال للمراجعة
+
+
+
+
+
+ما الهدف الأساسي من الذكاء الاصطناعي؟
+
+
+
+إظهار الجواب
+
+
+
+الهدف هو تطوير أنظمة وبرامج تستطيع تنفيذ مهام
+تحتاج عادةً إلى قدرات بشرية، مثل فهم اللغة وتحليل
+البيانات والتعرف على الصور واكتشاف الأنماط.
+
+
+
+
+
+
+
+
+
+سؤال 5
+
+
+🧠 سؤال للمراجعة
+
+
+
+
+
+ما المقصود بإنترنت الأشياء؟
+
+
+
+إظهار الجواب
+
+
+
+إنترنت الأشياء هو ربط الأجهزة والأشياء بالإنترنت
+بحيث تستطيع جمع البيانات وتبادلها وتنفيذ وظائف
+معينة، مثل أجهزة المنزل الذكي وأجهزة المصانع.
+
+
+
+
+
+
+
+
+
+
+
+✨🎓✨
+
+
+
+
+شكراً لاستماعكم
+
+
+
+
+نتمنى أن تكونوا قد استمتعتم بالتعرف على
+أهم وسائل التكنولوجيا الحديثة.
+
+
+
+🌐 التكنولوجيا تتطور باستمرار، والمستقبل مليء بالابتكار.
+
+
+
+
+
+
+إعداد
+
+
+
+
+عمار الهدار 
+
+
+
+
+
+
+
+
+
+
+❮
+
+
+
+1 / 12
+
+
+
+❯
+
+
+
+
+
+
+
+
+
+
+
