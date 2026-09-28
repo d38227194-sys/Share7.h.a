@@ -750,7 +750,7 @@ body.loading {
             </div>
         </div>
         <div class="original-text">
-            <strong>📝 النص الأصلي:</strong> نظام حاسوبي قادر على محاكاة بعض قدرات الذكاء البشري مثل التفكير والتعلم وحل المشكلات.
+            <strong>📝 النص الأصلي:</strong> نظام حاسوبي قادر على محاكاة بعض قدرات الذكاء البشري مثل والتفكير والتعلم وحل المشكلات.
         </div>
         <div class="detailed-explanation">
             <div class="explanation-title">💡 الشرح المُوسّع</div>
@@ -819,6 +819,7 @@ body.loading {
 <script>
 let currentCardIndex = 0;
 let isLoading = false;
+let isAuthenticated = false;
 
 const cards = document.querySelectorAll(".card");
 const dotsContainer = document.getElementById("dotsContainer");
@@ -828,6 +829,20 @@ const pageIndicator = document.getElementById("pageIndicator");
 const loadingScreen = document.getElementById("loadingScreen");
 const loadingProgress = document.getElementById("loadingProgress");
 const loadingDots = document.getElementById("loadingDots");
+
+/* PASSWORD VERIFICATION SYSTEM */
+function checkPassword() {
+    if (isAuthenticated) return true;
+    
+    const userInput = prompt("Please enter the password to access the presentation:");
+    if (userInput === "tami") {
+        isAuthenticated = true;
+        return true;
+    } else {
+        alert("Incorrect Password! Access Denied.");
+        return false;
+    }
+}
 
 /* CREATE NAVIGATION DOTS */
 cards.forEach((card, index) => {
@@ -858,6 +873,12 @@ function updateUI() {
 
 function changePage(direction) {
     if (isLoading) return;
+    
+    // Check password if trying to move forward from the start page
+    if (direction > 0 && currentCardIndex === 0 && !isAuthenticated) {
+        if (!checkPassword()) return;
+    }
+
     const target = currentCardIndex + direction;
     if (target >= 0 && target < cards.length) {
         changePageTo(target);
@@ -866,6 +887,11 @@ function changePage(direction) {
 
 function changePageTo(target) {
     if (isLoading || target < 0 || target >= cards.length || target === currentCardIndex) return;
+
+    // Check password if navigating away from home page
+    if (currentCardIndex === 0 && target > 0 && !isAuthenticated) {
+        if (!checkPassword()) return;
+    }
 
     isLoading = true;
     document.body.classList.add("loading");
