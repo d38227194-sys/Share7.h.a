@@ -1,714 +1,957 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>عرض التكنولوجيا الحديثة التفاعلي</title>
+<style>
+:root {
+    --navy-dark: #0b2545;
+    --navy-medium: #134074;
+    --navy-light: #8da9c4;
+    --bg-color: #020914;
+    --cyan: #00f2fe;
+    --blue: #0072ff;
+    --text-color: #172033;
+}
 
+/* =========================
+   GENERAL
+========================= */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+}
 
+body {
+    background: #020914;
+    color: var(--text-color);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+}
 
+/* =========================
+   MATRIX BACKGROUND
+========================= */
+#matrixBackground {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
+}
 
+.matrix-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(2, 9, 20, 0.48);
+    z-index: -1;
+    pointer-events: none;
+}
 
+/* =========================
+   LOADING SCREEN
+========================= */
+#loadingScreen {
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(circle at center, rgba(0, 114, 255, 0.16), rgba(2, 9, 20, 0.98) 65%);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    overflow: hidden;
+}
 
+#loadingScreen.show {
+    opacity: 1;
+    visibility: visible;
+}
 
+#loadingMatrix {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.7;
+}
 
+.loading-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding: 35px 50px;
+    border: 1px solid rgba(0,242,254,0.35);
+    border-radius: 22px;
+    background: rgba(2, 14, 28, 0.88);
+    box-shadow: 0 0 30px rgba(0,242,254,0.12), inset 0 0 25px rgba(0,114,255,0.06);
+    backdrop-filter: blur(5px);
+}
 
+.loading-title {
+    color: white;
+    font-size: 27px;
+    font-weight: bold;
+    letter-spacing: 4px;
+    margin-bottom: 15px;
+    text-shadow: 0 0 10px var(--cyan), 0 0 25px rgba(0,242,254,0.6);
+}
 
+.loading-text {
+    color: var(--cyan);
+    font-size: 15px;
+    font-family: monospace;
+    letter-spacing: 2px;
+    min-width: 180px;
+}
 
+.loading-dots {
+    display: inline-block;
+    width: 35px;
+    text-align: left;
+}
 
+.loading-bar {
+    width: 220px;
+    height: 4px;
+    margin: 20px auto 0;
+    background: rgba(255,255,255,0.12);
+    border-radius: 10px;
+    overflow: hidden;
+}
 
-<canvas id="loadingMatrix"></canvas>
+.loading-progress {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--blue), var(--cyan));
+    box-shadow: 0 0 12px var(--cyan);
+    animation: loadingProgress 0.75s ease forwards;
+}
 
-<div class="loading-content">
+@keyframes loadingProgress {
+    0% { width: 0%; }
+    100% { width: 100%; }
+}
 
-    <div class="loading-title">
-        LOADING
+/* =========================
+   HEADER
+========================= */
+header {
+    width: 100%;
+    padding: 24px 15px;
+    text-align: center;
+    background: rgba(3, 15, 27, 0.92);
+    border-bottom: 1px solid rgba(0,242,254,0.22);
+    box-shadow: 0 5px 25px rgba(0,0,0,0.6), 0 0 20px rgba(0,242,254,0.05);
+    position: relative;
+    z-index: 5;
+}
+
+header h1 {
+    color: white;
+    font-size: clamp(21px, 4vw, 32px);
+    margin-bottom: 8px;
+    text-shadow: 0 0 10px var(--cyan), 0 0 25px rgba(0,242,254,0.35);
+}
+
+header p {
+    color: var(--navy-light);
+    font-size: 14px;
+}
+
+/* =========================
+   NAVIGATION DOTS
+========================= */
+.nav-dots {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin: 22px 0 15px;
+    position: relative;
+    z-index: 5;
+}
+
+.dot {
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    background: #334155;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.dot:hover {
+    transform: scale(1.15);
+}
+
+.dot.active {
+    background: var(--cyan);
+    box-shadow: 0 0 8px var(--cyan), 0 0 18px rgba(0,242,254,0.65);
+    transform: scale(1.35);
+}
+
+/* =========================
+   MAIN
+========================= */
+.main-container {
+    width: 92%;
+    max-width: 900px;
+    margin: 0 auto 25px;
+    position: relative;
+    min-height: 560px;
+    z-index: 2;
+}
+
+/* =========================
+   CARDS
+========================= */
+.card {
+    display: none;
+    background: rgba(255,255,255,0.97);
+    border-radius: 20px;
+    padding: 32px;
+    min-height: 540px;
+    box-shadow: 0 20px 45px rgba(0,0,0,0.5), 0 0 20px rgba(0,242,254,0.07);
+    border-top: 5px solid var(--navy-medium);
+    overflow: hidden;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(20px) scale(0.98);
+}
+
+.card.active {
+    display: block;
+    animation: pageEnter 0.55s ease forwards;
+}
+
+@keyframes pageEnter {
+    0% { opacity: 0; transform: translateY(20px) scale(0.98); }
+    60% { opacity: 1; transform: translateY(-3px) scale(1.005); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* =========================
+   CARD HEADER
+========================= */
+.card-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 2px solid #e2e8f0;
+    padding-bottom: 15px;
+    margin-bottom: 22px;
+}
+
+.card-title {
+    color: var(--navy-dark);
+    font-size: clamp(19px, 3vw, 25px);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    text-align: center;
+}
+
+.card-badge {
+    background: var(--navy-dark);
+    color: white;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+}
+
+/* =========================
+   TEXT
+========================= */
+.original-text {
+    background: #f8fafc;
+    border-right: 4px solid var(--navy-medium);
+    padding: 16px 18px;
+    border-radius: 8px;
+    font-size: 15px;
+    line-height: 1.9;
+    margin-bottom: 20px;
+    color: #334155;
+    text-align: center;
+}
+
+.detailed-explanation {
+    background: #eef4f8;
+    border-radius: 12px;
+    padding: 22px;
+    font-size: 15px;
+    line-height: 2;
+    color: #0f172a;
+    text-align: center;
+}
+
+.explanation-title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    font-weight: bold;
+    color: var(--navy-dark);
+    font-size: 18px;
+    margin-bottom: 12px;
+}
+
+.detailed-explanation ul,
+.detailed-explanation ol {
+    text-align: right;
+    max-width: 700px;
+    margin: 12px auto;
+}
+
+.detailed-explanation li {
+    margin-bottom: 8px;
+}
+
+/* =========================
+   TABLE
+========================= */
+.comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 18px auto 5px;
+    font-size: 14px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.comparison-table th {
+    background: var(--navy-dark);
+    color: white;
+    padding: 12px;
+    text-align: center;
+}
+
+.comparison-table td {
+    padding: 12px;
+    border: 1px solid #cbd5e1;
+    background: white;
+    text-align: center;
+    line-height: 1.7;
+}
+
+/* =========================
+   AI LOGO
+========================= */
+.ai-logos-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+    margin: 15px 0 25px;
+    padding: 18px;
+    background: white;
+    border-radius: 14px;
+    box-shadow: inset 0 0 12px rgba(0,0,0,0.05);
+}
+
+.logo-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.animated-logo {
+    width: 58px;
+    height: 58px;
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-9px); }
+    100% { transform: translateY(0); }
+}
+
+/* =========================
+   WELCOME
+========================= */
+.hacker-card {
+    background: rgba(3,10,22,0.94) !important;
+    color: #00f2fe !important;
+    border-top: 5px solid #00f2fe !important;
+    min-height: 540px;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.hacker-card.active {
+    display: flex;
+}
+
+.hacker-content {
+    position: relative;
+    z-index: 2;
+    background: rgba(3,10,22,0.88);
+    padding: 40px 30px;
+    border-radius: 18px;
+    border: 1px solid rgba(0,242,254,0.35);
+    box-shadow: 0 0 30px rgba(0,242,254,0.12);
+    width: 90%;
+    max-width: 700px;
+    text-align: center;
+}
+
+.hacker-title {
+    font-size: clamp(28px, 6vw, 45px);
+    font-weight: bold;
+    color: white;
+    margin-bottom: 18px;
+    text-shadow: 0 0 15px var(--cyan), 0 0 30px var(--cyan);
+}
+
+.hacker-subtitle {
+    font-size: 16px;
+    color: #8da9c4;
+    line-height: 2;
+    margin-bottom: 28px;
+}
+
+.start-btn {
+    background: linear-gradient(45deg, #00f2fe, #0072ff);
+    color: #030a16;
+    font-weight: bold;
+    font-size: 16px;
+    padding: 14px 32px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    box-shadow: 0 0 15px rgba(0,242,254,0.4);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.start-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 30px rgba(0,242,254,0.75);
+}
+
+/* =========================
+   THANK YOU
+========================= */
+.thankyou-card {
+    background: linear-gradient(135deg, rgba(11,37,69,0.96), rgba(19,64,116,0.96)) !important;
+    color: white !important;
+    min-height: 540px;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.thankyou-card.active {
+    display: flex;
+}
+
+.thankyou-box {
+    width: 90%;
+    max-width: 650px;
+    padding: 40px 25px;
+    border-radius: 20px;
+    border: 2px solid rgba(0,242,254,0.5);
+    background: rgba(2,15,30,0.72);
+    box-shadow: 0 0 30px rgba(0,242,254,0.18);
+    text-align: center;
+}
+
+.thankyou-icon {
+    font-size: 55px;
+    margin-bottom: 15px;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+.thankyou-title {
+    font-size: clamp(30px, 6vw, 45px);
+    font-weight: bold;
+    margin-bottom: 18px;
+    color: white;
+    text-shadow: 0 0 15px var(--cyan), 0 0 30px rgba(0,242,254,0.5);
+}
+
+.thankyou-sub {
+    font-size: 16px;
+    color: #cbd5e1;
+    line-height: 2;
+    margin-bottom: 25px;
+}
+
+.names {
+    border-top: 1px solid rgba(255,255,255,0.2);
+    padding-top: 20px;
+    color: #00f2fe;
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 2;
+}
+
+/* =========================
+   NAVIGATION
+========================= */
+.navigation-controls {
+    width: 92%;
+    max-width: 900px;
+    margin: 0 auto 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    position: relative;
+    z-index: 5;
+}
+
+.nav-btn {
+    background: linear-gradient(135deg, #134074, #0b2545);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.2);
+    padding: 12px 25px;
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+}
+
+.nav-btn:hover:not(:disabled) {
+    background: #00f2fe;
+    color: #0b2545;
+    transform: translateY(-3px);
+    box-shadow: 0 0 20px rgba(0,242,254,0.6);
+}
+
+.nav-btn:disabled {
+    background: #1e293b;
+    color: #64748b;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+#pageIndicator {
+    color: var(--cyan);
+    font-size: 16px;
+    font-weight: bold;
+    text-shadow: 0 0 8px rgba(0,242,254,0.6);
+}
+
+/* =========================
+   MOBILE
+========================= */
+@media (max-width: 650px) {
+    .main-container { width: 94%; }
+    .card { padding: 20px; min-height: 570px; }
+    .detailed-explanation { padding: 16px; font-size: 14px; }
+    .comparison-table { font-size: 11px; }
+    .comparison-table th, .comparison-table td { padding: 7px; }
+    .navigation-controls { width: 94%; }
+    .nav-btn { padding: 10px 15px; font-size: 12px; }
+    .loading-content { padding: 30px 25px; }
+}
+
+body.loading {
+    overflow: hidden;
+}
+</style>
+</head>
+<body>
+
+<!-- LOADING SCREEN -->
+<div id="loadingScreen">
+    <canvas id="loadingMatrix"></canvas>
+    <div class="loading-content">
+        <div class="loading-title">LOADING</div>
+        <div class="loading-text">SYSTEM INITIALIZING<span class="loading-dots" id="loadingDots">.</span></div>
+        <div class="loading-bar">
+            <div class="loading-progress" id="loadingProgress"></div>
+        </div>
+    </div>
+</div>
+
+<!-- BACKGROUND MATRIX -->
+<canvas id="matrixBackground"></canvas>
+<div class="matrix-overlay"></div>
+
+<!-- HEADER -->
+<header>
+    <h1>شرح وسائِلِ التِّكنولوجيا الحَديثَة 🚀</h1>
+    <p>عرض تفاعلي شامل ومتطوّر لدروس التكنولوجيا</p>
+</header>
+
+<!-- DOTS -->
+<div class="nav-dots" id="dotsContainer"></div>
+
+<!-- MAIN CONTAINER -->
+<div class="main-container">
+    <!-- PAGE 1: WELCOME -->
+    <div class="card hacker-card active">
+        <div class="hacker-content">
+            <div class="hacker-title">التكنولوجيا الحديثة</div>
+            <div class="hacker-subtitle">
+                مرحباً بك في العرض التفاعلي الشامل.<br>
+                اكتشف عالم الأجهزة الذكية، الحوسبة السحابية، الذكاء الاصطناعي، والواقع الافتراضي وإنترنت الأشياء بأسلوب عصري وممتع.
+            </div>
+            <button class="start-btn" onclick="changePage(1)">ابدأ الاستكشاف 🚀</button>
+        </div>
     </div>
 
-    <div class="loading-text">
-        SYSTEM INITIALIZING<span
-            class="loading-dots"
-            id="loadingDots"
-        >.</span>
+    <!-- PAGE 2: SMART DEVICES -->
+    <div class="card">
+        <div class="card-header">
+            <h2 class="card-title"><span class="card-badge">1</span> الأجهزة الذكية (Smart Devices)</h2>
+        </div>
+        <div class="original-text">
+            <strong>📝 النص الأصلي:</strong> أجهزة إلكترونية مجهزة بتقنيات حديثة تمكنها من الاتصال بشبكة الإنترنت وتبادل البيانات مع البيئة المحيطة، أو مع مستخدمين آخرين. وتمتاز بالقدرة على جمع البيانات وتحليلها واتخاذ قرارات ذكية بناءً عليها.
+        </div>
+        <div class="detailed-explanation">
+            <div class="explanation-title">💡 الشرح المُوسّع</div>
+            الأجهزة الذكية أصبحت تتجاوز مجرد كونها أدوات تنفذ أوامر بلمسة زر، فهي تعتمد على مجموعة من التقنيات التي تجعلها قادرة على فهم البيئة المحيطة والتفاعل معها.
+            <ul>
+                <li><strong>المستشعرات:</strong> تجمع البيانات مثل الحرارة والضوء والحركة.</li>
+                <li><strong>المعالجة الذكية:</strong> تحلل البيانات وتتعرف على الأنماط.</li>
+                <li><strong>الاتصال والتحكم:</strong> تتواصل مع الأجهزة الأخرى وتنفذ بعض العمليات تلقائياً.</li>
+            </ul>
+            <strong>أمثلة من حياتنا اليومية:</strong>
+            <ul>
+                <li>الساعات الذكية التي تتابع النشاط والحركة.</li>
+                <li>أنظمة المنازل الذكية التي تتحكم بالإضاءة والتكييف.</li>
+                <li>السيارات الحديثة التي تحتوي على أنظمة مساعدة للسائق.</li>
+            </ul>
+        </div>
     </div>
 
-    <div class="loading-bar">
-
-        <div
-            class="loading-progress"
-            id="loadingProgress"
-        ></div>
-
+    <!-- PAGE 3: CLOUD COMPUTING -->
+    <div class="card">
+        <div class="card-header">
+            <h2 class="card-title"><span class="card-badge">2</span> الحوسبة السحابية (Cloud Computing)</h2>
+        </div>
+        <div class="original-text">
+            <strong>📝 النص الأصلي:</strong> تقنية توفر خدمات حاسوبية عديدة عبر الإنترنت مثل الخوادم وقواعد البيانات والتخزين والبرمجيات والشبكات والذكاء الاصطناعي.
+        </div>
+        <div class="detailed-explanation">
+            <div class="explanation-title">💡 الشرح المُوسّع</div>
+            تخيل الحوسبة السحابية مثل شركة الكهرباء؛ بدلاً من بناء محطة كهرباء خاصة في منزلك، تحصل على الخدمة عبر الشبكة وتستخدم منها المقدار الذي تحتاجه.<br><br>
+            <strong>النماذج الرئيسية للحوسبة السحابية:</strong>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>النموذج</th>
+                        <th>الشرح</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>SaaS</strong></td>
+                        <td>تطبيقات جاهزة للاستخدام عبر الإنترنت مثل Gmail وGoogle Docs.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>PaaS</strong></td>
+                        <td>بيئة تساعد المطورين على بناء التطبيقات وتشغيلها.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>IaaS</strong></td>
+                        <td>توفير خوادم ومساحات تخزين وشبكات افتراضية عبر الإنترنت.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h1>
-    شرح وسائِلِ التِّكنولوجيا الحَديثَة 🚀
-</h1>
-
-<p>
-    عرض تفاعلي شامل ومتطوّر لدروس التكنولوجيا
-</p>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div class="hacker-content">
-
-    <div class="hacker-title">
-        التكنولوجيا الحديثة
+    <!-- PAGE 4: VR & AR -->
+    <div class="card">
+        <div class="card-header">
+            <h2 class="card-title"><span class="card-badge">3</span> الواقع الافتراضي والواقع المعزز (VR & AR)</h2>
+        </div>
+        <div class="original-text">
+            <strong>📝 النص الأصلي:</strong> تقنيات تفاعلية ثلاثية الأبعاد تقدم تجارب فريدة، ورغم وجود تشابه بينهما إلا أن لكل منهما خصائص واستخدامات مختلفة.
+        </div>
+        <div class="detailed-explanation">
+            <div class="explanation-title">💡 الشرح والمقارنة</div>
+            الفرق الأساسي بينهما هو طريقة تعامل التقنية مع العالم الحقيقي.
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>المعيار</th>
+                        <th>VR</th>
+                        <th>AR</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>العزل</td>
+                        <td>ينقل المستخدم إلى عالم افتراضي.</td>
+                        <td>يضيف عناصر رقمية إلى العالم الحقيقي.</td>
+                    </tr>
+                    <tr>
+                        <td>الأدوات</td>
+                        <td>نظارات الواقع الافتراضي.</td>
+                        <td>الهواتف والكاميرات والنظارات الذكية.</td>
+                    </tr>
+                    <tr>
+                        <td>الاستخدام</td>
+                        <td>التدريب والألعاب والمحاكاة.</td>
+                        <td>التعليم والتصميم والصيانة.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 
-    <div class="hacker-subtitle">
-
-        مرحباً بك في العرض التفاعلي الشامل.
-
-        <br>
-
-        اكتشف عالم الأجهزة الذكية،
-        الحوسبة السحابية،
-        الذكاء الاصطناعي،
-        والواقع الافتراضي
-        وإنترنت الأشياء
-        بأسلوب عصري وممتع.
-
+    <!-- PAGE 5: AI -->
+    <div class="card">
+        <div class="card-header">
+            <h2 class="card-title"><span class="card-badge">4</span> الذكاء الاصطناعي (Artificial Intelligence)</h2>
+        </div>
+        <div class="ai-logos-container">
+            <div class="logo-item">
+                <svg class="animated-logo gemini-logo" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 0C12 6.62742 6.62742 12 0 12C6.62742 12 12 17.3726 12 24C12 17.3726 17.3726 12 24 12C17.3726 12 12 6.62742 12 0Z" fill="url(#gemini-grad)"/>
+                    <defs>
+                        <linearGradient id="gemini-grad" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse">
+                            <stop stop-color="#1A73E8"/>
+                            <stop offset="0.5" stop-color="#8AB4F8"/>
+                            <stop offset="1" stop-color="#A142F4"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
+                <span style="font-size:10pt; font-weight:bold; color:#1a73e8;">Gemini</span>
+            </div>
+        </div>
+        <div class="original-text">
+            <strong>📝 النص الأصلي:</strong> نظام حاسوبي قادر على محاكاة بعض قدرات الذكاء البشري مثل التفكير والتعلم وحل المشكلات.
+        </div>
+        <div class="detailed-explanation">
+            <div class="explanation-title">💡 الشرح المُوسّع</div>
+            يعتمد الذكاء الاصطناعي على خوارزميات قادرة على تحليل البيانات والتعرف على الأنماط والتعامل مع المشكلات.
+            <ul>
+                <li><strong>التعلم الآلي:</strong> يتعلم النظام من البيانات.</li>
+                <li><strong>التعلم العميق:</strong> يستخدم شبكات عصبية اصطناعية لمعالجة البيانات المعقدة.</li>
+                <li><strong>الذكاء الاصطناعي التوليدي:</strong> يمكنه إنشاء النصوص والصور والأكواد وغيرها.</li>
+            </ul>
+            <div style="background:#fef2f2; border-right:4px solid #ef4444; padding:12px 15px; border-radius:8px; margin-top:18px; color:#991b1b;">
+                <strong>⚠️ ملاحظة:</strong> قد تقدم أنظمة الذكاء الاصطناعي أحياناً معلومات غير صحيحة، لذلك من المهم مراجعة المعلومات والتحقق من المصادر.
+            </div>
+        </div>
     </div>
 
-    <button
-        class="start-btn"
-        onclick="changePage(1)"
-    >
-        ابدأ الاستكشاف 🚀
-    </button>
-
-</div>
-
-
-
-
-
-
-
-
-<div class="card-header">
-
-    <h2 class="card-title">
-
-        <span class="card-badge">
-            1
-        </span>
-
-        الأجهزة الذكية
-        (Smart Devices)
-
-    </h2>
-
-</div>
-
-<div class="original-text">
-
-    <strong>📝 النص الأصلي:</strong>
-
-    أجهزة إلكترونية مجهزة بتقنيات حديثة تمكنها من الاتصال بشبكة الإنترنت وتبادل البيانات مع البيئة المحيطة، أو مع مستخدمين آخرين. وتمتاز بالقدرة على جمع البيانات وتحليلها واتخاذ قرارات ذكية بناءً عليها.
-
-</div>
-
-<div class="detailed-explanation">
-
-    <div class="explanation-title">
-        💡 الشرح المُوسّع
+    <!-- PAGE 6: IOT -->
+    <div class="card">
+        <div class="card-header">
+            <h2 class="card-title"><span class="card-badge">5</span> إنترنت الأشياء (Internet of Things - IoT)</h2>
+        </div>
+        <div class="original-text">
+            <strong>📝 النص الأصلي:</strong> شبكة من الأجهزة الذكية المرتبطة بالإنترنت لمشاركة البيانات والموارد والتفاعل مع بعضها البعض.
+        </div>
+        <div class="detailed-explanation">
+            <div class="explanation-title">💡 الشرح المُوسّع</div>
+            فكرة إنترنت الأشياء هي ربط الأشياء والأجهزة بالإنترنت حتى تتمكن من جمع البيانات وإرسالها واستقبال الأوامر.<br><br>
+            <strong>كيف يعمل إنترنت الأشياء؟</strong>
+            <ol>
+                <li><strong>جمع البيانات:</strong> تقوم المستشعرات بجمع المعلومات.</li>
+                <li><strong>نقل البيانات:</strong> ترسل الأجهزة البيانات عبر الشبكة.</li>
+                <li><strong>المعالجة:</strong> يتم تحليل البيانات.</li>
+                <li><strong>اتخاذ الإجراء:</strong> يمكن للجهاز تنفيذ إجراء تلقائي.</li>
+            </ol>
+            <div style="background:#f0fdf4; border-right:4px solid #22c55e; padding:12px 15px; border-radius:8px; margin-top:18px; color:#166534;">
+                <strong>📜 مثال:</strong> يمكن للمنزل الذكي تشغيل الإضاءة أو تعديل درجة الحرارة تلقائياً اعتماداً على البيانات التي تجمعها الأجهزة.
+            </div>
+        </div>
     </div>
 
-    الأجهزة الذكية أصبحت تتجاوز مجرد كونها أدوات تنفذ أوامر بلمسة زر، فهي تعتمد على مجموعة من التقنيات التي تجعلها قادرة على فهم البيئة المحيطة والتفاعل معها.
-
-    <ul>
-
-        <li>
-            <strong>المستشعرات:</strong>
-            تجمع البيانات مثل الحرارة والضوء والحركة.
-        </li>
-
-        <li>
-            <strong>المعالجة الذكية:</strong>
-            تحلل البيانات وتتعرف على الأنماط.
-        </li>
-
-        <li>
-            <strong>الاتصال والتحكم:</strong>
-            تتواصل مع الأجهزة الأخرى وتنفذ بعض العمليات تلقائياً.
-        </li>
-
-    </ul>
-
-    <strong>
-        أمثلة من حياتنا اليومية:
-    </strong>
-
-    <ul>
-
-        <li>
-            الساعات الذكية التي تتابع النشاط والحركة.
-        </li>
-
-        <li>
-            أنظمة المنازل الذكية التي تتحكم بالإضاءة والتكييف.
-        </li>
-
-        <li>
-            السيارات الحديثة التي تحتوي على أنظمة مساعدة للسائق.
-        </li>
-
-    </ul>
-
-</div>
-
-
-
-
-
-
-
-
-<div class="card-header">
-
-    <h2 class="card-title">
-
-        <span class="card-badge">
-            2
-        </span>
-
-        الحوسبة السحابية
-        (Cloud Computing)
-
-    </h2>
-
-</div>
-
-<div class="original-text">
-
-    <strong>📝 النص الأصلي:</strong>
-
-    تقنية توفر خدمات حاسوبية عديدة عبر الإنترنت مثل الخوادم وقواعد البيانات والتخزين والبرمجيات والشبكات والذكاء الاصطناعي.
-
-</div>
-
-<div class="detailed-explanation">
-
-    <div class="explanation-title">
-        💡 الشرح المُوسّع
+    <!-- PAGE 7: THANK YOU -->
+    <div class="card thankyou-card">
+        <div class="thankyou-box">
+            <div class="thankyou-icon">✨🎓✨</div>
+            <div class="thankyou-title">شكراً لاستماعكم</div>
+            <div class="thankyou-sub">نتمنى أن يكون هذا العرض قد ساعدكم على فهم أبرز مفاهيم التكنولوجيا الحديثة بطريقة واضحة وممتعة.</div>
+            <div class="names">
+                إعداد<br>
+                عمار الهدار<br>
+                هاشم العبيدين
+            </div>
+        </div>
     </div>
-
-    تخيل الحوسبة السحابية مثل شركة الكهرباء؛ بدلاً من بناء محطة كهرباء خاصة في منزلك، تحصل على الخدمة عبر الشبكة وتستخدم منها المقدار الذي تحتاجه.
-
-    <br><br>
-
-    <strong>
-        النماذج الرئيسية للحوسبة السحابية:
-    </strong>
-
-    <table class="comparison-table">
-
-        <thead>
-
-            <tr>
-
-                <th>
-                    النموذج
-                </th>
-
-                <th>
-                    الشرح
-                </th>
-
-            </tr>
-
-        </thead>
-
-        <tbody>
-
-            <tr>
-
-                <td>
-                    <strong>SaaS</strong>
-                </td>
-
-                <td>
-                    تطبيقات جاهزة للاستخدام عبر الإنترنت مثل Gmail وGoogle Docs.
-                </td>
-
-            </tr>
-
-            <tr>
-
-                <td>
-                    <strong>PaaS</strong>
-                </td>
-
-                <td>
-                    بيئة تساعد المطورين على بناء التطبيقات وتشغيلها.
-                </td>
-
-            </tr>
-
-            <tr>
-
-                <td>
-                    <strong>IaaS</strong>
-                </td>
-
-                <td>
-                    توفير خوادم ومساحات تخزين وشبكات افتراضية عبر الإنترنت.
-                </td>
-
-            </tr>
-
-        </tbody>
-
-    </table>
-
 </div>
 
-
-
-
-
-
-
-
-<div class="card-header">
-
-    <h2 class="card-title">
-
-        <span class="card-badge">
-            3
-        </span>
-
-        الواقع الافتراضي والواقع المعزز
-        (VR & AR)
-
-    </h2>
-
+<!-- NAVIGATION CONTROLS -->
+<div class="navigation-controls">
+    <button class="nav-btn" id="prevBtn" onclick="changePage(-1)" disabled>❮ الصفحة السابقة</button>
+    <span id="pageIndicator">1 / 7</span>
+    <button class="nav-btn" id="nextBtn" onclick="changePage(1)">الصفحة التالية ❯</button>
 </div>
 
-<div class="original-text">
-
-    <strong>📝 النص الأصلي:</strong>
-
-    تقنيات تفاعلية ثلاثية الأبعاد تقدم تجارب فريدة، ورغم وجود تشابه بينهما إلا أن لكل منهما خصائص واستخدامات مختلفة.
-
-</div>
-
-<div class="detailed-explanation">
-
-    <div class="explanation-title">
-        💡 الشرح والمقارنة
-    </div>
-
-    الفرق الأساسي بينهما هو طريقة تعامل التقنية مع العالم الحقيقي.
-
-    <table class="comparison-table">
-
-        <thead>
-
-            <tr>
-
-                <th>
-                    المعيار
-                </th>
-
-                <th>
-                    VR
-                </th>
-
-                <th>
-                    AR
-                </th>
-
-            </tr>
-
-        </thead>
-
-        <tbody>
-
-            <tr>
-
-                <td>
-                    العزل
-                </td>
-
-                <td>
-                    ينقل المستخدم إلى عالم افتراضي.
-                </td>
-
-                <td>
-                    يضيف عناصر رقمية إلى العالم الحقيقي.
-                </td>
-
-            </tr>
-
-            <tr>
-
-                <td>
-                    الأدوات
-                </td>
-
-                <td>
-                    نظارات الواقع الافتراضي.
-                </td>
-
-                <td>
-                    الهواتف والكاميرات والنظارات الذكية.
-                </td>
-
-            </tr>
-
-            <tr>
-
-                <td>
-                    الاستخدام
-                </td>
-
-                <td>
-                    التدريب والألعاب والمحاكاة.
-                </td>
-
-                <td>
-                    التعليم والتصميم والصيانة.
-                </td>
-
-            </tr>
-
-        </tbody>
-
-    </table>
-
-</div>
-
-
-
-
-
-
-
-
-<div class="card-header">
-
-    <h2 class="card-title">
-
-        <span class="card-badge">
-            4
-        </span>
-
-        الذكاء الاصطناعي
-        (Artificial Intelligence)
-
-    </h2>
-
-</div>
-
-<div class="ai-logos-container">
-
-    <div class="logo-item">
-
-        <svg
-            class="animated-logo gemini-logo"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-        >
-
-            <path
-                d="M12 0C12 6.62742 6.62742 12 0 12C6.62742 12 12 17.3726 12 24C12 17.3726 17.3726 12 24 12C17.3726 12 12 6.62742 12 0Z"
-                fill="url(#gemini-grad)"
-            />
-
-            <defs>
-
-                <linearGradient
-                    id="gemini-grad"
-                    x1="0"
-                    y1="0"
-                    x2="24"
-                    y2="24"
-                    gradientUnits="userSpaceOnUse"
-                >
-
-                    <stop
-                        stop-color="#1A73E8"
-                    />
-
-                    <stop
-                        offset="0.5"
-                        stop-color="#8AB4F8"
-                    />
-
-                    <stop
-                        offset="1"
-                        stop-color="#A142F4"
-                    />
-
-                </linearGradient>
-
-            </defs>
-
-        </svg>
-
-        <span
-            style="
-            font-size:10pt;
-            font-weight:bold;
-            color:#1a73e8;
-            "
-        >
-            Gemini
-        </span>
-
-    </div>
-
-</div>
-
-<div class="original-text">
-
-    <strong>📝 النص الأصلي:</strong>
-
-    نظام حاسوبي قادر على محاكاة بعض قدرات الذكاء البشري مثل التفكير والتعلم وحل المشكلات.
-
-</div>
-
-<div class="detailed-explanation">
-
-    <div class="explanation-title">
-        💡 الشرح المُوسّع
-    </div>
-
-    يعتمد الذكاء الاصطناعي على خوارزميات قادرة على تحليل البيانات والتعرف على الأنماط والتعامل مع المشكلات.
-
-    <ul>
-
-        <li>
-            <strong>التعلم الآلي:</strong>
-            يتعلم النظام من البيانات.
-        </li>
-
-        <li>
-            <strong>التعلم العميق:</strong>
-            يستخدم شبكات عصبية اصطناعية لمعالجة البيانات المعقدة.
-        </li>
-
-        <li>
-            <strong>الذكاء الاصطناعي التوليدي:</strong>
-            يمكنه إنشاء النصوص والصور والأكواد وغيرها.
-        </li>
-
-    </ul>
-
-    <div
-        style="
-        background:#fef2f2;
-        border-right:4px solid #ef4444;
-        padding:12px 15px;
-        border-radius:8px;
-        margin-top:18px;
-        color:#991b1b;
-        "
-    >
-
-        <strong>
-            ⚠️ ملاحظة:
-        </strong>
-
-        قد تقدم أنظمة الذكاء الاصطناعي أحياناً معلومات غير صحيحة، لذلك من المهم مراجعة المعلومات والتحقق من المصادر.
-
-    </div>
-
-</div>
-
-
-
-
-
-
-
-
-<div class="card-header">
-
-    <h2 class="card-title">
-
-        <span class="card-badge">
-            5
-        </span>
-
-        إنترنت الأشياء
-        (Internet of Things - IoT)
-
-    </h2>
-
-</div>
-
-<div class="original-text">
-
-    <strong>📝 النص الأصلي:</strong>
-
-    شبكة من الأجهزة الذكية المرتبطة بالإنترنت لمشاركة البيانات والموارد والتفاعل مع بعضها البعض.
-
-</div>
-
-<div class="detailed-explanation">
-
-    <div class="explanation-title">
-        💡 الشرح المُوسّع
-    </div>
-
-    فكرة إنترنت الأشياء هي ربط الأشياء والأجهزة بالإنترنت حتى تتمكن من جمع البيانات وإرسالها واستقبال الأوامر.
-
-    <br><br>
-
-    <strong>
-        كيف يعمل إنترنت الأشياء؟
-    </strong>
-
-    <ol>
-
-        <li>
-            <strong>جمع البيانات:</strong>
-            تقوم المستشعرات بجمع المعلومات.
-        </li>
-
-        <li>
-            <strong>نقل البيانات:</strong>
-            ترسل الأجهزة البيانات عبر الشبكة.
-        </li>
-
-        <li>
-            <strong>المعالجة:</strong>
-            يتم تحليل البيانات.
-        </li>
-
-        <li>
-            <strong>اتخاذ الإجراء:</strong>
-            يمكن للجهاز تنفيذ إجراء تلقائي.
-        </li>
-
-    </ol>
-
-    <div
-        style="
-        background:#f0fdf4;
-        border-right:4px solid #22c55e;
-        padding:12px 15px;
-        border-radius:8px;
-        margin-top:18px;
-        color:#166534;
-        "
-    >
-
-        <strong>
-            📜 مثال:
-        </strong>
-
-        يمكن للمنزل الذكي تشغيل الإضاءة أو تعديل درجة الحرارة تلقائياً اعتماداً على البيانات التي تجمعها الأجهزة.
-
-    </div>
-
-</div>
-
-
-
-
-
-
-
-
-<div class="thankyou-box">
-
-    <div class="thankyou-icon">
-        ✨🎓✨
-    </div>
-
-    <div class="thankyou-title">
-        شكراً لاستماعكم
-    </div>
-
-    <div class="thankyou-sub">
-
-        نتمنى أن يكون هذا العرض قد ساعدكم على فهم أبرز مفاهيم التكنولوجيا الحديثة بطريقة واضحة وممتعة.
-
-    </div>
-
-    <div class="names">
-
-        إعداد
-
-        <br>
-
-        عمار الهدار
-
-        <br>
-
-        هاشم العبيدين
-
-    </div>
-
-</div>
-
-
-
-
-
-
-
-
-
-
-<button
-    class="nav-btn"
-    id="prevBtn"
-    onclick="changePage(-1)"
-    disabled
->
-
-    ❮
-    الصفحة السابقة
-
-</button>
-
-<span id="pageIndicator">
-    1 / 7
-</span>
-
-<button
-    class="nav-btn"
-    id="nextBtn"
-    onclick="changePage(1)"
->
-
-    الصفحة التالية
-    ❯
-
-</button>
-
-
-
-
-
-
-
-
+<!-- JAVASCRIPT -->
+<script>
+let currentCardIndex = 0;
+let isLoading = false;
+
+const cards = document.querySelectorAll(".card");
+const dotsContainer = document.getElementById("dotsContainer");
+const prevBtn = document.getElementById("prevBtn");
+const nextBtn = document.getElementById("nextBtn");
+const pageIndicator = document.getElementById("pageIndicator");
+const loadingScreen = document.getElementById("loadingScreen");
+const loadingProgress = document.getElementById("loadingProgress");
+const loadingDots = document.getElementById("loadingDots");
+
+/* CREATE NAVIGATION DOTS */
+cards.forEach((card, index) => {
+    const dot = document.createElement("div");
+    dot.classList.add("dot");
+    if (index === 0) dot.classList.add("active");
+    dot.addEventListener("click", () => {
+        if (index !== currentCardIndex && !isLoading) {
+            changePageTo(index);
+        }
+    });
+    dotsContainer.appendChild(dot);
+});
+
+const dots = document.querySelectorAll(".dot");
+
+function updateUI() {
+    cards.forEach((card, index) => {
+        card.classList.toggle("active", index === currentCardIndex);
+    });
+    dots.forEach((dot, index) => {
+        dot.classList.toggle("active", index === currentCardIndex);
+    });
+    prevBtn.disabled = currentCardIndex === 0;
+    nextBtn.disabled = currentCardIndex === cards.length - 1;
+    pageIndicator.textContent = `${currentCardIndex + 1} / ${cards.length}`;
+}
+
+function changePage(direction) {
+    if (isLoading) return;
+    const target = currentCardIndex + direction;
+    if (target >= 0 && target < cards.length) {
+        changePageTo(target);
+    }
+}
+
+function changePageTo(target) {
+    if (isLoading || target < 0 || target >= cards.length || target === currentCardIndex) return;
+
+    isLoading = true;
+    document.body.classList.add("loading");
+    loadingScreen.classList.add("show");
+
+    loadingProgress.style.animation = "none";
+    void loadingProgress.offsetWidth;
+    loadingProgress.style.animation = "loadingProgress 0.75s ease forwards";
+
+    let dotCount = 1;
+    const dotsInterval = setInterval(() => {
+        dotCount++;
+        if (dotCount > 3) dotCount = 1;
+        loadingDots.textContent = ".".repeat(dotCount);
+    }, 180);
+
+    setTimeout(() => {
+        cards[currentCardIndex].classList.remove("active");
+        currentCardIndex = target;
+        updateUI();
+    }, 430);
+
+    setTimeout(() => {
+        clearInterval(dotsInterval);
+        loadingScreen.classList.remove("show");
+        document.body.classList.remove("loading");
+        isLoading = false;
+    }, 780);
+}
+
+/* MAIN MATRIX BACKGROUND */
+const matrixCanvas = document.getElementById("matrixBackground");
+const ctx = matrixCanvas.getContext("2d");
+let fontSize = 15;
+let columns, drops;
+
+function resizeMatrix() {
+    matrixCanvas.width = window.innerWidth;
+    matrixCanvas.height = window.innerHeight;
+    columns = Math.floor(matrixCanvas.width / fontSize);
+    drops = Array(columns).fill(1);
+}
+
+resizeMatrix();
+window.addEventListener("resize", resizeMatrix);
+
+const matrixChars = "01ABCDEFGHIJKLMNOPQRSTUVWXYZ#$%&@<>";
+
+function drawMatrix() {
+    ctx.fillStyle = "rgba(2,9,20,0.13)";
+    ctx.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
+    ctx.fillStyle = "#00c8ff";
+    ctx.font = fontSize + "px monospace";
+
+    for (let i = 0; i < drops.length; i++) {
+        const text = matrixChars.charAt(Math.floor(Math.random() * matrixChars.length));
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+        if (drops[i] * fontSize > matrixCanvas.height && Math.random() > 0.975) {
+            drops[i] = 0;
+        }
+        drops[i]++;
+    }
+}
+setInterval(drawMatrix, 45);
+
+/* LOADING MATRIX BACKGROUND */
+const loadingCanvas = document.getElementById("loadingMatrix");
+const loadingCtx = loadingCanvas.getContext("2d");
+let loadingFontSize = 16;
+let loadingColumns, loadingDrops;
+
+function resizeLoadingMatrix() {
+    loadingCanvas.width = window.innerWidth;
+    loadingCanvas.height = window.innerHeight;
+    loadingColumns = Math.floor(loadingCanvas.width / loadingFontSize);
+    loadingDrops = Array(loadingColumns).fill(1);
+}
+
+resizeLoadingMatrix();
+window.addEventListener("resize", resizeLoadingMatrix);
+
+function drawLoadingMatrix() {
+    loadingCtx.fillStyle = "rgba(2,9,20,0.16)";
+    loadingCtx.fillRect(0, 0, loadingCanvas.width, loadingCanvas.height);
+    loadingCtx.fillStyle = "#00e5ff";
+    loadingCtx.font = loadingFontSize + "px monospace";
+
+    for (let i = 0; i < loadingDrops.length; i++) {
+        const text = matrixChars.charAt(Math.floor(Math.random() * matrixChars.length));
+        loadingCtx.fillText(text, i * loadingFontSize, loadingDrops[i] * loadingFontSize);
+        if (loadingDrops[i] * loadingFontSize > loadingCanvas.height && Math.random() > 0.94) {
+            loadingDrops[i] = 0;
+        }
+        loadingDrops[i]++;
+    }
+}
+setInterval(drawLoadingMatrix, 40);
+
+updateUI();
+</script>
+</body>
+</html>
